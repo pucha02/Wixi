@@ -1,7 +1,12 @@
-const MainPage = () => {
-    return (
-        <div>Main Page</div>
-    )
-}
+import Navigation from "../molecules/navigation";
 
-export default MainPage
+const MainPage = () => {
+  return (
+    <div>
+      Main Page
+      <Navigation />
+    </div>
+  );
+};
+
+export default MainPage;
