@@ -1,4 +1,4 @@
-import Navigation from "../molecules/navigation"
+import Navigation from "../../molecules/navigation"
 
 const Header = () => {
     return (

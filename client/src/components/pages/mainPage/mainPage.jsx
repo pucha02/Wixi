@@ -1,4 +1,4 @@
-import Navigation from "../atomic/molecules/navigation";
+import Navigation from "../../atomic/molecules/navigation";
 
 const MainPage = () => {
   return (
