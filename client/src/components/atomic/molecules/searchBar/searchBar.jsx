@@ -1,6 +1,6 @@
 import React from 'react';
-import Input from '../../atoms/input/input';
-import Button from '../../atoms/button/button';
+import Input from '../../atoms/input/Input';
+import Button from '../../atoms/button/Button';
 
 const SearchBar = ({ searchTerm, onSearchChange, onSearchSubmit }) => {
   return (

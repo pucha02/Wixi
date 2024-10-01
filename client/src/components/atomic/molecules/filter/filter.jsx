@@ -1,5 +1,5 @@
 import React from 'react';
-import Checkbox from '../../atoms/checkbox/checkbox';
+import Checkbox from '../../atoms/checkbox/Checkbox';
 
 const Filter = ({ filters, onFilterChange }) => {
   return (

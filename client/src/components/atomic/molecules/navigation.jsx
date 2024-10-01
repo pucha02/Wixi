@@ -1,4 +1,4 @@
-import Logo from "../atoms/logo/logo"
+import Logo from "../atoms/logo/Logo"
 
 const Navigation = () => {
     return (
