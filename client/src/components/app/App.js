@@ -1,10 +1,10 @@
-import MainPage from "../pages/mainPage";
+import ProductList from "../atomic/templates/productList/productList";
 
 const App = () => {
   return (
     <div className="App">
       <div>Hello World</div>
-      <MainPage/>
+      <ProductList/>
     </div>
   );
 };
