@@ -1,10 +1,22 @@
-export const fetchData = async () => {
-  try {
-    const respons = await fetch("http://localhost:3001/data").then((data) =>
-      data.json()
-    );
-    return respons;
-  } catch (error) {
-    console.log(error);
+import { useHttp } from "../hooks/http.hook";
+
+const useGetDataProduct = () => {
+  const { request, clearError, process, setProcess } = useHttp();
+
+  const _url = 'http://localhost:3001/data'
+
+  const getAllProduct = async () => {
+    const result = await request(_url)
+    console.log(result)
+    return result
   }
-};
+
+  return {
+    getAllProduct, 
+    process,
+    setProcess,
+    clearError
+  }
+}
+
+export default useGetDataProduct;

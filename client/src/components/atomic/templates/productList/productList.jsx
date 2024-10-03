@@ -1,25 +1,41 @@
 import { ProductItem } from "../../organisms/productItem/ProductItem";
-import { useEffect } from "react";
-import { fetchData } from "../../../../services/FetchData";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import useGetDataProduct from "../../../../services/FetchData";
 
-export const ProductList = () => {
+const ProductList = () => {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    setData(fetchData());
-  }, []);
+  const { getAllProduct } = useGetDataProduct();
 
-  return (
-    <div>
-      {/* {data.map((el) => (
-        <div key={el.id}>
-            {el.name}
-        </div>
-      ))} */
-      console.log(data)}
-    </div>
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getAllProduct();
+        setData(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); 
+
+  function renderItems(arr) {
+    const items = arr.map((item, i) => {
+      return (
+        <li key={i}>
+          <ProductItem name={item.name} description={item.description} cost={item.price} />
+        </li>
+      );
+    });
+    return <ul>{items}</ul>;
+  }
+
+  const elements = useMemo(() => {
+    return renderItems(data);
+  }, [data]);
+
+  return <div>{elements}</div>;
 };
 
 export default ProductList;
