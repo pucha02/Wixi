@@ -5,30 +5,30 @@ function UserProfile() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const fetchDataUser = async () => {
-            const token = localStorage.getItem('token');
-        
-            try {
-                const response = await fetch('http://localhost:5000/get-information-for-user-account', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                });
-        
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-        
-                const data = await response.json();
-                setUser(data);
-            } catch (error) {
-                console.error('Помилка при отриманні даних користувача:', error);
-            }
-        };
-
         fetchDataUser();
     }, []);
+
+    const fetchDataUser = async () => {
+        const token = localStorage.getItem('token');
+    
+        try {
+            const response = await fetch('http://localhost:5000/get-information-for-user-account', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
+            const data = await response.json();
+            setUser(data);
+        } catch (error) {
+            console.error('Помилка при отриманні даних користувача:', error);
+        }
+    };
 
     if (!user) return <p>Завантаження...</p>;
 

@@ -16,7 +16,6 @@ const ClientRegistrationForm = () => {
         email: '',
         password: ''
     });
-    const [error, setError] = useState('');
     const [validationErrors, setValidationErrors] = useState({});
 
     const handleSubmitRegistrationUser = async (e) => {
@@ -24,6 +23,11 @@ const ClientRegistrationForm = () => {
         const errors = validateFields(userData);
 
         setValidationErrors(errors);
+
+        if (Object.keys(errors).length > 0) {
+            console.log('Ошибки валидации, регистрация отменена', errors);
+            return; // Stop form submission if errors exist
+        }
 
         try {
             const response = await fetch('http://localhost:5000/register-user', {
@@ -43,7 +47,7 @@ const ClientRegistrationForm = () => {
                 throw new Error('Помилка під час реєстрації');
             }
         } catch (error) {
-            setError('Помилка під час реєстрації');
+            console.log('Помилка під час реєстрації');
         }
     };
 
