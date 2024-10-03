@@ -1,0 +1,145 @@
+{
+    "data": [
+      {
+        "id": 1,
+        "name": "Wireless Mouse",
+        "description": "Ergonomic wireless mouse with adjustable DPI",
+        "category": "Electronics",
+        "price": 25.99
+      },
+      {
+        "id": 2,
+        "name": "Laptop Stand",
+        "description": "Aluminum adjustable laptop stand",
+        "category": "Accessories",
+        "price": 34.99
+      },
+      {
+        "id": 3,
+        "name": "Mechanical Keyboard",
+        "description": "RGB mechanical keyboard with Cherry MX switches",
+        "category": "Electronics",
+        "price": 89.99
+      },
+      {
+        "id": 4,
+        "name": "USB-C Hub",
+        "description": "Multiport USB-C hub with HDMI and Ethernet",
+        "category": "Accessories",
+        "price": 45.0
+      },
+      {
+        "id": 5,
+        "name": "Bluetooth Speaker",
+        "description": "Portable Bluetooth speaker with 12-hour battery life",
+        "category": "Electronics",
+        "price": 55.0
+      },
+      {
+        "id": 6,
+        "name": "Smartphone Stand",
+        "description": "Adjustable smartphone stand for desk use",
+        "category": "Accessories",
+        "price": 12.5
+      },
+      {
+        "id": 7,
+        "name": "Noise Cancelling Headphones",
+        "description": "Over-ear noise cancelling headphones with Bluetooth",
+        "category": "Electronics",
+        "price": 120.0
+      },
+      {
+        "id": 8,
+        "name": "Wireless Charger",
+        "description": "Fast wireless charger for smartphones",
+        "category": "Accessories",
+        "price": 29.99
+      },
+      {
+        "id": 9,
+        "name": "LED Desk Lamp",
+        "description": "LED desk lamp with adjustable brightness",
+        "category": "Home Office",
+        "price": 22.99
+      },
+      {
+        "id": 10,
+        "name": "Smartwatch",
+        "description": "Fitness smartwatch with heart rate monitor",
+        "category": "Wearable",
+        "price": 150.0
+      },
+      {
+        "id": 11,
+        "name": "External Hard Drive",
+        "description": "1TB portable external hard drive",
+        "category": "Electronics",
+        "price": 60.0
+      },
+      {
+        "id": 12,
+        "name": "Gaming Chair",
+        "description": "Ergonomic gaming chair with lumbar support",
+        "category": "Furniture",
+        "price": 200.0
+      },
+      {
+        "id": 13,
+        "name": "Water Bottle",
+        "description": "Stainless steel water bottle with insulation",
+        "category": "Outdoor",
+        "price": 18.99
+      },
+      {
+        "id": 14,
+        "name": "Wireless Earbuds",
+        "description": "True wireless earbuds with charging case",
+        "category": "Electronics",
+        "price": 49.99
+      },
+      {
+        "id": 15,
+        "name": "Portable Power Bank",
+        "description": "10,000mAh portable power bank for mobile devices",
+        "category": "Electronics",
+        "price": 24.99
+      },
+      {
+        "id": 16,
+        "name": "Fitness Tracker",
+        "description": "Fitness tracker with step and calorie counter",
+        "category": "Wearable",
+        "price": 35.0
+      },
+      {
+        "id": 17,
+        "name": "Electric Toothbrush",
+        "description": "Rechargeable electric toothbrush with timer",
+        "category": "Personal Care",
+        "price": 65.0
+      },
+      {
+        "id": 18,
+        "name": "Smart Light Bulb",
+        "description": "WiFi-enabled smart light bulb with color control",
+        "category": "Home Automation",
+        "price": 19.99
+      },
+      {
+        "id": 19,
+        "name": "Instant Pot",
+        "description": "Electric pressure cooker for fast meal preparation",
+        "category": "Kitchen Appliances",
+        "price": 89.0
+      },
+      {
+        "id": 20,
+        "name": "Yoga Mat",
+        "description": "Eco-friendly non-slip yoga mat",
+        "category": "Fitness",
+        "price": 30.0
+      }
+    ]
+  }
+  

@@ -26,7 +26,7 @@ const ClientRegistrationForm = () => {
 
         if (Object.keys(errors).length > 0) {
             console.log('Ошибки валидации, регистрация отменена', errors);
-            return; // Stop form submission if errors exist
+            return;
         }
 
         try {
@@ -41,7 +41,7 @@ const ClientRegistrationForm = () => {
             if (response.status === 400) {
                 alert('Користувач з таким номером телефону вже існує');
             }
-            if (response.status === 201) {
+            else if (response.status === 201) {
                 alert('Реєстрація пройшла успішно');
             } else {
                 throw new Error('Помилка під час реєстрації');
