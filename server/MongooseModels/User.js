@@ -12,11 +12,11 @@ const orderSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-    number_phone: { type: String, required: true },
+    number_phone: { type: String, required: true, unique: true },
     firstname: { type: String, required: true },
-    lastname: { type: String, required: true },
-    email: { type: String },
-    password: { type: String, required: true },
+    lastname: { type: String, required: true},
+    email: {type: String},
+    password: { type: String, required: true},
     orders: [orderSchema]
 });
 

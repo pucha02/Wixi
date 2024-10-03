@@ -1,10 +1,13 @@
-import MainPage from "../pages/mainPage";
+import ClientRegistrationForm from "../atomic/organisms/ClientRegistrationForm/ClientRegistrationForm";
+import ClientLoginForm from "../atomic/organisms/ClientLoginForm/ClientLoginForm";
+import UserProfile from "../atomic/organisms/UserProfile/UserProfile";
 
 const App = () => {
   return (
     <div className="App">
-      <div>Hello World</div>
-      <MainPage/>
+      <ClientRegistrationForm/>
+      <ClientLoginForm/>
+      <UserProfile/>
     </div>
   );
 };

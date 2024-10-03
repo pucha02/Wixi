@@ -1,9 +1,8 @@
-import Navigation from "../../molecules/Navigation"
 
 const Header = () => {
     return (
-        <div><Navigation/></div>
+        <div>Header</div>
     )
 }
 
-export default Navigation
+export default Header
