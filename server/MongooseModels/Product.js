@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'; 
+import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
     id: { type: Number, required: true },
@@ -7,6 +7,11 @@ const productSchema = new mongoose.Schema({
     type: { type: String },
     description: { type: String, default: null },
     cost: { type: String },
+    discount: {
+        percentage: { type: Number, default: 0 }, 
+        startDate: { type: Date }, 
+        endDate: { type: Date } 
+    },
     color: [
         {
             color_name: { type: String },
@@ -22,4 +27,4 @@ const productSchema = new mongoose.Schema({
 
 const Product = mongoose.model('Product', productSchema);
 
-export default Product; 
+export default Product;
