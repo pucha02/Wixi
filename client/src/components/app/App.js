@@ -9,7 +9,6 @@ const App = () => {
       <ClientRegistrationForm />
       <ClientLoginForm />
       <UserProfile />
-      <div>Hello World</div>
       <ProductList />
     </div>
   );

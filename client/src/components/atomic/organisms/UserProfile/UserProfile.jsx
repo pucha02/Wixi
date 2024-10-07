@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserProfileInfoLabelAtom } from '../../atoms/UserProfile/UserProfileInfoLabel';
+import { UserProfileLogoutButton } from '../../atoms/UserProfile/UserProfileLogoutButton';
 
 function UserProfile() {
     const [user, setUser] = useState(null);
@@ -12,7 +13,7 @@ function UserProfile() {
         const token = localStorage.getItem('token');
     
         try {
-            const response = await fetch('http://localhost:5000/get-information-for-user-account', {
+            const response = await fetch('http://localhost:5000/api/auth/get-information-for-user-account', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -30,6 +31,28 @@ function UserProfile() {
         }
     };
 
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/auth/logout-user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+            });
+    
+            if (response.ok) {
+                setUser(null);
+                localStorage.removeItem('token');
+            } else {
+                console.error('Logout failed:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
+    };
+    
+
     if (!user) return <p>Завантаження...</p>;
 
     return (
@@ -39,6 +62,7 @@ function UserProfile() {
             <UserProfileInfoLabelAtom user={user.firstname}/>
             <UserProfileInfoLabelAtom user={user.lastname}/>
             <UserProfileInfoLabelAtom user={user.email}/>
+            <UserProfileLogoutButton logout={handleLogout}/>
         </div>
     );
 }

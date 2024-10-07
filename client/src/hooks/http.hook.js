@@ -12,9 +12,13 @@ export const useHttp = () => {
     ) => {
       setProcess("loading");
 
+      if (body) {
+        body = JSON.stringify(body);
+      }
+
       try {
         const response = await fetch(url, { method, body, headers });
-
+        console.log(body)
         if (!response.ok) {
           throw new Error(
             `Could not fetch  ${url}, status: ${response.status}`

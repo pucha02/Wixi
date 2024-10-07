@@ -10,7 +10,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAllProduct();
+        const result = await getAllProduct('Футболки');
         setData(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -24,7 +24,7 @@ const ProductList = () => {
     const items = arr.map((item, i) => {
       return (
         <li key={i}>
-          <ProductItem name={item.name} description={item.description} cost={item.price} />
+          <ProductItem name={item.title} description={item.description} cost={item.price} />
         </li>
       );
     });
