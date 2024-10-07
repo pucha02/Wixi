@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
 const Product = require('./Product'); // Вкажіть правильний шлях до вашої моделі Product
 
-// Рядок підключення до MongoDB
 const mongoURI = 'mongodb+srv://wixi4598:gj2TIqB9qCzKUeeR@cluster0.zoliw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
-// Приклад даних для спортивного одягу
 const products = [
     {
         id: 1,

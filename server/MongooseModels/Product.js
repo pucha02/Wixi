@@ -1,14 +1,10 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'; 
 
-// Схема товара (product)
 const productSchema = new mongoose.Schema({
     id: { type: Number, required: true },
     title: { type: String, required: true },
-
-    category: {
-        id: { type: Number, required: true },
-        title: { type: String, required: true },
-    },
+    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
+    type: { type: String },
     description: { type: String, default: null },
     cost: { type: String },
     color: [
@@ -26,4 +22,4 @@ const productSchema = new mongoose.Schema({
 
 const Product = mongoose.model('Product', productSchema);
 
-module.exports = Product;
+export default Product; 
