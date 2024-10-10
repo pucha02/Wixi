@@ -2,6 +2,7 @@ import ClientRegistrationForm from "../atomic/organisms/ClientRegistrationForm/C
 import ClientLoginForm from "../atomic/organisms/ClientLoginForm/ClientLoginForm";
 import UserProfile from "../atomic/organisms/UserProfile/UserProfile";
 import ProductList from "../atomic/templates/productList/productList";
+import CategoryList from "../atomic/templates/categoryList/CategoryList";
 
 const App = () => {
   return (
@@ -10,6 +11,7 @@ const App = () => {
       <ClientLoginForm />
       <UserProfile />
       <ProductList />
+      <CategoryList/>
     </div>
   );
 };
