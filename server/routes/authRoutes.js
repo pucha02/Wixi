@@ -8,11 +8,20 @@ const router = express.Router();
 router.post('/register-user', registerUser);
 router.post('/login-user', loginUser);
 router.post('/logout-user', authenticateToken, (req, res) => {
+
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: false,  
+        sameSite: 'Lax',  
+    });
+
     res.json({ message: 'Ви вийшли з акаунту' });
 });
 router.get('/get-information-for-user-account', authenticateToken, async (req, res) => {
+
     try {
         const user = await User.findById(req.user.id).populate('orders');
+        
         if (!user) return res.status(404).json({ message: 'Користувача не знайдено' });
 
         res.json({

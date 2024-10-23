@@ -23,27 +23,53 @@ const ClientLoginForm = () => {
             return;
         }
     
+        // try {
+        //     const response = await fetch('http://localhost:5001/api/auth/login-user', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(userData),
+        //     });
+    
+        //     const data = await response.json();
+    
+        //     if (response.status === 400) {
+        //         alert(data.message);
+        //     }
+    
+        //     if (data.token) {
+        //         localStorage.setItem('token', data.token);
+        //         alert('Ви успішно увійшли до системи');
+        //     } else {
+        //         console.log('Помилка входу');
+        //     }
+        // } catch (error) {
+        //     console.log('Помилка входу. Перевірте дані.');
+        // }
+
         try {
-            const response = await fetch('http://localhost:5000/api/auth/login-user', {
+            const response = await fetch('http://localhost:5001/api/auth/login-user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(userData),
+                credentials: 'include',
             });
-    
+
             const data = await response.json();
-    
+
             if (response.status === 400) {
                 alert(data.message);
             }
-    
-            if (data.token) {
-                localStorage.setItem('token', data.token);
-                alert('Ви успішно увійшли до системи');
+
+            if (data.message) {
+                alert(data.message);
             } else {
                 console.log('Помилка входу');
             }
+            console.log('Cookies после входа:', document.cookie);
         } catch (error) {
             console.log('Помилка входу. Перевірте дані.');
         }

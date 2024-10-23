@@ -36,8 +36,17 @@ export const loginUser = async (req, res) => {
         if (!isPasswordValid) return res.status(400).json({ message: 'Неправильний пароль' });
 
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+
+        // Устанавливаем токен в cookies
+        res.cookie('token', token, { httpOnly: true, secure: false });
+
+        // Выводим куки и токен в консоль для дебага
+        console.log('Ответ с куками:', res.get('Set-Cookie'));  // Лог куки, отправленные сервером
+
+        res.json({ message: 'Ви успішно увійшли до системи' });
     } catch (error) {
+        console.log('Ошибка при логине:', error);  // Лог ошибки
         res.status(500).json({ message: 'Помилка при вході' });
     }
 };
+
