@@ -10,7 +10,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAllProduct('Кросівки');
+        const result = await getAllProduct('Костюми двійки');
         setData(result);
       } catch (error) {
         console.error('Error fetching data:', error);
