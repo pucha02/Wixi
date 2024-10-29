@@ -53,7 +53,7 @@ function UserProfile() {
     };
     
 
-    if (!user) return <p>Завантаження...</p>;
+    if (!user) return <p>Не авторизован</p>;
 
     return (
         <div>

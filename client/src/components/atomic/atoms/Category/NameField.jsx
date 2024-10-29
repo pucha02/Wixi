@@ -1,4 +1,4 @@
-export const CategoryNameFieldAtom = ({name}) => {
+export const NameCategory = ({name}) => {
     return (
         <div><p>{name}</p></div>
     )
