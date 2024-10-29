@@ -27,7 +27,7 @@ const ProductList = () => {
       return (
         <Link key={i} to={`${location.pathname}/${item.title}`}>
           <li>
-            <ProductItem name={item.title} description={item.description} cost={item.price}/>
+            <ProductItem name={item.title} description={item.description} cost={item.cost}/>
           </li>
         </Link>
       );
