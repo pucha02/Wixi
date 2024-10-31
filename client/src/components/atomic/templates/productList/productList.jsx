@@ -6,13 +6,13 @@ import { Link, useParams, useLocation } from "react-router-dom";
 const ProductList = () => {
   const [data, setData] = useState([]);
   let { id } = useParams();
-  const { getAllProduct } = useGetDataProduct();
+  const { getAllProductByCategory } = useGetDataProduct();
   const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAllProduct(id);
+        const result = await getAllProductByCategory(id);
         setData(result);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -27,7 +27,7 @@ const ProductList = () => {
       return (
         <Link key={i} to={`${location.pathname}/${item.title}`}>
           <li>
-            <ProductItem name={item.title} description={item.description} cost={item.cost}/>
+            <ProductItem name={item.title} cost={item.cost}/>
           </li>
         </Link>
       );
