@@ -25,13 +25,20 @@ const useGetDataProduct = () => {
     return result;
   };
 
+  const getAllProductBySearch = async () => {
+    const result = await request(`${_urlByAllProducts}`);
+    console.log(result);
+    return result;
+  };
+
   return {
     getAllProductByCategory,
     process,
     setProcess,
     clearError,
     getProduct,
-    getAllProduct
+    getAllProduct,
+    getAllProductBySearch
   };
 };
 
