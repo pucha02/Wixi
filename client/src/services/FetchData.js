@@ -25,11 +25,11 @@ const useGetDataProduct = () => {
     return result;
   };
 
-  const getAllProductBySearch = async () => {
-    const result = await request(`${_urlByAllProducts}`);
-    console.log(result);
+  const getAllProductBySearch = async (searchQuery) => {
+    const url = `${_urlByAllProducts}?search=${encodeURIComponent(searchQuery)}`;
+    const result = await request(url);
     return result;
-  };
+};
 
   return {
     getAllProductByCategory,
