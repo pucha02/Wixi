@@ -25,7 +25,6 @@ const SearchBar = () => {
     []
 );
 
-
   const handleInputChange = (e) => {
     const newValue = e.target.value;
     setQuery(newValue);
