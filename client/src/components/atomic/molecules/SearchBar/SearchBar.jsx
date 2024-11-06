@@ -15,7 +15,7 @@ const SearchBar = () => {
       setIsLoading(true);
       try {
         const result = await getAllProductBySearch(searchQuery);
-        setFilteredProducts(result); // Получаем отфильтрованные данные от сервера
+        setFilteredProducts(result);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
