@@ -8,14 +8,18 @@ const SearchBar = () => {
   const [data, setData] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { getAllProductBySearch } = useGetDataProduct();
+  const { getAllProduct } = useGetDataProduct();
 
   const fetchAndFilterProducts = useCallback(
     debounce(async (searchQuery) => {
       setIsLoading(true);
       try {
-        const result = await getAllProductBySearch(searchQuery);
-        setFilteredProducts(result);
+        const result = await getAllProduct();
+        setData(result);
+        const results = result.filter((product) =>
+          product.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredProducts(results);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -23,7 +27,7 @@ const SearchBar = () => {
       }
     }, 650),
     []
-);
+  );
 
   const handleInputChange = (e) => {
     const newValue = e.target.value;
