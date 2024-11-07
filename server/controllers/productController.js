@@ -9,8 +9,9 @@ export const getProductsByCategory = async (req, res) => {
         if (!foundCategory) {
             return res.status(404).json({ message: 'Категорія не знайдена' });
         }
-        const products = await Product.find({ 'category': foundCategory._id});
-        
+        console.log(foundCategory.title)
+        const products = await Product.find({ 'category': foundCategory.title});
+        console.log(products)
         res.json(products);
     } catch (error) {
         res.status(500).json({ message: 'Помилка отримання даних', error });
