@@ -1,5 +1,7 @@
-export const ProductCost = ({cost}) => {
+export const ProductCost = ({ cost }) => {
+  return (
     <div>
-        <p>{cost}$</p>
+      <p>{cost}$</p>
     </div>
-}
+  );
+};

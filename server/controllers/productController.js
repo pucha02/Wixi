@@ -29,3 +29,14 @@ export const getAllProducts = async (req, res) => {
         res.status(500).json({ message: 'Помилка отримання даних', error });
     }
 };
+
+export const getProductByName = async (req, res) => {
+    const { title } = req.query;
+    try {
+        const product = await Product.find({ 'title': title});
+        
+        res.json(product);
+    } catch (error) {
+        res.status(500).json({ message: 'Помилка отримання даних', error });
+    }
+};
