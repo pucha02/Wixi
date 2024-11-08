@@ -4,6 +4,7 @@ const useGetDataProduct = () => {
   const { request, clearError, process, setProcess } = useHttp();
 
   const _urlByCategory = 'http://localhost:5000/api/products/get-products-by-category';
+  const _urlByProductTitle = 'http://localhost:5000/api/products/get-products-by-title';
   const _urlByAllProducts = 'http://localhost:5000/api/products/get-all-products'
   
 
@@ -14,7 +15,7 @@ const useGetDataProduct = () => {
   };
 
   const getProduct = async (title) => {
-    const result = await request(`${_urlByCategory}?title=${encodeURIComponent(title)}`)
+    const result = await request(`${_urlByProductTitle}?title=${encodeURIComponent(title)}`)
     console.log(result)
     return result
   }
