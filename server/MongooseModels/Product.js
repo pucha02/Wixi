@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema({
     type: { type: String },
     description: { type: String, default: null },
     cost: { type: String },
+    quantity: { type: Number },
     discount: {
         percentage: { type: Number, default: 0 }, 
         startDate: { type: Date }, 

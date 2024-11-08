@@ -1,7 +1,7 @@
-export const ProductButtonAddToCart = ({some}) => {
-    return (
-        <div>
-            <button>Додати у кошик</button>
-        </div>
-    )
-}
+export const ProductButtonAddToCart = ({ some, handleAddToCart }) => {
+  return (
+    <div>
+      <button onClick={handleAddToCart}>Додати у кошик</button>
+    </div>
+  );
+};

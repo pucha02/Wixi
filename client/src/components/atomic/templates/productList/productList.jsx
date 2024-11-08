@@ -25,9 +25,17 @@ const ProductList = () => {
   function renderItems(arr) {
     const items = arr.map((item, i) => {
       return (
-        <Link key={i} to={`${location.pathname}/${item.title}`}>
+        <Link
+          key={i}
+          to={`${location.pathname}/${item.title}`}
+          state={{
+            localProductName: item.title,
+            localProductCost: item.cost,
+            localProductId: item._id,
+          }}
+        >
           <li>
-            <ProductItem name={item.title} cost={item.cost}/>
+            <ProductItem productName={item.title} productCost={item.cost} productId={item._id} />
           </li>
         </Link>
       );

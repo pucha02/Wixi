@@ -6,6 +6,7 @@ import CategoryList from "../atomic/templates/categoryList/CategoryList";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ProductItem } from "../atomic/organisms/productItem/ProductItem";
 import SearchBar from "../atomic/molecules/SearchBar/SearchBar";
+import { TestButtonShowCart } from "../../TestButtonShowCart/TestButtonShowCart";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </Router>
+      <TestButtonShowCart/>
     </div>
   );
 };
