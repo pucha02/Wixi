@@ -17,7 +17,8 @@ const productSchema = new mongoose.Schema({
         {
             color_name: { type: String },
             sizes: [{
-                size_name: { type: String }
+                size_name: { type: String },
+                availableQuantity: { type: Number, default: 0 }
             }],
             img: [{
                 img_link: { type: String }
