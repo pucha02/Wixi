@@ -6,7 +6,6 @@ const useGetDataCategories = () => {
   const _url = 'http://localhost:5000/api/categories/get-categories';
 
   const getAllCategories = async () => {
-    // Формируем URL с query параметром category
     const result = await request(`${_url}`);
     
     return result;

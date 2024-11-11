@@ -5,12 +5,15 @@ import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from "../../../../redux/reducers/cartReducer";
+import useGetDataProduct from "../../../../services/FetchData";
 
 export const ProductItem = ({ productName, description, productCost, toProductItem, productId }) => {
 
+  const { addToCart } = useGetDataProduct();
   const dispatch = useDispatch();
   const product = useSelector((state=>state.cart.items))
   const location = useLocation()
+  const userId = localStorage.getItem('userid')
 
   const {localProductCost, localProductId, localProductName} = location.state || {}
 
@@ -21,6 +24,9 @@ export const ProductItem = ({ productName, description, productCost, toProductIt
   const handleAddToCart =  () => {
     const item = { title, _id, cost};
     dispatch(addItem(item));
+    if (userId){
+      addToCart(userId, item)
+    }
     console.log(product, cost)
   };
 
