@@ -6,7 +6,6 @@ const useGetDataProduct = () => {
   const _urlByCategory = 'http://localhost:5000/api/products/get-products-by-category';
   const _urlByProductTitle = 'http://localhost:5000/api/products/get-products-by-title';
   const _urlByAllProducts = 'http://localhost:5000/api/products/get-all-products'
-  
 
   const getAllProductByCategory = async (category) => {
     const result = await request(`${_urlByCategory}?category=${encodeURIComponent(category)}`);
