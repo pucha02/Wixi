@@ -1,7 +1,7 @@
 import express from 'express';
 import { registerUser, loginUser } from '../controllers/authController.js';
 import { authenticateToken } from '../middlewares/authMiddleware.js';
-import User from '../MongooseModels/User.js';
+import { User } from '../MongooseModels/User.js';
 
 const router = express.Router();
 

@@ -1,0 +1,36 @@
+.hot-strip {
+    background-color: #ffffff; /* Цвет фона полосы */
+    color: #C3C1C1; /* Цвет текста */
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+    position: relative;
+  }
+  
+  .hot-strip-text {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 24px;
+    font-weight: bold;
+    animation: scroll 20s linear infinite;
+    white-space: nowrap;
+  }
+  
+
+  .hot-strip-text::after {
+    
+    white-space: nowrap;
+  }
+  
+  /* Анимация движения текста */
+  @keyframes scroll {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  

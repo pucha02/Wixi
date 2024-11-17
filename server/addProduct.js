@@ -78,19 +78,21 @@ const saveProductsToDB = async (products) => {
 };
 
 const main = async () => {
-    let skip = 0;
-    let moreProducts = true;
+    // let skip = 0;
+    // let moreProducts = true;
 
-    while (moreProducts) {
-        const products = await fetchProducts(skip);
+    // while (moreProducts) {
+    //     const products = await fetchProducts(skip);
 
-        if (products && products.length > 0) {
-            await saveProductsToDB(products);
-            skip += 1;
-        } else {
-            moreProducts = false;
-        }
-    }
+    //     if (products && products.length > 0) {
+    //         await saveProductsToDB(products);
+    //         skip += 1;
+    //     } else {
+    //         moreProducts = false;
+    //     }
+    // }
+    const products = await fetchProducts(0);
+    console.log(JSON.stringify(products))
 };
 
 // Запуск процесса

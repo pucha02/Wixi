@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../MongooseModels/User.js'; 
+import { User, Order } from '../MongooseModels/User.js';
 
 const JWT_SECRET = 'your_jwt_secret_key';
 
@@ -36,7 +36,7 @@ export const loginUser = async (req, res) => {
         if (!isPasswordValid) return res.status(400).json({ message: 'Неправильний пароль' });
 
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+        res.json({ token, id: user._id });
     } catch (error) {
         res.status(500).json({ message: 'Помилка при вході' });
     }

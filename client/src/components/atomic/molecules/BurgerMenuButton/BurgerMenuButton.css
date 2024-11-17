@@ -1,0 +1,23 @@
+.burger-menu {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.burger-menu.open .burger-menu-span span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.burger-menu.open .burger-menu-span span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-menu.open .burger-menu-span span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
