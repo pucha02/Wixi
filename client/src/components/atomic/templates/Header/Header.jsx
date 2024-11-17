@@ -2,6 +2,8 @@ import { BurgerMenuButton } from "../../molecules/BurgerMenuButton/BurgerMenuBut
 import { RightHeaderElement } from "../../molecules/RightHeaderElement/RightHeaderElement"
 import { SearchLoupe } from "../../atoms/Header/SearchLoupe/SearchLoupe"
 import { Logo } from "../../atoms/Header/Logo/Logo"
+import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 import './Header.css'
 
 import SearchBar from "../../molecules/SearchBar/SearchBar"
@@ -14,26 +16,32 @@ import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
 
 export const Header = () => {
+    const products = useSelector((state => state.cart.items))
     return (
         <div className="header">
             <div className="header-top">
                 <p>Безкоштовна доставка при повній оплаті на замовлення від 3000 грн</p>
             </div>
-            <div className="header-bottom">
-                <div className="left-elements-block">
-                    <BurgerMenuButton />
-                    <div className="search-block">
-                        <SearchLoupe src={SearchLoupeImg} /><SearchBar />
+            <div className="header-bottom-block">
+                <div className="header-bottom">
+                    <div className="left-elements-block">
+                        <BurgerMenuButton />
+                        <div className="search-block">
+                            <SearchLoupe src={SearchLoupeImg} /><SearchBar />
+                        </div>
                     </div>
-                </div>
-                <div className="logo-block">
-                    <Logo src={LogoImg} />
-                </div>
-                <div className="right-elements-block">
-                    <RightHeaderElement src={PhoneImg} />
-                    <RightHeaderElement src={PersonalCabinetImg} label={'Акаунт'} />
-                    <RightHeaderElement src={HeartImg} label={'Вішлист'} />
-                    <RightHeaderElement src={CartImg} label={'Кошик'} />
+                    <div className="logo-block">
+                        <Logo src={LogoImg} />
+
+                    </div>
+                    <div className="right-elements-block">
+                        <RightHeaderElement src={PhoneImg} />
+                        <RightHeaderElement src={PersonalCabinetImg} label={'Акаунт'} />
+                        <RightHeaderElement src={HeartImg} label={'Вішлист'} />
+                        <Link to={'/cart/'}><RightHeaderElement src={CartImg} label={'Кошик'} /></Link>
+                        
+                        <div>{products.length}</div>
+                    </div>
                 </div>
             </div>
 

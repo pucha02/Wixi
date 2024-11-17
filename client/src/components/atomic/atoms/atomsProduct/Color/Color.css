@@ -1,0 +1,23 @@
+.color-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    transition: transform 0.2s ease;
+}
+
+.color-circle.active {
+    border: 2px solid #000; /* Change to a color to highlight */
+    transform: scale(1.1); /* Slightly enlarge to indicate selection */
+}
+
+.availability-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: green;
+}

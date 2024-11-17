@@ -1,6 +1,8 @@
+import './FooterLogo.css'
+
 export const FooterLogo = ({src}) => {
     return(
-        <div>
+        <div className="footer-logo-block">
             <img src={src} alt="" />
         </div>
     )

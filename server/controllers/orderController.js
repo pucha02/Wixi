@@ -1,11 +1,12 @@
-import Product from '../MongooseModels/Product.js'; 
-import User from '../MongooseModels/User.js'; 
+import Product from '../MongooseModels/Product.js';
+import { User } from '../MongooseModels/User.js';
+import { Order } from '../MongooseModels/User.js';
 
 export const registerOrder = async (req, res) => {
-    const { number_phone, orderData, totalCost } = req.body;
-
+    let orderDetails = req.body
     try {
-        const user = await User.findOne({ number_phone });
+        console.log(req.body)
+        const user = await User.findOne({ email: orderDetails.email });
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -18,19 +19,23 @@ export const registerOrder = async (req, res) => {
         // }
 
         const newOrder = {
-            number_section_NP: orderData.number_section_NP,
-            city: orderData.city,
-            products: orderData.products.map(item => ({
+            number_section_NP: orderDetails.number_section_NP,
+            city: orderDetails.city,
+            products: orderDetails.products.map(item => ({
                 product: item.product,
                 color: item.color,
                 size: item.size,
                 quantity: item.quantity,
                 cost: item.cost
             })),
-            totalCost
+            totalCost: orderDetails.totalCost,
+            number_phone: orderDetails.number_phone
         };
+        const order = new Order(newOrder);
+
 
         user.orders.push(newOrder);
+        await order.save()
         await user.save();
 
         res.status(201).json({ message: 'Order placed successfully', order: newOrder });

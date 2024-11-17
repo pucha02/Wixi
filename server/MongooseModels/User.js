@@ -22,7 +22,8 @@ const orderSchema = new mongoose.Schema({
             cost: { type: Number }
         }
     ],
-    totalCost: { type: Number, required: true }
+    totalCost: { type: Number, required: true },
+    number_phone: { type: String }
 });
 
 const userSchema = new mongoose.Schema({
@@ -35,6 +36,5 @@ const userSchema = new mongoose.Schema({
     orders: [orderSchema]
 });
 
-const User = mongoose.model('User', userSchema);
-
-export default User;
+export const User = mongoose.model('User', userSchema);
+export const Order = mongoose.model('Order', orderSchema)

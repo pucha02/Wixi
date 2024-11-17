@@ -1,6 +1,8 @@
+import './SocialNetworkLogo.css'
+
 export const SocialNetworkLogo = ({src}) => {
     return (
-        <div>
+        <div className="social-network-block">
             <img src={src} alt="" />
         </div>
     )
