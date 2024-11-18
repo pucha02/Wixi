@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchCart = () =>
-  createAsyncThunk("cart/fetchCart", async (item) => {
-    const response = await fetch("");
+export const fetchCart = createAsyncThunk(
+  "cart/fetchCart",
+  async (item) => {
+    const response = await fetch(); 
     return await response.json();
-  });
+  }
+);
 
 export const addItemToCart = createAsyncThunk(
   "cart/addItemToCart",

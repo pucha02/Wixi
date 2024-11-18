@@ -2,6 +2,9 @@ import { ProductItem } from "../../organisms/productItem/ProductItem";
 import { useEffect, useMemo, useState } from "react";
 import useGetDataProduct from "../../../../services/FetchData";
 import { Link, useParams, useLocation } from "react-router-dom";
+import { FilterIcon } from "../../atoms/Filter/FilterIcon/FilterIcon";
+import FilterImg from '../../../../assets/svg/filter.svg'
+import './productList.css'
 
 const ProductList = () => {
   const [data, setData] = useState([]);
@@ -28,19 +31,17 @@ const ProductList = () => {
         <Link
           key={i}
           to={`${location.pathname}/${item.title}`}
-          state={{
-            localProductName: item.title,
-            localProductCost: item.cost,
-            localProductId: item._id,
-          }}
+          
         >
-          <li>
-            <ProductItem productName={item.title} productCost={item.cost} productId={item._id} />
+          <li className="product-item-li">
+            <h2>{item.title}</h2>
+            <p>{item.cost}</p> 
+            <img src={item.img} alt=""/>
           </li>
         </Link>
       );
     });
-    return <ul>{items}</ul>;
+    return <ul className="product-list">{items}</ul>;
   }
 
   const elements = useMemo(() => {
@@ -48,9 +49,9 @@ const ProductList = () => {
   }, [data]);
 
   return (
-    <div>
+    <div className="catalog-container">
+      <div className="category-title">{id}<FilterIcon src={FilterImg}/></div>
       {elements}
-      {id}
     </div>
   );
 };

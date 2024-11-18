@@ -1,4 +1,4 @@
-export const ProductCost = ({ cost }) => {
+export const ProductCost = ({ cost, discount }) => {
   return (
     <div>
       <p>{cost}$</p>

@@ -1,7 +1,7 @@
 /* SearchBar.css */
 .search-bar {
     position: relative;
-    width: 100%;
+    width: max-content;
     max-width: 400px;
     margin: 0 auto;
   }
@@ -9,8 +9,8 @@
   .search-input {
     width: 100%;
     padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 25px;
+    border: none;
+    border-bottom: 2px solid #000000;
     font-size: 16px;
     outline: none;
     transition: border-color 0.3s ease;

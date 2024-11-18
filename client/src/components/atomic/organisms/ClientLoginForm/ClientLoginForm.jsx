@@ -39,7 +39,9 @@ const ClientLoginForm = () => {
             }
     
             if (data.token) {
+                console.log(data.id)
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('userid', data.id)
                 alert('Ви успішно увійшли до системи');
             } else {
                 console.log('Помилка входу');

@@ -6,6 +6,9 @@ const useGetDataProduct = () => {
   const _urlByCategory = 'http://localhost:5000/api/products/get-products-by-category';
   const _urlByProductTitle = 'http://localhost:5000/api/products/get-products-by-title';
   const _urlByAllProducts = 'http://localhost:5000/api/products/get-all-products'
+  const _urlAddToCart = 'http://localhost:5000/api/cart/add-to-cart'
+  const _urlRemoveFromCart = 'http://localhost:5000/api/cart/remove-from-cart'
+
 
   const getAllProductByCategory = async (category) => {
     const result = await request(`${_urlByCategory}?category=${encodeURIComponent(category)}`);
@@ -29,7 +32,17 @@ const useGetDataProduct = () => {
     const url = `${_urlByAllProducts}?search=${encodeURIComponent(searchQuery)}`;
     const result = await request(url);
     return result;
-};
+  };
+
+  const addToCart = async (userId, product) => {
+    const result = await request(_urlAddToCart, 'POST', { userId, product })
+    return result
+  };
+
+  const removeFromCart = async (userId, product) => {
+    const result = await request(_urlRemoveFromCart, 'POST', { userId, product })
+    return result
+  };
 
   return {
     getAllProductByCategory,
@@ -38,7 +51,9 @@ const useGetDataProduct = () => {
     clearError,
     getProduct,
     getAllProduct,
-    getAllProductBySearch
+    getAllProductBySearch,
+    addToCart,
+    removeFromCart
   };
 };
 

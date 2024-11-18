@@ -1,0 +1,8 @@
+.color-list{
+    display: flex;
+}
+.inactive {
+    opacity: 0.5; /* Делает элемент полупрозрачным */
+    pointer-events: none; /* Отключает клики на неактивных элементах */
+    cursor: not-allowed; /* Курсор в виде запрета */
+}

@@ -1,0 +1,17 @@
+.heart-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.heart-container img {
+    cursor: pointer;
+    transition: filter 0.3s;
+  }
+  
+  .heart-container img.liked {
+    filter: invert(38%) sepia(80%) saturate(2183%) hue-rotate(330deg) brightness(95%) contrast(106%);
+    fill: red;
+  }
+  

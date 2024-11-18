@@ -24,7 +24,7 @@ const CategoryList = () => {
   function renderItems(arr) {
     const items = arr.map((item, i) => {
       return (
-        <Link key={i} to={`/category/productList/${item.title}`} >
+        <Link key={i} state={{title: item.title}} to={`/category/productList/${item.title}`} >
           <li>
             <NameCategory name={item.title} />
           </li>
