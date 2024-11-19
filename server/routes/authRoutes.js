@@ -27,4 +27,17 @@ router.get('/get-information-for-user-account', authenticateToken, async (req, r
     }
 });
 
+router.get('/get-information-for-user-cart', authenticateToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        
+        if (!user) return res.status(404).json({ message: 'Користувача не знайдено' });
+        res.json({
+            cart: user.cart
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Помилка при отриманні даних користувача' });
+    }
+});
+
 export default router;
