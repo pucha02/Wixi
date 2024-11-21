@@ -1,16 +1,44 @@
-import { ProductItem } from "../../organisms/productItem/ProductItem";
+import { ProductCost } from "../../atoms/atomsProduct/Cost";
+import { ProductDescription } from "../../atoms/atomsProduct/Description";
+import { ProductName } from "../../atoms/atomsProduct/Name";
+import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button";
+import { ProductType } from "../../atoms/atomsProduct/Type";
+import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
+import { ProductArticle } from "../../atoms/atomsProduct/Article/Article";
+import { ColorList } from "../../molecules/ColorList/ColorList";
+import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
+
+import { addItem } from "../../../../redux/reducers/cartReducer";
+import {
+  addItemToCart,
+  fetchCart,
+} from "../../../../redux/reducers/cartReducer";
+
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import useGetDataProduct from "../../../../services/FetchData";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { FilterIcon } from "../../atoms/Filter/FilterIcon/FilterIcon";
 import FilterImg from '../../../../assets/svg/filter.svg'
+import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
 import './productList.css'
 
 const ProductList = () => {
   const [data, setData] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+
   let { id } = useParams();
   const { getAllProductByCategory } = useGetDataProduct();
   const location = useLocation();
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.cart.items);
+
+  const token = localStorage.getItem('token')
+
+  const activeColor = data[0]?.color?.[activeIndex];
+  const activeImage = activeColor?.img?.[0]?.img_link || '';
+  const totalAvailableQuantity = activeColor?.sizes?.reduce((total, el) => total + el.availableQuantity, 0) || 0;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,38 +53,88 @@ const ProductList = () => {
     fetchData();
   }, []);
 
-  function renderItems(arr) {
+  const handleAddToCart = (product, activeColor) => {
+    const item = { title: product.title, _id: product._id, cost: product.cost, color: activeColor?.name, quantity: 1 };
+    console.log(token)
+    if (token) {
+      const userId = localStorage.getItem('userid');
+      dispatch(addItemToCart({ item, userId }));
+    }
+    else {
+      dispatch(addItem(item));
+      console.log(item)
+    }
+  };
+
+  const handleAddToWishList = () => {
+    setIsLiked(!isLiked);
+    // const item = { title, _id, cost };
+    // dispatch(addItem(item));
+    // if (userId) {
+    //   addToCart(userId, item);
+    // }
+    console.log(product, data[0].cost);
+  };
+
+  const renderItems = (arr) => {
     const items = arr.map((item, i) => {
+      const activeColor = item.color?.[activeIndex] || item.color?.[0]; 
+      const activeImage = activeColor?.img?.[0]?.img_link || "/placeholder-image.png"; 
+
       return (
-        <Link
-          key={i}
-          to={`${location.pathname}/${item.title}`}
-          state={{
-            localProductName: item.title,
-            localProductCost: item.cost,
-            localProductId: item._id,
-            localProductColors: item.color,
-            localProductDiscount: item.discount,
-            localProductType: item.type,
-            localProductImage: item.img
-          }}
-        >
-          <li className="product-item-li">
-            <ProductItem productId={item._id} productName={item.title} productCost={item.cost} productColors={item.color} productDiscount={item.discount} productType={item.type} />
-          </li>
-        </Link>
+
+        <li className="product-item-li">
+          <div className="product-item">
+            <Link key={i} to={`${location.pathname}/${item.title}`}>
+              <ProductImage src={activeImage} className={""} />
+            </Link>
+            <div className="name-heart">
+              <ProductName name={item.title} className={""} />
+              <ProductHeart
+                src={HeartIcon}
+                isLiked={isLiked}
+                toggleHeart={() => handleAddToWishList(i)}
+              />
+            </div>
+            <ProductDescription description={item.description} className={""} />
+            <ProductType productType={item.type} className={""} />
+            <div className="cost-article">
+              {activeColor?.sizes?.reduce((total, size) => total + size.availableQuantity, 0) > 0 ? (
+                <div className="availability-text">В наличии</div>
+              ) : (
+                <div className="availability-text">Нет в наличии</div>
+              )}
+              <ProductArticle article={item.article || "—"} className={""} />
+            </div>
+            <div className="cost-addBtn">
+              <ProductCost cost={item.cost} discount={item.discount} className={""} />
+              <ProductButtonAddToCart
+                handleAddToCart={()=>handleAddToCart(item, activeColor)}
+                className={""}
+              />
+            </div>
+            <ColorList
+              colors={item.color}
+              setActiveIndex={(index) => setActiveIndex(index)}
+              activeIndex={activeIndex}
+              className={""}
+            />
+          </div>
+        </li>
+
       );
     });
     return <ul className="product-list">{items}</ul>;
-  }
+  };
+
 
   const elements = useMemo(() => {
     return renderItems(data);
-  }, [data]);
+  }, [data, activeIndex]);
 
   return (
     <div className="catalog-container">
-      <div className="category-title">{id}<FilterIcon src={FilterImg}/></div>
+      <div className="category-title">{id}<FilterIcon src={FilterImg} /></div>
       {elements}
     </div>
   );
