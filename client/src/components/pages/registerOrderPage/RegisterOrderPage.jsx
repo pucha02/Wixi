@@ -21,12 +21,14 @@ export const RegisterOrderPage = () => {
             try {
                 const result = await getAllUserData();
                 console.log(result);
-
+                if (result) {
+                    setOrderDetails((prevDetails) => ({
+                        ...prevDetails,
+                        email: result.email || '',
+                    }));
+                }
                 // Обновляем только поле email
-                setOrderDetails((prevDetails) => ({
-                    ...prevDetails,
-                    email: result.email || '',
-                }));
+
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -96,7 +98,7 @@ export const RegisterOrderPage = () => {
                         <input
                             type="text"
                             name="email"
-                            value={orderDetails.email}
+                            value={orderDetails.email || ''}
                             onChange={handleChange}
                             required
                         />

@@ -13,13 +13,15 @@ import { addItem } from "../../../../redux/reducers/cartReducer";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
 import useGetDataProduct from "../../../../services/FetchData";
 import HeartIcon from '../../../../assets/svg/little-heart-2.svg';
+import { addItemToCart } from "../../../../redux/reducers/cartReducer";
+
 
 import './productPageItem.css';
 
 export const ProductPageItem = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isLiked, setIsLiked] = useState(false);
-
+    const product = useSelector((state) => state.cart.items);
     const { addToCart } = useGetDataProduct();
     const dispatch = useDispatch();
     const location = useLocation();
@@ -39,12 +41,13 @@ export const ProductPageItem = () => {
     const totalAvailableQuantity = activeColor?.sizes.reduce((total, el) => total + el.availableQuantity, 0) || 0;
 
     const handleAddToCart = () => {
-        const item = { title, _id, cost };
-        dispatch(addItem(item));
+        const item = { title, _id, cost, color: activeColor?.name }; // Include additional data if needed
         if (userId) {
-            addToCart(userId, item);
+          dispatch(addItemToCart({ item, userId }));
         }
-    };
+        
+        console.log(product, cost);
+      };
 
     const handleAddToWishList = () => {
         setIsLiked(!isLiked);

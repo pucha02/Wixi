@@ -9,6 +9,7 @@ import { ColorList } from "../../molecules/ColorList/ColorList";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from "../../../../redux/reducers/cartReducer";
+import { addItemToCart } from "../../../../redux/reducers/cartReducer";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
 import useGetDataProduct from "../../../../services/FetchData";
 import { useState } from "react";
@@ -26,7 +27,8 @@ export const ProductItem = ({ productName, description, productCost, toProductIt
   const dispatch = useDispatch();
   const product = useSelector((state) => state.cart.items);
   const location = useLocation();
-  const userId = localStorage.getItem('userid');
+
+  const token = localStorage.getItem('token')
 
   const { localProductCost, localProductId, localProductName, localProductColors, localProductDiscount, localProductType } = location.state || {};
 
@@ -45,12 +47,16 @@ export const ProductItem = ({ productName, description, productCost, toProductIt
   const activeImage = activeColor?.img[0]?.img_link;
 
   const handleAddToCart = () => {
-    const item = { title, _id, cost };
-    dispatch(addItem(item));
-    if (userId) {
-      addToCart(userId, item);
+    const item = { title, _id, cost, color: activeColor?.name, quantity: 1 };
+    console.log(token)
+    if (token) {
+      const userId = localStorage.getItem('userid');
+      dispatch(addItemToCart({ item, userId }));
     }
-    console.log(product, cost);
+    else {
+      dispatch(addItem(item));
+      console.log(item)
+    }
   };
 
 
@@ -69,7 +75,7 @@ export const ProductItem = ({ productName, description, productCost, toProductIt
       <ProductImage src={activeImage} className={''} />
       <div className="name-heart">
         <ProductName name={title} className={''} />
-        <ProductHeart src={HeartIcon} isLiked={isLiked} toggleHeart={handleAddToWishList}/>
+        <ProductHeart src={HeartIcon} isLiked={isLiked} toggleHeart={handleAddToWishList} />
       </div>
       <ProductDescription description={description} className={''} />
 
