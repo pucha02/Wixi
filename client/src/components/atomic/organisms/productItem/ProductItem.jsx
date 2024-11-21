@@ -7,47 +7,63 @@ import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
 import { ProductArticle } from "../../atoms/atomsProduct/Article/Article";
 import { ColorList } from "../../molecules/ColorList/ColorList";
 import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../../../redux/reducers/cartReducer";
-import { addItemToCart } from "../../../../redux/reducers/cartReducer";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
 import useGetDataProduct from "../../../../services/FetchData";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react"; 
+import { useParams } from "react-router-dom";
+import {
+  addItemToCart,
+  fetchCart,
+} from "../../../../redux/reducers/cartReducer";
 
-import HeartIcon from '../../../../assets/svg/little-heart-2.svg'
+import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
 
-import './ProductItem.css'
+import "./ProductItem.css";
 
-export const ProductItem = ({ productName, description, productCost, toProductItem, productId, productColors, productDiscount, productType, classNames }) => {
+export const ProductItem = () => {
+
+  const [data, setData] = useState([]);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
 
-  const { addToCart } = useGetDataProduct();
+  const { addToCart, getProduct } = useGetDataProduct();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.cart.items);
   const location = useLocation();
+  const userId = localStorage.getItem("userid");
+  let { productName } = useParams();
 
   const token = localStorage.getItem('token')
 
-  const { localProductCost, localProductId, localProductName, localProductColors, localProductDiscount, localProductType } = location.state || {};
+  const activeColor = data[0]?.color?.[activeIndex];
+  const activeImage = activeColor?.img?.[0]?.img_link || '';
+  const totalAvailableQuantity = activeColor?.sizes?.reduce((total, el) => total + el.availableQuantity, 0) || 0;
 
-  const cost = productCost || localProductCost;
-  const _id = productId || localProductId;
-  const title = productName || localProductName;
-  const colors = productColors || localProductColors;
-  const discount = productDiscount || localProductDiscount;
-  const type = productType || localProductType;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getProduct(productName);
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
 
-  const totalAvailableQuantity = colors[activeIndex]?.sizes.reduce((total, el) => {
-    return total + el.availableQuantity;
-  }, 0);
+  const {
+    localProductColors,
+  } = location.state || {};
 
-  const activeColor = colors[activeIndex];
-  const activeImage = activeColor?.img[0]?.img_link;
 
-  const handleAddToCart = () => {
-    const item = { title, _id, cost, color: activeColor?.name, quantity: 1 };
+
+
+  const handleAddToCart = (product, activeColor) => {
+    const item = { title: product.title, _id: product._id, cost: product.cost, color: activeColor?.name, quantity: 1 };
     console.log(token)
     if (token) {
       const userId = localStorage.getItem('userid');
@@ -59,7 +75,6 @@ export const ProductItem = ({ productName, description, productCost, toProductIt
     }
   };
 
-
   const handleAddToWishList = () => {
     setIsLiked(!isLiked);
     // const item = { title, _id, cost };
@@ -67,34 +82,57 @@ export const ProductItem = ({ productName, description, productCost, toProductIt
     // if (userId) {
     //   addToCart(userId, item);
     // }
-    console.log(product, cost);
+    console.log(product, data[0].cost);
   };
 
-  return (
-    <div className="product-item" onClick={toProductItem}>
-      <ProductImage src={activeImage} className={''} />
+  function renderDataProductProperty(newData) {
+    if (newData.length === 0) return null;
+    const item = newData[0]
+    return (
+      <div className="product-item">
+
+        <ProductImage src={activeImage} className={""} />
+ 
       <div className="name-heart">
-        <ProductName name={title} className={''} />
-        <ProductHeart src={HeartIcon} isLiked={isLiked} toggleHeart={handleAddToWishList} />
+        <ProductName name={item.title} className={""} />
+        {/* <ProductHeart
+          src={HeartIcon}
+          isLiked={isLiked}
+          toggleHeart={() => handleAddToWishList(i)}
+        /> */}
       </div>
-      <ProductDescription description={description} className={''} />
-
-      <ProductType productType={type} className={''} />
+      <ProductDescription description={item.description} className={""} />
+      <ProductType productType={item.type} className={""} />
       <div className="cost-article">
-        {
-          totalAvailableQuantity > 0 ? (
-            <div className="availability-text">В наявності</div>
-          ) :
-            <div className="availability-text">Немає у наявності</div>
-        }
-        <ProductArticle article={555555} className={''} />
-
+        {activeColor?.sizes?.reduce((total, size) => total + size.availableQuantity, 0) > 0 ? (
+          <div className="availability-text">В наличии</div>
+        ) : (
+          <div className="availability-text">Нет в наличии</div>
+        )}
+        <ProductArticle article={item.article || "—"} className={""} />
       </div>
       <div className="cost-addBtn">
-        <ProductCost cost={cost} discount={discount} className={''} />
-        <ProductButtonAddToCart handleAddToCart={handleAddToCart} className={''} />
+        <ProductCost cost={item.cost} discount={item.discount} className={""} />
+        <ProductButtonAddToCart
+          handleAddToCart={()=>handleAddToCart(item, activeColor)}
+          className={""}
+        />
       </div>
-      <ColorList colors={colors} setActiveIndex={setActiveIndex} activeIndex={activeIndex} className={''} />
+      <ColorList
+        colors={item.color}
+        setActiveIndex={(index) => setActiveIndex(index)}
+        activeIndex={activeIndex}
+        className={""}
+      />
     </div>
+    )
+  }
+
+  const elements = useMemo(() => {
+    return renderDataProductProperty(data);
+  }, [data, activeIndex]);
+
+  return (
+  elements
   );
 };
