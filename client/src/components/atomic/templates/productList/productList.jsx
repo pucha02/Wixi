@@ -36,22 +36,24 @@ const ProductList = () => {
 
   const token = localStorage.getItem('token')
 
-  const activeColor = data[0]?.color?.[activeIndex];
-  const activeImage = activeColor?.img?.[0]?.img_link || '';
-  const totalAvailableQuantity = activeColor?.sizes?.reduce((total, el) => total + el.availableQuantity, 0) || 0;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getAllProductByCategory(id);
-        setData(result);
+        const updatedData = result.map((item) => ({
+          ...item,
+          activeIndex: 0
+        }));
+        setData(updatedData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
   const handleAddToCart = (product, activeColor) => {
     const item = { title: product.title, _id: product._id, cost: product.cost, color: activeColor?.name, quantity: 1 };
@@ -76,16 +78,25 @@ const ProductList = () => {
     console.log(product, data[0].cost);
   };
 
+  const handleSetActiveIndex = (productId, index) => {
+    setData((prevData) =>
+      prevData.map((item) =>
+        item._id === productId
+          ? { ...item, activeIndex: index }
+          : item
+      )
+    );
+  };
+  
   const renderItems = (arr) => {
     const items = arr.map((item, i) => {
-      const activeColor = item.color?.[activeIndex] || item.color?.[0]; 
+      const activeColor = item.color?.[item.activeIndex] || item.color?.[0]; 
       const activeImage = activeColor?.img?.[0]?.img_link || "/placeholder-image.png"; 
-
+  
       return (
-
-        <li className="product-item-li">
+        <li className="product-item-li" key={i}>
           <div className="product-item">
-            <Link key={i} to={`${location.pathname}/${item.title}`}>
+            <Link to={`${location.pathname}/${item.title}`}>
               <ProductImage src={activeImage} className={""} />
             </Link>
             <div className="name-heart">
@@ -109,25 +120,23 @@ const ProductList = () => {
             <div className="cost-addBtn">
               <ProductCost cost={item.cost} discount={item.discount} className={""} />
               <ProductButtonAddToCart
-                handleAddToCart={()=>handleAddToCart(item, activeColor)}
+                handleAddToCart={() => handleAddToCart(item, activeColor)}
                 className={""}
               />
             </div>
             <ColorList
               colors={item.color}
-              setActiveIndex={(index) => setActiveIndex(index)}
-              activeIndex={activeIndex}
+              setActiveIndex={(index) => handleSetActiveIndex(item._id, index)}
+              activeIndex={item.activeIndex}
               className={""}
             />
           </div>
         </li>
-
       );
     });
     return <ul className="product-list">{items}</ul>;
   };
-
-
+  
   const elements = useMemo(() => {
     return renderItems(data);
   }, [data, activeIndex]);
