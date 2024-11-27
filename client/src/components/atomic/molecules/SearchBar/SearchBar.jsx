@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import "./SearchBar.css";
 import useGetDataProduct from "../../../../services/FetchData";
 import debounce from "lodash.debounce";
+import { Link } from "react-router-dom";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
@@ -26,21 +27,23 @@ const SearchBar = () => {
     }, 650),
     []
   );
-  
+
   const handleInputChange = (e) => {
     const newValue = e.target.value;
     setQuery(newValue);
-    setFilteredProducts([]); 
-    if(newValue){
+    setFilteredProducts([]);
+    if (newValue) {
       fetchAndFilterProducts(newValue);
     }
   };
-  
+
   function renderItems(arr) {
     return (
       <ul>
         {arr.map((item, i) => (
-          <li key={i}>{item.title}</li>
+          <Link key={i} to={`/category/productList/${item.categoty}/${item.title}`}>
+            <li>{item.title}</li>
+          </Link>
         ))}
       </ul>
     );
