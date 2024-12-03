@@ -6,7 +6,7 @@ export const registerOrder = async (req, res) => {
     let orderDetails = req.body
     try {
         console.log(req.body)
-        const user = await User.findOne({ email: orderDetails.email });
+        const user = await User.findOne({ number_phone: orderDetails.number_phone });
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });

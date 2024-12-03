@@ -3,8 +3,8 @@ import { User } from "../MongooseModels/User.js";
 import { ObjectId } from "mongodb";
 
 export const addToCart = async (req, res) => {
-    const { userId, _id, title, cost, quantity } = req.body;  // Извлекаем данные из запроса
-    console.log("Received request to add to cart:", { userId, _id, title, cost, quantity });
+    const { userId, _id, title, cost, quantity, color, discount, originalCost } = req.body;  // Извлекаем данные из запроса
+    console.log("Received request to add to cart:", { userId, _id, title, cost, quantity, color, discount, originalCost });
 
     try {
         // Проверка наличия обязательных полей
@@ -32,11 +32,11 @@ export const addToCart = async (req, res) => {
             );
             console.log("Product quantity updated");
         } else {
-            console.log("Adding new product to cart:", { _id, title, cost, quantity });
+            console.log("Adding new product to cart:", { _id, title, cost, quantity, color, discount, originalCost });
             // Добавление нового товара в корзину
             await User.updateOne(
                 { _id: userId },
-                { $push: { cart: { _id, title, cost, quantity } } }
+                { $push: { cart: { _id, title, cost, quantity, color, discount, originalCost } } }
             );
             console.log("New product added to cart");
         }

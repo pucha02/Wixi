@@ -5,6 +5,7 @@ const useGetDataProduct = () => {
 
   const _urlByCategory = 'http://localhost:5000/api/products/get-products-by-category';
   const _urlByProductTitle = 'http://localhost:5000/api/products/get-products-by-title';
+  const _urlByProductType = 'http://localhost:5000/api/products/get-products-by-type';
   const _urlByAllProducts = 'http://localhost:5000/api/products/get-all-products'
   const _urlAddToCart = 'http://localhost:5000/api/cart/add-to-cart'
   const _urlRemoveFromCart = 'http://localhost:5000/api/cart/remove-from-cart'
@@ -18,6 +19,12 @@ const useGetDataProduct = () => {
 
   const getProduct = async (title) => {
     const result = await request(`${_urlByProductTitle}?title=${encodeURIComponent(title)}`)
+    console.log(result)
+    return result
+  }
+
+  const getProductByType = async (type) => {
+    const result = await request(`${_urlByProductType}?type=${encodeURIComponent(type)}`)
     console.log(result)
     return result
   }
@@ -53,7 +60,8 @@ const useGetDataProduct = () => {
     getAllProduct,
     getAllProductBySearch,
     addToCart,
-    removeFromCart
+    removeFromCart,
+    getProductByType
   };
 };
 

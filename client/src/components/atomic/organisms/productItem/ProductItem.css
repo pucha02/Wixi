@@ -5,8 +5,10 @@
 }
 
 .product-item{
-    width: max-content;
+    width: 360px;
     margin-top: 30px;
+    position: relative;
+    margin-left: 24px;
 }
 
 .cost-addBtn{

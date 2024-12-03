@@ -1,0 +1,12 @@
+.main{
+    display: flex;
+}
+
+.filter-block{
+    width: 260px;
+}
+
+.product-list-block{
+    width: 90%;
+    margin: 0 0px 0 30px;
+}

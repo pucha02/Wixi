@@ -1,11 +1,37 @@
 import React from 'react';
 import './HotStripDiscount.css';
 
-const HotStripDiscount = () => {
+const HotStripDiscount = ({content}) => {
   return (
-    <div className="hot-strip">
-      <div className="hot-strip-text"><div>ЗНИЖКИ!</div><div>ЗНИЖКИ!</div><div>ЗНИЖКИ!</div><div>ЗНИЖКИ!</div><div>ЗНИЖКИ!</div><div>ЗНИЖКИ!</div><div>ЗНИЖКИ!</div><div>ЗНИЖКИ!</div></div>
+   <>
+    <div class="items-wrap">
+    <div class="items marquee">
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
     </div>
+    <div aria-hidden="true" class="items marquee">
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    <div class="item">{content}</div>
+    </div>
+  </div>
+  
+  </>
   );
 };
 

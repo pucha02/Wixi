@@ -4,7 +4,7 @@ import UserProfile from "../atomic/templates/UserProfile/UserProfile";
 import { ProductPage } from "../pages/productPage/productPage";
 import CategoryList from "../atomic/templates/categoryList/CategoryList";
 import { CatalogPage } from "../pages/catalogPage/CatalogPage";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter  as Router, Route, Routes } from "react-router-dom";
 import { ProductItem } from "../atomic/organisms/productItem/ProductItem";
 import { RegisterOrderPage } from "../pages/registerOrderPage/RegisterOrderPage";
 import { CartPage } from "../pages/cartPage/CartPage";
@@ -27,7 +27,7 @@ const App = () => {
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </Router>
-      <TestButtonShowCart />
+      {/* <TestButtonShowCart /> */}
     </div>
   );
 };

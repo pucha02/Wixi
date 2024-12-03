@@ -1,8 +1,12 @@
 .heart-container{
     display: flex;
+    height: max-content;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
 }
 
 .heart-container img {

@@ -21,10 +21,12 @@ export const MainPage = () => {
         <>
             <Header />
             <MySlider images={images} />
-            <HotStripDiscount />
-            <CarouselListByTypes/>
-            <HotStripTop/>
-            <CarouselListByTypes/>
+            <HotStripDiscount content={'ЗНИЖКИ!'}/>
+            <CarouselListByTypes type={'sale'}/>
+            <HotStripDiscount content={'НОВИНКИ!'}/>
+            <CarouselListByTypes type={'new'}/>
+            <HotStripDiscount content={'ТОП ПРОДАЖІВ!'}/>
+            <CarouselListByTypes type={'top'}/>
             <Footer/>
         </>
     )

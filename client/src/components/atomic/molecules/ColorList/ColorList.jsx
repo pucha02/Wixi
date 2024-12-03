@@ -3,7 +3,7 @@ import './ColorList.css';
 
 export const ColorList = ({ colors, setActiveIndex, activeIndex, classname }) => {
     return (
-      <div className={classname}>
+      <div className='color-list'>
         {colors.map((color, index) => {
           const totalAvailableQuantity = color.sizes.reduce((total, el) => {
             return total + el.availableQuantity;

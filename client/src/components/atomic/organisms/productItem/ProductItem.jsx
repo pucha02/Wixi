@@ -1,6 +1,6 @@
-import { ProductCost } from "../../atoms/atomsProduct/Cost";
+import { ProductCost } from "../../atoms/atomsProduct/Cost/Cost";
 import { ProductDescription } from "../../atoms/atomsProduct/Description";
-import { ProductName } from "../../atoms/atomsProduct/Name";
+import { ProductName } from "../../atoms/atomsProduct/Name/Name";
 import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button";
 import { ProductType } from "../../atoms/atomsProduct/Type";
 import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
@@ -10,8 +10,10 @@ import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../../../redux/reducers/cartReducer";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
+import { CarouselListByTypes } from "../../templates/CarouselListByTypes/CarouselListByTypes";
+import { ProductDiscount } from "../../atoms/atomsProduct/Discount/Discount";
 import useGetDataProduct from "../../../../services/FetchData";
-import { useState, useEffect, useMemo } from "react"; 
+import { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import {
   addItemToCart,
@@ -51,7 +53,7 @@ export const ProductItem = () => {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, []);
 
@@ -63,15 +65,29 @@ export const ProductItem = () => {
 
 
   const handleAddToCart = (product, activeColor) => {
-    const item = { title: product.title, _id: product._id, cost: product.cost, color: activeColor?.name, quantity: 1 };
-    console.log(token)
+    const hasDiscount = product.discount?.percentage > 0;
+    const discountedCost = hasDiscount
+      ? product.cost - (product.cost * product.discount.percentage) / 100
+      : product.cost;
+  
+    // Формируем объект товара
+    const item = {
+      title: product.title,
+      _id: product._id,
+      cost: discountedCost, // Цена (с учетом скидки, если есть)
+      color: activeColor?.name,
+      quantity: 1,
+      ...(hasDiscount && { originalCost: product.cost }), // Добавляем originalCost только при наличии скидки
+      ...(hasDiscount && { discount: product.discount.percentage }), // Процент скидки, только если она есть
+    };
+  
+    console.log(token);
     if (token) {
       const userId = localStorage.getItem('userid');
       dispatch(addItemToCart({ item, userId }));
-    }
-    else {
+    } else {
       dispatch(addItem(item));
-      console.log(item)
+      console.log(item);
     }
   };
 
@@ -92,39 +108,40 @@ export const ProductItem = () => {
       <div className="product-item">
 
         <ProductImage src={activeImage} className={""} />
- 
-      <div className="name-heart">
-        <ProductName name={item.title} className={""} />
-        {/* <ProductHeart
+
+        <div className="name-heart">
+          <ProductName name={item.title} className={""} />
+          {/* <ProductHeart
           src={HeartIcon}
           isLiked={isLiked}
           toggleHeart={() => handleAddToWishList(i)}
         /> */}
-      </div>
-      <ProductDescription description={item.description} className={""} />
-      <ProductType productType={item.type} className={""} />
-      <div className="cost-article">
-        {activeColor?.sizes?.reduce((total, size) => total + size.availableQuantity, 0) > 0 ? (
-          <div className="availability-text">В наличии</div>
-        ) : (
-          <div className="availability-text">Нет в наличии</div>
-        )}
-        <ProductArticle article={item.article || "—"} className={""} />
-      </div>
-      <div className="cost-addBtn">
-        <ProductCost cost={item.cost} discount={item.discount} className={""} />
-        <ProductButtonAddToCart
-          handleAddToCart={()=>handleAddToCart(item, activeColor)}
+        </div>
+        <ProductDescription description={item.description} className={""} />
+        <ProductType productType={item.type} className={""} />
+        <div className="cost-article">
+          {activeColor?.sizes?.reduce((total, size) => total + size.availableQuantity, 0) > 0 ? (
+            <div className="availability-text">В наличии</div>
+          ) : (
+            <div className="availability-text">Нет в наличии</div>
+          )}
+          <ProductArticle article={item.article || "—"} className={""} />
+        </div>
+        <div className="cost-addBtn">
+          <ProductCost cost={item.cost} discount={item.discount.percentage} />
+          {item.discount.percentage > 0 ? <ProductDiscount discount={item.discount.percentage} /> : null}
+          <ProductButtonAddToCart
+            handleAddToCart={() => handleAddToCart(item, activeColor)}
+            className={""}
+          />
+        </div>
+        <ColorList
+          colors={item.color}
+          setActiveIndex={(index) => setActiveIndex(index)}
+          activeIndex={activeIndex}
           className={""}
         />
       </div>
-      <ColorList
-        colors={item.color}
-        setActiveIndex={(index) => setActiveIndex(index)}
-        activeIndex={activeIndex}
-        className={""}
-      />
-    </div>
     )
   }
 
@@ -133,6 +150,12 @@ export const ProductItem = () => {
   }, [data, activeIndex]);
 
   return (
-  elements
+    <div>
+      {elements}
+      <div div className="recently-viewed-container" >
+        <h2>Recently Viewed</h2>
+        <CarouselListByTypes type={null} getdata={JSON.parse(localStorage.getItem("recentlyViewed"))} />
+      </div >
+    </div>
   );
 };

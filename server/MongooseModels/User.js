@@ -6,7 +6,9 @@ const cartItemSchema = new mongoose.Schema({
     color: { type: String },
     size: { type: String },
     quantity: { type: Number, default: 1 },
-    cost: { type: Number }
+    cost: { type: Number },
+    discount: { type: Number },
+    originalCost: { type: Number }
 });
 
 const orderSchema = new mongoose.Schema({

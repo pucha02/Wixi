@@ -4,6 +4,8 @@ import { SearchLoupe } from "../../atoms/Header/SearchLoupe/SearchLoupe"
 import { Logo } from "../../atoms/Header/Logo/Logo"
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
+import { useState } from "react"
+import CategoryList from "../categoryList/CategoryList"
 import './Header.css'
 
 import SearchBar from "../../molecules/SearchBar/SearchBar"
@@ -16,6 +18,12 @@ import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
 
 export const Header = () => {
+    const [viewCategories, setViewCategories] = useState(false)
+
+    const handleToggleCategories = () => {
+        setViewCategories(!viewCategories)
+    }
+
     const products = useSelector((state => state.cart.items))
     return (
         <div className="header">
@@ -25,7 +33,7 @@ export const Header = () => {
             <div className="header-bottom-block">
                 <div className="header-bottom">
                     <div className="left-elements-block">
-                        <BurgerMenuButton />
+                        <BurgerMenuButton handleToggleCategories={handleToggleCategories} viewCategories={viewCategories}/>
                         <div className="search-block">
                             <SearchLoupe src={SearchLoupeImg} /><SearchBar />
                         </div>
@@ -39,12 +47,13 @@ export const Header = () => {
                         <RightHeaderElement src={PersonalCabinetImg} label={'Акаунт'} />
                         <RightHeaderElement src={HeartImg} label={'Вішлист'} />
                         <Link to={'/cart/'}><RightHeaderElement src={CartImg} label={'Кошик'} /></Link>
-                        
+
                         <div>{products.length}</div>
                     </div>
                 </div>
+                
             </div>
-
+            {viewCategories && <CategoryList />}
         </div>
     )
 }

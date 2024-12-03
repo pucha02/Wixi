@@ -7,7 +7,7 @@ export const CartPage = () => {
   const { items: products, loading, error } = useSelector((state) => state.cart);
   const [localProducts, setLocalProducts] = useState([]);
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -50,9 +50,10 @@ export const CartPage = () => {
     <div>
       <h1>Ваш кошик</h1>
       <ul>
+        {console.log(cartItems)}
         {cartItems.map((product) => (
           <li key={product._id || product.id}>
-            {product.title} - ${product.cost} (Кількість: {product.quantity})
+            {product.title} - ${product.cost} - {product.discount} (Кількість: {product.quantity})
             <button onClick={() => handleRemoveItem(product._id)}>
               Видалити
             </button>

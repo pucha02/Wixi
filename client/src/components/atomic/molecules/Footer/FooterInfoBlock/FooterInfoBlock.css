@@ -1,0 +1,23 @@
+.footer-info-element-top{
+    display: flex;
+    margin-bottom: 9px;
+}
+
+.footer-info-element-top .footer-element-head-text{
+    margin-left: 18px;
+}
+
+.footer-info-element-block{
+    margin-top: 30px;
+}
+
+.footer-info-element-bottom{
+    margin-top: 15px;
+    color: white;
+    font-size: 24px;
+    font-family: 'Helvetica Neue Cyr Ultra Light';
+}
+
+.footer-info-element-bottom .footer-element-text{
+    margin-top: 15px;
+}

@@ -1,6 +1,7 @@
 .footer-block {
-    height: 600px;
+    height: auto;
     background-color: black;
+    margin-top: 80px;
 }
 
 .footer-container {
@@ -15,4 +16,45 @@
 .footer-logo-block {
     display: flex;
     justify-content: center;
+}
+
+.footer-logo-block img {
+    width: 86px;
+    height: 86px;
+}
+
+.head-footer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.social-network{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.social-network img{
+    width: 34px;
+    height: 33px;
+}
+
+.social-network-el-block{
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-size: 20px;
+    
+}
+
+.social-network-el-txt{
+    margin-left: 11px;
+    font-family: 'Helvetica Neue Cyr Ultra Light';
+}
+
+.bottom-footer {
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 70px;
 }

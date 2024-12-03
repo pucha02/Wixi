@@ -1,0 +1,10 @@
+.cost-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cost-block p {
+    margin: 0;
+    margin-top: 21px;
+}

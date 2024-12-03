@@ -1,5 +1,11 @@
 .product-image img{
-    width: 435px;
-    height: 500px;
+    width: 360px;
+    height: 425px;
+    object-fit: cover;
+}
+
+.product-image.main-page img{
+    width: 420px;
+    height: 470px;
     object-fit: cover;
 }
