@@ -11,7 +11,6 @@ import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
 import { addItem } from "../../../../redux/reducers/cartReducer";
 import {
   addItemToCart,
-  fetchCart,
 } from "../../../../redux/reducers/cartReducer";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +21,7 @@ import { FilterIcon } from "../../atoms/Filter/FilterIcon/FilterIcon";
 import FilterImg from '../../../../assets/svg/filter.svg'
 import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
 import './productList.css'
+import Filter from "../../organisms/Filter/Filter";
 
 const ProductList = () => {
   const [data, setData] = useState([]);
@@ -144,6 +144,7 @@ const ProductList = () => {
   return (
     <div className="catalog-container">
       <div className="category-title">{id}<FilterIcon src={FilterImg} /></div>
+      <Filter/>
       {elements}
     </div>
   );

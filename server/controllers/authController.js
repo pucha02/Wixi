@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { User, Order } from '../MongooseModels/User.js';
+import { User } from '../MongooseModels/User.js';
 
 const JWT_SECRET = 'your_jwt_secret_key';
 
