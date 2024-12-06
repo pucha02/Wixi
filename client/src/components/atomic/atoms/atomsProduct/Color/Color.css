@@ -1,12 +1,16 @@
 .color-circle {
-    width: 30px;
-    height: 30px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     display: inline-block;
-    margin: 5px;
+    margin-left: 25px;
     cursor: pointer;
     border: 1px solid #ccc;
     transition: transform 0.2s ease;
+}
+
+.color-circle:first-child {
+    margin-left: 0;
 }
 
 .color-circle.active {
@@ -21,3 +25,4 @@
     font-size: 14px;
     color: green;
 }
+

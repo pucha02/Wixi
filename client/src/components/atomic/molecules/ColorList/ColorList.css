@@ -1,4 +1,4 @@
-.color-list{
+.colors-container{
     display: flex;
     width: 100%;
     flex-wrap: wrap;
@@ -8,4 +8,23 @@
     opacity: 0.5; /* Делает элемент полупрозрачным */
     pointer-events: none; /* Отключает клики на неактивных элементах */
     cursor: not-allowed; /* Курсор в виде запрета */
+}
+
+.isDisplaySizes{
+    display: none;
+}
+
+.color-list{
+    margin-top: 30px;
+}
+
+.size-list{
+    margin-top: 42px;
+}
+
+.size-list .size-button{
+    margin-top: 21px;
+    width: 64px;
+    height: 64px;
+    font-size: 19px;
 }

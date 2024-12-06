@@ -1,0 +1,42 @@
+.modal-content .product-image {
+    width: max-content;
+}
+
+.modal-content .product-image img {
+    width: 120px;
+    height: 170px;
+}
+
+.cart-list {
+    list-style-type: none;
+    height: 380px;
+    overflow-y: auto;
+}
+
+.cart-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.cart-list li:first-child {
+    margin-top: 0;
+}
+
+.cart-title {
+    margin-bottom: 30px;
+}
+
+.cart-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.cart-product-description{
+    font-size: 18px;
+}
+
+.cart-item-cost{
+    font-size: 18px;
+}

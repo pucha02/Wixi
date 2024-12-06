@@ -5,6 +5,7 @@ import { Logo } from "../../atoms/Header/Logo/Logo"
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useState } from "react"
+import { CartPage } from "../../../pages/cartPage/CartPage"
 import CategoryList from "../categoryList/CategoryList"
 import './Header.css'
 
@@ -19,6 +20,7 @@ import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
 export const Header = () => {
     const [viewCategories, setViewCategories] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleToggleCategories = () => {
         setViewCategories(!viewCategories)
@@ -33,25 +35,27 @@ export const Header = () => {
             <div className="header-bottom-block">
                 <div className="header-bottom">
                     <div className="left-elements-block">
-                        <BurgerMenuButton handleToggleCategories={handleToggleCategories} viewCategories={viewCategories}/>
+                        <BurgerMenuButton handleToggleCategories={handleToggleCategories} viewCategories={viewCategories} />
                         <div className="search-block">
                             <SearchLoupe src={SearchLoupeImg} /><SearchBar />
                         </div>
                     </div>
                     <div className="logo-block">
-                        <Logo src={LogoImg} />
+                        <Link to={'/'}>
+                            <Logo src={LogoImg} />
+                        </Link>
 
                     </div>
                     <div className="right-elements-block">
                         <RightHeaderElement src={PhoneImg} />
                         <RightHeaderElement src={PersonalCabinetImg} label={'Акаунт'} />
                         <RightHeaderElement src={HeartImg} label={'Вішлист'} />
-                        <Link to={'/cart/'}><RightHeaderElement src={CartImg} label={'Кошик'} /></Link>
+                        <RightHeaderElement src={CartImg} label={'Кошик'} onClick={() => setIsModalOpen(true)} />
 
                         <div>{products.length}</div>
                     </div>
                 </div>
-                
+                <CartPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
             </div>
             {viewCategories && <CategoryList />}
         </div>

@@ -1,20 +1,16 @@
 import { ProductCost } from "../../atoms/atomsProduct/Cost/Cost";
-import { ProductDescription } from "../../atoms/atomsProduct/Description";
 import { ProductName } from "../../atoms/atomsProduct/Name/Name";
-import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button";
+import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button/ButtonImage";
 import { ProductType } from "../../atoms/atomsProduct/Type";
 import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
-import { ProductArticle } from "../../atoms/atomsProduct/Article/Article";
 import { ProductDiscount } from "../../atoms/atomsProduct/Discount/Discount";
 import { ColorList } from "../../molecules/ColorList/ColorList";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
 import { CarouselListByTypes } from "../CarouselListByTypes/CarouselListByTypes";
-
+import { handleAddToCart } from "../../../../utils/cartOperations";
+import { handleAddToWishList } from "../../../../utils/wishListOperations";
 import { addItem } from "../../../../redux/reducers/cartReducer";
-import {
-  addItemToCart,
-  fetchCart,
-} from "../../../../redux/reducers/cartReducer";
+import { addItemToCart } from "../../../../redux/reducers/cartReducer";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
@@ -28,9 +24,8 @@ import './productList.css'
 const ProductList = () => {
   const [data, setData] = useState([]);
   const [recentlyViewed, setRecentlyViewed] = useState([]);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isLiked, setIsLiked] = useState(false);
-
+  const [likedItems, setLikedItems] = useState({});
+  const [activeSize, setActiveSize] = useState(0);
   let { id } = useParams();
   const { getAllProductByCategory } = useGetDataProduct();
   const location = useLocation();
@@ -40,63 +35,29 @@ const ProductList = () => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
+    loadRecentlyViewed();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getAllProductByCategory(id);
         const updatedData = result.map((item) => ({
           ...item,
-          activeIndex: 0
+          activeIndex: 0,
         }));
         setData(updatedData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
+    window.scrollTo(0, 0);
     fetchData();
   }, [id]);
 
   const loadRecentlyViewed = () => {
     const data = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
     setRecentlyViewed(data);
-  };
-
-  useEffect(() => {
-    loadRecentlyViewed();
-  }, []);
-
-  const handleAddToCart = (product, activeColor) => {
-    const hasDiscount = product.discount?.percentage > 0;
-    const discountedCost = hasDiscount
-      ? product.cost - (product.cost * product.discount.percentage) / 100
-      : product.cost;
-  
-    // Формируем объект товара
-    const item = {
-      title: product.title,
-      _id: product._id,
-      cost: discountedCost, // Цена (с учетом скидки, если есть)
-      color: activeColor?.name,
-      quantity: 1,
-      ...(hasDiscount && { originalCost: product.cost }), // Добавляем originalCost только при наличии скидки
-      ...(hasDiscount && { discount: product.discount.percentage }), // Процент скидки, только если она есть
-    };
-  
-    console.log(token);
-    if (token) {
-      const userId = localStorage.getItem('userid');
-      dispatch(addItemToCart({ item, userId }));
-    } else {
-      dispatch(addItem(item));
-      console.log(item);
-    }
-  };
-  
-
-
-  const handleAddToWishList = () => {
-    setIsLiked(!isLiked);
-    console.log(product, data[0].cost);
   };
 
   const handleSetActiveIndex = (productId, index) => {
@@ -111,7 +72,6 @@ const ProductList = () => {
 
   const addToRecentlyViewed = (product) => {
     const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
-    console.log(recentlyViewed)
     if (!recentlyViewed.some((item) => item._id === product._id)) {
       recentlyViewed.push(product);
       localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed));
@@ -122,6 +82,7 @@ const ProductList = () => {
     const items = arr.map((item, i) => {
       const activeColor = item.color?.[item.activeIndex] || item.color?.[0];
       const activeImage = activeColor?.img?.[0]?.img_link || "/placeholder-image.png";
+      const isLiked = likedItems[item._id] || false; // Проверяем, лайкнут ли товар
 
       return (
         <li className="product-item-li" key={i}>
@@ -134,10 +95,10 @@ const ProductList = () => {
               <ProductHeart
                 src={HeartIcon}
                 isLiked={isLiked}
-                toggleHeart={() => handleAddToWishList(i)}
+                toggleHeart={() => handleAddToWishList(item._id, setLikedItems)} // Передаем ID товара
               />
               <ProductButtonAddToCart
-                handleAddToCart={() => handleAddToCart(item, activeColor)}
+                handleAddToCart={() => handleAddToCart(item, activeColor, dispatch, addItemToCart, addItem, token)}
                 className={""}
               />
             </div>
@@ -149,7 +110,9 @@ const ProductList = () => {
               colors={item.color}
               setActiveIndex={(index) => handleSetActiveIndex(item._id, index)}
               activeIndex={item.activeIndex}
-              className={""}
+              setActiveSize={setActiveSize}
+              activeSize={activeSize}
+              classname={"isDisplaySizes"}
             />
           </div>
         </li>
@@ -158,17 +121,18 @@ const ProductList = () => {
     return <ul className="product-list">{items}</ul>;
   };
 
+  const elements = useMemo(() => {
+    return renderItems(data);
+  }, [data, likedItems]); // Добавляем зависимость от `likedItems`
+
   return (
     <div className="catalog-container">
       <div className="category-title">
         {id}
         <FilterIcon src={FilterImg} />
       </div>
-      {renderItems(data)}
-      <div className="recently-viewed-container">
-        <h2>Recently Viewed</h2>
-        <CarouselListByTypes type={null} getdata={JSON.parse(localStorage.getItem("recentlyViewed"))} />
-      </div>
+      {elements}
+
     </div>
   );
 };

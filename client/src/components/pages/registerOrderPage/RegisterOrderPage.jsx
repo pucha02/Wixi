@@ -35,7 +35,7 @@ export const RegisterOrderPage = () => {
         };
 
         fetchData();
-    }, [getAllUserData]);
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

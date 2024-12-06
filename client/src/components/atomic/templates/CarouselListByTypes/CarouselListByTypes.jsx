@@ -1,6 +1,6 @@
 import { ProductCost } from "../../atoms/atomsProduct/Cost/Cost";
 import { ProductName } from "../../atoms/atomsProduct/Name/Name";
-import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button";
+import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button/ButtonImage";
 import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
 import { ProductDiscount } from "../../atoms/atomsProduct/Discount/Discount";
 import { ColorList } from "../../molecules/ColorList/ColorList";
@@ -12,6 +12,7 @@ import { addItemToCart } from "../../../../redux/reducers/cartReducer";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import useGetDataProduct from "../../../../services/FetchData";
+import { handleAddToCart } from "../../../../utils/cartOperations";
 import { Link } from "react-router-dom";
 
 // Swiper imports
@@ -23,10 +24,11 @@ import { Pagination, Navigation } from "swiper/modules";
 
 import "./CarouselListByTypes.css";
 
-export const CarouselListByTypes = ({ type = null, getdata }) => {
+export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) => {
   const [data, setData] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
-
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeSize, setActiveSize] = useState(0);
   const { getProductByType } = useGetDataProduct();
   const dispatch = useDispatch();
 
@@ -53,33 +55,6 @@ export const CarouselListByTypes = ({ type = null, getdata }) => {
   const token = localStorage.getItem("token");
 
 
-  const handleAddToCart = (product, activeColor) => {
-    const hasDiscount = product.discount?.percentage > 0;
-    const discountedCost = hasDiscount
-      ? product.cost - (product.cost * product.discount.percentage) / 100
-      : product.cost;
-  
-    // Формируем объект товара
-    const item = {
-      title: product.title,
-      _id: product._id,
-      cost: discountedCost, // Цена (с учетом скидки, если есть)
-      color: activeColor?.name,
-      quantity: 1,
-      ...(hasDiscount && { originalCost: product.cost }), // Добавляем originalCost только при наличии скидки
-      ...(hasDiscount && { discount: product.discount.percentage }), // Процент скидки, только если она есть
-    };
-  
-    console.log(token);
-    if (token) {
-      const userId = localStorage.getItem('userid');
-      dispatch(addItemToCart({ item, userId }));
-    } else {
-      dispatch(addItem(item));
-      console.log(item);
-    }
-  };
-
   const renderItems = (arr) => {
     return arr.map((item) => {
       const activeColor = item.color?.[item.activeIndex] || item.color?.[0];
@@ -97,9 +72,9 @@ export const CarouselListByTypes = ({ type = null, getdata }) => {
                 isLiked={isLiked}
                 toggleHeart={() => setIsLiked(!isLiked)}
               />
-              <ProductButtonAddToCart
-                handleAddToCart={() => handleAddToCart(item, activeColor)}
-              />
+              {/* <ProductButtonAddToCart
+                handleAddToCart={() => handleAddToCart(item, activeColor, dispatch, addItemToCart, addItem, token
+              /> */}
             </div>
             <div className="cost-addBtn">
               <ProductCost cost={item.cost} discount={item.discount.percentage} />
@@ -109,15 +84,13 @@ export const CarouselListByTypes = ({ type = null, getdata }) => {
             </div>
             <ColorList
               colors={item.color}
-              setActiveIndex={(index) =>
-                setData((prev) =>
-                  prev.map((el) =>
-                    el._id === item._id ? { ...el, activeIndex: index } : el
-                  )
-                )
-              }
-              activeIndex={item.activeIndex}
+              setActiveIndex={(index) => setActiveIndex(index)}
+              activeIndex={activeIndex}
+              setActiveSize={setActiveSize}
+              activeSize={activeSize}
+              classname={"isDisplaySizes"}
             />
+
           </div>
         </SwiperSlide>
       );
@@ -127,16 +100,16 @@ export const CarouselListByTypes = ({ type = null, getdata }) => {
   return (
     <div className="main-container">
       <Swiper
-        slidesPerView={3}
+        slidesPerView={countSlide}
         spaceBetween={0}
-        
+
         navigation={true}
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
         {renderItems(data)}
       </Swiper>
-     
+
     </div>
   );
 };

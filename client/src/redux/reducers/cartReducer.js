@@ -42,11 +42,12 @@ export const addItemToCart = createAsyncThunk(
 
 export const removeItemCart = createAsyncThunk(
   'cart/removeItem',
-  async ({ userId, productId }) => {
-    console.log(userId)
+  async ({ userId, productId, item }) => {
+    console.log("Удаляемый товар:", { userId, productId, item });
+    
     const response = await fetch('http://localhost:5000/api/cart/remove-from-cart', {
       method: 'POST',
-      body: JSON.stringify({ userId, productId }),
+      body: JSON.stringify({ userId, productId, item }),
       headers: { 'Content-Type': 'application/json' },
     });
 
@@ -57,34 +58,50 @@ export const removeItemCart = createAsyncThunk(
     return productId; // Возвращаем id удалённого товара
   }
 );
+
 // Срез для управления состоянием корзины
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: JSON.parse(localStorage.getItem('cart')) || [], // Загрузка корзины из localStorage по умолчанию
+    items: JSON.parse(localStorage.getItem('cart')) || [],
     loading: false,
     error: null,
   },
   reducers: {
-    // Локальное добавление элемента в корзину
+    
     addItem: (state, action) => {
-      const existingItem = state.items.find((item) => item._id === action.payload._id);
+      // Найдем существующий товар с учетом идентификатора, цвета и размера
+      const existingItem = state.items.find((item) => 
+        item._id === action.payload._id &&
+        item.color.color_name === action.payload.color.color_name &&
+        item.color.size === action.payload.size
+      );
+    
       if (existingItem) {
+        // Увеличиваем количество, если товар найден
         existingItem.quantity += 1;
       } else {
-        state.items.push({ ...action.payload, quantity: 1 });
+        // Если товар не найден, добавляем новый с количеством 1
+        const newItem = {
+          ...action.payload,
+          quantity: 1
+        };
+        state.items.push(newItem);
       }
-      localStorage.setItem('cart', JSON.stringify(state.items)); // Сохранение корзины в localStorage
-    },
-    // Удаление элемента из корзины
+    
+      // Обновляем cart в localStorage
+      localStorage.setItem('cart', JSON.stringify(state.items));
+    }
+    ,
+    
     removeItem: (state, action) => {
       state.items = state.items.filter((item) => item._id !== action.payload._id);
-      localStorage.setItem('cart', JSON.stringify(state.items)); // Сохранение корзины в localStorage
+      localStorage.setItem('cart', JSON.stringify(state.items));
     },
-    // Очистка корзины
+    
     clearCart: (state) => {
       state.items = [];
-      localStorage.setItem('cart', JSON.stringify(state.items)); // Очистка корзины в localStorage
+      localStorage.setItem('cart', JSON.stringify(state.items));
     },
   },
   extraReducers: (builder) => {

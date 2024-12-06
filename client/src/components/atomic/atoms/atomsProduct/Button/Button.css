@@ -1,0 +1,18 @@
+.add-to-cart-btn{
+    display: flex;
+    align-items: end;
+    cursor: pointer;
+}
+
+.add-to-cart-btn-with-txt{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 287px;
+    height: 55px;
+    background-color: black;
+    color: white;
+    margin-top: 45px;
+    font-size: 21px;
+}

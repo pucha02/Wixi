@@ -7,11 +7,11 @@ export const ProductCost = ({ cost, discount = 0 }) => {
   return (
     <div className='cost-block' >
       {/* Скидка отображается, если она есть */}
-      <p style={{ fontWeight: 'bold', fontSize: '1.2em'}}>
+      <p className='price' style={{ fontWeight: 'bold'}}>
         {discountedCost}$
       </p>
       {discount > 0 && (
-        <p style={{ textDecoration: 'line-through', fontSize: '0.9em', color: 'gray' }}>
+        <p className='discount-price' style={{ textDecoration: 'line-through',color: 'gray' }}>
           {cost}$
         </p>
       )}

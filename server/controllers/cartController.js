@@ -3,8 +3,8 @@ import { User } from "../MongooseModels/User.js";
 import { ObjectId } from "mongodb";
 
 export const addToCart = async (req, res) => {
-    const { userId, _id, title, cost, quantity, color, discount, originalCost } = req.body;  // Извлекаем данные из запроса
-    console.log("Received request to add to cart:", { userId, _id, title, cost, quantity, color, discount, originalCost });
+    const { userId, _id, title, cost, quantity, color, discount, originalCost, size, img } = req.body;  // Извлекаем данные из запроса
+    console.log("Received request to add to cart:", { userId, _id, title, cost, quantity, color, discount, originalCost, size, img });
 
     try {
         // Проверка наличия обязательных полей
@@ -19,24 +19,29 @@ export const addToCart = async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // Проверка, существует ли уже товар в корзине
-        const existingProduct = user.cart.find(item => item._id.toString() === _id);
+        console.log(quantity)
+        const existingProduct = user.cart.find(item => item._id.toString() === _id && item.size.toString() === size && item.color.toString() === color.color_name );
         console.log("Existing product in cart:", existingProduct);
 
         if (existingProduct) {
             console.log("Updating quantity of existing product:", existingProduct);
-            // Обновление количества товара в корзине
-            await User.updateOne(
-                { _id: userId, 'cart._id': _id },
+            const result = await User.updateOne(
+                { _id: userId, 'cart._id': _id, 'cart.color': color.color_name, 'cart.size': size },
                 { $inc: { 'cart.$.quantity': quantity } }
             );
-            console.log("Product quantity updated");
-        } else {
-            console.log("Adding new product to cart:", { _id, title, cost, quantity, color, discount, originalCost });
+            console.log("Update result:", result);
+            if (result.modifiedCount > 0) {
+                console.log("Product quantity successfully updated.");
+            } else {
+                console.log("Failed to update product quantity. Check query conditions.");
+            }
+        }
+         else {
+            console.log("Adding new product to cart:", { _id, title, cost, quantity, color: color.color_name, discount, originalCost, size, img });
             // Добавление нового товара в корзину
             await User.updateOne(
                 { _id: userId },
-                { $push: { cart: { _id, title, cost, quantity, color, discount, originalCost } } }
+                { $push: { cart: { _id, title, cost, quantity, color: color.color_name, discount, originalCost, size, img } } }
             );
             console.log("New product added to cart");
         }
@@ -50,35 +55,58 @@ export const addToCart = async (req, res) => {
 
 
 export const removeFromCart = async (req, res) => {
-    const { userId, productId } = req.body;
-    
-    console.log("Received request to remove product from cart:", { userId, productId });
+    const { userId, productId, item } = req.body;
+
+    console.log("Received request to remove product from cart:", req.body);
 
     try {
-        if (!userId || !productId) {
-            console.error("Invalid data: userId and productId are required");
-            return res.status(400).json({ error: 'Invalid data: userId and _id are required' });
+        // Проверка обязательных данных
+        if (!userId || !productId || !item.color || !item.size) {
+            console.error("Invalid data: userId, productId, color, and size are required");
+            return res.status(400).json({ error: 'Invalid data: userId, productId, color, and size are required' });
         }
 
-        console.log(`Attempting to remove product with ID ${productId} from user ${userId}'s cart`);
+        console.log(`Attempting to remove product variation with:
+        - ID: ${productId}
+        - Color: ${item.color}
+        - Size: ${item.size}
+        - User ID: ${userId}`);
 
+        // Логирование текущего состояния корзины пользователя перед изменением
+        const user = await User.findById(userId).select('cart');
+        console.log("User's current cart:", user?.cart);
+
+        // Удаление конкретной вариации товара
         const result = await User.updateOne(
             { _id: userId },
-            { $pull: { cart: { _id: new ObjectId(productId) } } }
+            { 
+                $pull: { 
+                    cart: { 
+                        _id: new ObjectId(productId), 
+                        color: item.color, 
+                        size: item.size // Обязательно учитывать и цвет, и размер
+                    } 
+                } 
+            }
         );
 
+        // Логирование результата обновления
         console.log("Update result:", result);
 
+        // Логирование текущего состояния корзины пользователя после изменения
+        const updatedUser = await User.findById(userId).select('cart');
+        console.log("User's updated cart:", updatedUser?.cart);
+
         if (result.modifiedCount === 0) {
-            console.warn("No products were removed. It might not exist in the cart.");
-            return res.status(404).json({ error: 'Product not found in cart' });
+            console.warn("No matching product variation found for removal.");
+            return res.status(404).json({ error: 'Product variation not found in cart' });
         }
 
-        console.log("Product removed successfully");
+        console.log("Specific product variation removed successfully");
 
-        res.status(200).json({ message: 'Product completely removed from cart' });
+        res.status(200).json({ message: 'Product variation removed from cart' });
     } catch (error) {
-        console.error("Error occurred while removing product:", error);
-        res.status(500).json({ error: 'Failed to remove product from cart' });
+        console.error("Error occurred while removing product variation:", error);
+        res.status(500).json({ error: 'Failed to remove product variation from cart' });
     }
 };

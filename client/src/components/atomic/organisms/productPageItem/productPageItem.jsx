@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Carousel from "../../templates/Slider/Carousel";
 import { ProductCost } from "../../atoms/atomsProduct/Cost/Cost";
 import { ProductName } from "../../atoms/atomsProduct/Name/Name";
-import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button";
+import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button/ButtonImage";
 import { ProductType } from "../../atoms/atomsProduct/Type";
 import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
 import { ProductArticle } from "../../atoms/atomsProduct/Article/Article";

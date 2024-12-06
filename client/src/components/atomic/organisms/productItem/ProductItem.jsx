@@ -1,9 +1,9 @@
 import { ProductCost } from "../../atoms/atomsProduct/Cost/Cost";
 import { ProductDescription } from "../../atoms/atomsProduct/Description";
 import { ProductName } from "../../atoms/atomsProduct/Name/Name";
-import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button";
-import { ProductType } from "../../atoms/atomsProduct/Type";
-import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
+import ProductDescriptionMenu from "../ProductDescriptionMenu/ProductDescriptionMenu";
+import { SizeTable } from "../../atoms/atomsProduct/SizeTable/SizeTable";
+import { ProductButtonAddToCartTxt } from "../../atoms/atomsProduct/Button/ButtonTxt";
 import { ProductArticle } from "../../atoms/atomsProduct/Article/Article";
 import { ColorList } from "../../molecules/ColorList/ColorList";
 import { useLocation } from "react-router-dom";
@@ -17,9 +17,10 @@ import { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import {
   addItemToCart,
-  fetchCart,
 } from "../../../../redux/reducers/cartReducer";
-
+import { handleAddToCart } from "../../../../utils/cartOperations";
+import { handleAddToWishList } from "../../../../utils/wishListOperations";
+import ImageSlider from "../../templates/Slider/ImageSlider";
 import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
 
 import "./ProductItem.css";
@@ -27,23 +28,20 @@ import "./ProductItem.css";
 export const ProductItem = () => {
 
   const [data, setData] = useState([]);
-
+  const [likedItems, setLikedItems] = useState({});
   const [activeIndex, setActiveIndex] = useState(0);
+  const [activeSize, setActiveSize] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
 
-  const { addToCart, getProduct } = useGetDataProduct();
+  const { getProduct } = useGetDataProduct();
   const dispatch = useDispatch();
-  const product = useSelector((state) => state.cart.items);
   const location = useLocation();
-  const userId = localStorage.getItem("userid");
   let { productName } = useParams();
 
   const token = localStorage.getItem('token')
 
   const activeColor = data[0]?.color?.[activeIndex];
-  const activeImage = activeColor?.img?.[0]?.img_link || '';
-  const totalAvailableQuantity = activeColor?.sizes?.reduce((total, el) => total + el.availableQuantity, 0) || 0;
-
+  console.log(activeColor?.img)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,72 +51,25 @@ export const ProductItem = () => {
         console.error("Error fetching data:", error);
       }
     };
-
+    window.scrollTo(0, 0);
     fetchData();
-  }, []);
-
-  const {
-    localProductColors,
-  } = location.state || {};
-
-
-
-
-  const handleAddToCart = (product, activeColor) => {
-    const hasDiscount = product.discount?.percentage > 0;
-    const discountedCost = hasDiscount
-      ? product.cost - (product.cost * product.discount.percentage) / 100
-      : product.cost;
-  
-    // Формируем объект товара
-    const item = {
-      title: product.title,
-      _id: product._id,
-      cost: discountedCost, // Цена (с учетом скидки, если есть)
-      color: activeColor?.name,
-      quantity: 1,
-      ...(hasDiscount && { originalCost: product.cost }), // Добавляем originalCost только при наличии скидки
-      ...(hasDiscount && { discount: product.discount.percentage }), // Процент скидки, только если она есть
-    };
-  
-    console.log(token);
-    if (token) {
-      const userId = localStorage.getItem('userid');
-      dispatch(addItemToCart({ item, userId }));
-    } else {
-      dispatch(addItem(item));
-      console.log(item);
-    }
-  };
-
-  const handleAddToWishList = () => {
-    setIsLiked(!isLiked);
-    // const item = { title, _id, cost };
-    // dispatch(addItem(item));
-    // if (userId) {
-    //   addToCart(userId, item);
-    // }
-    console.log(product, data[0].cost);
-  };
+  }, [productName]);
 
   function renderDataProductProperty(newData) {
     if (newData.length === 0) return null;
     const item = newData[0]
+    const isLiked = likedItems[item._id] || false;
     return (
       <div className="product-item">
-
-        <ProductImage src={activeImage} className={""} />
-
         <div className="name-heart">
           <ProductName name={item.title} className={""} />
-          {/* <ProductHeart
-          src={HeartIcon}
-          isLiked={isLiked}
-          toggleHeart={() => handleAddToWishList(i)}
-        /> */}
+          <ProductHeart
+            src={HeartIcon}
+            isLiked={isLiked}
+            toggleHeart={() => handleAddToWishList(item._id, setLikedItems)}
+          />
         </div>
         <ProductDescription description={item.description} className={""} />
-        <ProductType productType={item.type} className={""} />
         <div className="cost-article">
           {activeColor?.sizes?.reduce((total, size) => total + size.availableQuantity, 0) > 0 ? (
             <div className="availability-text">В наличии</div>
@@ -129,33 +80,45 @@ export const ProductItem = () => {
         </div>
         <div className="cost-addBtn">
           <ProductCost cost={item.cost} discount={item.discount.percentage} />
-          {item.discount.percentage > 0 ? <ProductDiscount discount={item.discount.percentage} /> : null}
-          <ProductButtonAddToCart
-            handleAddToCart={() => handleAddToCart(item, activeColor)}
-            className={""}
-          />
+          {/* {item.discount.percentage > 0 ? <ProductDiscount discount={item.discount.percentage} /> : null} */}
+          
         </div>
         <ColorList
           colors={item.color}
           setActiveIndex={(index) => setActiveIndex(index)}
           activeIndex={activeIndex}
-          className={""}
+          setActiveSize={setActiveSize}
+          activeSize={activeSize}
         />
+        <SizeTable/>
+        <ProductButtonAddToCartTxt
+            handleAddToCart={() => handleAddToCart(item, activeColor, activeSize, dispatch, addItemToCart, addItem, token)}
+            className={""}
+          />
       </div>
     )
   }
 
   const elements = useMemo(() => {
     return renderDataProductProperty(data);
-  }, [data, activeIndex]);
+  }, [data, activeIndex, likedItems, isLiked, activeSize]);
 
   return (
     <div>
-      {elements}
-      <div div className="recently-viewed-container" >
-        <h2>Recently Viewed</h2>
-        <CarouselListByTypes type={null} getdata={JSON.parse(localStorage.getItem("recentlyViewed"))} />
-      </div >
+      <div className="product-page-container">
+        <div className="product-page-data-block">
+          <ImageSlider images={activeColor?.img && activeColor?.img.length > 0 ? activeColor.img : []} />
+
+          {elements}
+        </div>
+        <div className="tab-menu-block">
+          <ProductDescriptionMenu/>
+        </div>
+        <div className="recently-viewed-container" >
+          <h2>Recently Viewed</h2>
+          <CarouselListByTypes type={null} getdata={JSON.parse(localStorage.getItem("recentlyViewed"))} countSlide={4}/>
+        </div>
+      </div>
     </div>
   );
 };
