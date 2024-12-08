@@ -4,9 +4,7 @@ function Filter({ data }) {
   const size = ["XS", "S", "M", "L", "XL"];
   const color = ["red", "green", "white", "black"];
   const brand = ["wixi", "adidas", "nike"];
-
   const allFilters = [size, color, brand];
-
   const filterName = ['Size', 'Color', 'Brand']
 
   return (

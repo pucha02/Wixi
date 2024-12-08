@@ -1,23 +1,34 @@
-const initialState = {
-  items: [],
-  loading: true,
-  error: null,
-};
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const wishlistReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "FETCH_WISHLIST_REQUEST":
-      return { ...state, loading: true, error: null };
+const wishlistSlice = createSlice({
+  name: "wishlist",
+  initialState: {
+    items: JSON.parse(localStorage.getItem("wishlist")) || [],
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    addItemToWishlist: (state, action) => {
+      const className = 'active'
+      const existingItem = state.items.find(
+        (item) => item._id === action.payload._id
+      );
+      if (!existingItem) {
+        state.items.push({ ...action.payload, className });
+        localStorage.setItem("wishlist", JSON.stringify(state.items));
+      }
+      console.log("addItemToWishist - done")
+    },
+    removeItemFromWishlist: (state, action) => {
+      state.items = state.items.filter(
+        (item) => item._id !== action.payload._id
+      );
+      localStorage.setItem("wishlist", JSON.stringify(state.items)); 
+      console.log("removeItemFromWishlist - done")// Сохранение корзины в localStorage
+    },
+  },
+});
 
-    case "FETCH_WISHLIST_SUCCESS":
-      return { ...state, loading: false, items: action.payload };
+export const { addItemToWishlist, removeItemFromWishlist } = wishlistSlice.actions;
 
-    case "FETCH_WISHLIST_FAILURE":
-      return { ...state, loading: false, error: action.payload };
-
-    default:
-      return state;
-  }
-};
-
-export default wishlistReducer;
+export default wishlistSlice.reducer;
