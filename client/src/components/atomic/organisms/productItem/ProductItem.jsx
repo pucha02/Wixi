@@ -81,7 +81,7 @@ export const ProductItem = () => {
         <div className="cost-addBtn">
           <ProductCost cost={item.cost} discount={item.discount.percentage} />
           {/* {item.discount.percentage > 0 ? <ProductDiscount discount={item.discount.percentage} /> : null} */}
-          
+
         </div>
         <ColorList
           colors={item.color}
@@ -90,11 +90,11 @@ export const ProductItem = () => {
           setActiveSize={setActiveSize}
           activeSize={activeSize}
         />
-        <SizeTable/>
+        <SizeTable />
         <ProductButtonAddToCartTxt
-            handleAddToCart={() => handleAddToCart(item, activeColor, activeSize, dispatch, addItemToCart, addItem, token)}
-            className={""}
-          />
+          handleAddToCart={() => handleAddToCart(item, activeColor, activeSize, dispatch, addItemToCart, addItem, token)}
+          className={""}
+        />
       </div>
     )
   }
@@ -112,12 +112,22 @@ export const ProductItem = () => {
           {elements}
         </div>
         <div className="tab-menu-block">
-          <ProductDescriptionMenu/>
+          <ProductDescriptionMenu />
         </div>
-        <div className="recently-viewed-container" >
-          <h2>Recently Viewed</h2>
-          <CarouselListByTypes type={null} getdata={JSON.parse(localStorage.getItem("recentlyViewed"))} countSlide={4}/>
+        <div className="recently-viewed-container">
+          {JSON.parse(localStorage.getItem("recentlyViewed"))?.length > 0 && (
+            <>
+              <h2>ПЕРЕГЛЯНУТІ
+                ТОВАРИ:</h2>
+              <CarouselListByTypes
+                type={null}
+                getdata={JSON.parse(localStorage.getItem("recentlyViewed"))}
+                countSlide={4}
+              />
+            </>
+          )}
         </div>
+
       </div>
     </div>
   );

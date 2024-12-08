@@ -8,4 +8,5 @@
 .right-header-img img{
     width: 20px;
     height: 18px;
+    cursor: pointer;
 }

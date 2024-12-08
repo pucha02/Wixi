@@ -1,6 +1,8 @@
 import { BurgerMenuButton } from "../../molecules/BurgerMenuButton/BurgerMenuButton"
 import { RightHeaderElement } from "../../molecules/RightHeaderElement/RightHeaderElement"
 import { SearchLoupe } from "../../atoms/Header/SearchLoupe/SearchLoupe"
+import ClientLoginForm from "../../organisms/ClientLoginForm/ClientLoginForm"
+import ClientRegistrationForm from "../../organisms/ClientRegistrationForm/ClientRegistrationForm"
 import { Logo } from "../../atoms/Header/Logo/Logo"
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
@@ -21,6 +23,9 @@ import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 export const Header = () => {
     const [viewCategories, setViewCategories] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpenLogin, setIsModalOpenLogin] = useState(false);
+    const [isModalOpenReg, setIsModalOpenReg] = useState(false);
+
 
     const handleToggleCategories = () => {
         setViewCategories(!viewCategories)
@@ -48,14 +53,20 @@ export const Header = () => {
                     </div>
                     <div className="right-elements-block">
                         <RightHeaderElement src={PhoneImg} />
-                        <RightHeaderElement src={PersonalCabinetImg} label={'Акаунт'} />
+                        <RightHeaderElement src={PersonalCabinetImg} label={'Акаунт'} onClick={() => setIsModalOpenLogin(true)} />
                         <RightHeaderElement src={HeartImg} label={'Вішлист'} />
                         <RightHeaderElement src={CartImg} label={'Кошик'} onClick={() => setIsModalOpen(true)} />
 
-                        <div>{products.length}</div>
+                        <div>{products?.length || 0}</div>
                     </div>
                 </div>
-                <CartPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+                <CartPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+                <div className="client-login-form-block">
+                    <ClientLoginForm isModalOpen={isModalOpenLogin} setIsModalOpen={setIsModalOpenLogin} setIsModalOpenLogin={setIsModalOpenLogin} setIsModalOpenReg={setIsModalOpenReg}/>
+                </div>
+                <div className="client-reg-form-block">
+                    <ClientRegistrationForm isModalOpen={isModalOpenReg} setIsModalOpen={setIsModalOpenReg} setIsModalOpenLogin={setIsModalOpenLogin} setIsModalOpenReg={setIsModalOpenReg}/>
+                </div>
             </div>
             {viewCategories && <CategoryList />}
         </div>

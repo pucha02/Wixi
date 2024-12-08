@@ -1,0 +1,37 @@
+.delivery-info-selects{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.delivery-info-selects .css-b62m3t-container{
+    width: 342px;
+}
+
+.delivery-info-selects .css-b62m3t-container .css-13cymwt-control{
+    padding: 5px 0 5px 18px;
+    width: 342px;
+    font-size: 18px;
+}
+
+.delivery-info-bottom-select{
+    margin-top: 21px;
+}
+
+.delivery-info-selects{
+    margin-top: 30px;
+}
+
+.delivery-info-block{
+    margin-top: 36px;
+}
+
+.delivery-info-head{
+    font-size: 24px;
+}
+
+.delivery-info-selects .css-b62m3t-container .css-13cymwt-control:hover{
+    padding: 5px 0 5px 18px;
+    width: 342px;
+    font-size: 18px;
+}

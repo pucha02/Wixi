@@ -1,28 +1,38 @@
-.colors-container{
-    display: flex;
+.colors-container {
+
     width: 100%;
-    flex-wrap: wrap;
+
     margin-top: 21px;
-}
-.inactive {
-    opacity: 0.5; /* Делает элемент полупрозрачным */
-    pointer-events: none; /* Отключает клики на неактивных элементах */
-    cursor: not-allowed; /* Курсор в виде запрета */
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 10px;
+
 }
 
-.isDisplaySizes{
+.inactive {
+    opacity: 0.5;
+    /* Делает элемент полупрозрачным */
+    pointer-events: none;
+    /* Отключает клики на неактивных элементах */
+    cursor: not-allowed;
+    /* Курсор в виде запрета */
+}
+
+.isDisplaySizes {
     display: none;
 }
 
-.color-list{
+.color-list {
     margin-top: 30px;
 }
 
-.size-list{
+.size-list {
     margin-top: 42px;
 }
 
-.size-list .size-button{
+.size-list .size-button {
     margin-top: 21px;
     width: 64px;
     height: 64px;

@@ -1,9 +1,9 @@
 import './CartButton.css'
 
-export const CartButton = ({ text, handleClick }) => {
+export const CartButton = ({ text, handleClick, type="button" }) => {
     return (
-        <div onClick={handleClick}>
+        <button className='cart-button' type={type} onClick={handleClick}>
             {text}
-        </div>
+        </button>
     )
 }

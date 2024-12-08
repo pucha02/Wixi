@@ -1,6 +1,10 @@
+import './ClientRegistrationForm.css'
+
+
 export const RegistrationFormPhoneInputAtom = ({handleChange, userData}) => {
     return (
         <input
+        className='login-input'
             type="text"
             name="number_phone"
             placeholder="Номер телефона"

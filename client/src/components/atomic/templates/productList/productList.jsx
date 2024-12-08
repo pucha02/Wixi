@@ -97,10 +97,10 @@ const ProductList = () => {
                 isLiked={isLiked}
                 toggleHeart={() => handleAddToWishList(item._id, setLikedItems)} // Передаем ID товара
               />
-              <ProductButtonAddToCart
-                handleAddToCart={() => handleAddToCart(item, activeColor, dispatch, addItemToCart, addItem, token)}
-                className={""}
-              />
+              <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
+                <ProductButtonAddToCart
+                />
+              </Link>
             </div>
             <div className="cost-addBtn">
               <ProductCost cost={item.cost} discount={item.discount.percentage} />

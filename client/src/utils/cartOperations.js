@@ -12,6 +12,40 @@ export const removeFromCart = async (userId, productId) => {
     return response.json();
 };
 
+export const handleRemoveItem = (
+  productId,
+  product,
+  dispatch,
+  removeItemCart,
+  localProducts,
+  updateLocalProducts, // Функция для обновления локального состояния
+  removeItem
+) => {
+  const isAuthorized = !!localStorage.getItem("token");
+
+  if (isAuthorized) {
+    const userId = localStorage.getItem("userid");
+
+    dispatch(removeItemCart({ userId, productId, item: product })).then(() => {
+      dispatch(fetchCart());
+    });
+  } else {
+    const { _id, color, size } = product;
+
+    // Удаляем элемент из локальных продуктов
+    const updatedProducts = localProducts.filter(
+      (item) =>
+        item._id !== _id ||
+        item.color.color_name !== color.color_name ||
+        item.size !== size
+    );
+
+    updateLocalProducts(updatedProducts); // Обновляем состояние локальной корзины
+    dispatch(removeItem({ _id, color, size })); // Обновляем Redux для соответствия
+  }
+};
+
+
 export const handleAddToCart = (product, activeColor, activeSize, dispatch, addItemToCart, addItem, token) => {
     
     const hasDiscount = product.discount?.percentage > 0;
@@ -30,15 +64,53 @@ export const handleAddToCart = (product, activeColor, activeSize, dispatch, addI
       ...(hasDiscount && { discount: product.discount.percentage }),
       img: activeColor.img[0].img_link
     };
-    console.log(item)
+    
     if (token) {
       const userId = localStorage.getItem('userid');
+      
       dispatch(addItemToCart({ item, userId })).then(() => {
         dispatch(fetchCart());
       });
     } else {
       dispatch(addItem(item))
-      console.log(item);
+
     }
   };
   
+
+ export const handleQuantityChange = (
+    newCount,
+    product,
+    isAuthorized,
+    localProducts,
+    setLocalProducts,
+    dispatch,
+    updateCartItemQuantity
+) => {
+    const { _id, color, size } = product;
+    console.log(color)
+    if (isAuthorized) {
+        const userId = localStorage.getItem("userid");
+        dispatch(
+            updateCartItemQuantity({
+                productId: _id,
+                color: color,
+                size,
+                quantity: newCount,
+                userId
+            })
+        ).then(() => {
+            dispatch(fetchCart()); // Перезагружаем корзину после обновления
+        });
+    } else {
+        // Обновляем в localStorage для неавторизованных пользователей
+        const updatedProducts = localProducts.map((item) =>
+            item._id === _id &&
+                item.color.color_name === color.color_name &&
+                item.size === size
+                ? { ...item, quantity: newCount }
+                : item
+        );
+        setLocalProducts(updatedProducts);
+    }
+};

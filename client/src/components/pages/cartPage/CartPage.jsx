@@ -1,95 +1,97 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCart, removeItemCart } from "../../../redux/reducers/cartReducer";
-import { Modal } from "../../../common/Modal"; // Подключаем компонент модального окна
-import { ProductImage } from "../../atomic/atoms/atomsProduct/Image/Image";
-import { ProductQuantitySelector } from "../../atomic/molecules/QuantitySelector/QuantitySelector";
-import BucketImg from '../../../assets/svg/bucket.svg'
-import './Cart.css'
+import { fetchCart } from "../../../redux/reducers/cartReducer";
+import { Modal } from "../../../common/Modal";
+import { PromocodeForm } from "../../atomic/molecules/PromocodeForm/PromocodeForm";
+import { TotalCost } from "../../atomic/atoms/Cart/TotalCost/TotalCost";
+import { CartButton } from "../../atomic/atoms/Cart/Button/CartButton";
+import { CartItems } from "../../atomic/organisms/CartItems/CartItems";
+import './Cart.css';
 
 export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
   const { items: products, loading, error } = useSelector((state) => state.cart);
-  const [count, setCount] = useState(0)
   const [localProducts, setLocalProducts] = useState([]);
+  const [totalCost, setTotalCost] = useState(
+    JSON.parse(localStorage.getItem("totalCost")) || 0
+  );
+    const dispatch = useDispatch();
 
-
-  const dispatch = useDispatch();
+  const isAuthorized = !!localStorage.getItem("token");
+  const cartItems = isAuthorized ? products || [] : localProducts || [];
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      dispatch(fetchCart()).then(() => {
-        // Убедитесь, что данные обновляются после завершения асинхронного запроса
-        const updatedProducts = JSON.parse(localStorage.getItem("cart")) || [];
-        setLocalProducts(updatedProducts);
-      });
+      dispatch(fetchCart());
     } else {
-      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-      setLocalProducts(localCart);
+      try {
+        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+        setLocalProducts(localCart);
+      } catch (error) {
+        console.error("Ошибка при чтении данных из localStorage:", error);
+      }
     }
   }, [dispatch]);
 
-
-  const isAuthorized = !!localStorage.getItem("token");
-
-  const handleRemoveItem = (productId, product) => {
-    if (isAuthorized) {
-      const userId = localStorage.getItem("userid");
-
-      dispatch(removeItemCart({ userId, productId, item: product })).then(() => {
-        dispatch(fetchCart());
-      });
-    } else {
-      const updatedCart = localProducts.filter(item => item._id !== productId);
-      setLocalProducts(updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+  useEffect(() => {
+    if (!isAuthorized && localProducts.length > 0) {
+      try {
+        const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+        if (JSON.stringify(currentCart) !== JSON.stringify(localProducts)) {
+          localStorage.setItem("cart", JSON.stringify(localProducts));
+        }
+      } catch (error) {
+        console.error("Ошибка при сохранении данных в localStorage:", error);
+      }
     }
-  };
+  }, [localProducts]);
 
-  const cartItems = isAuthorized ? products : localProducts;
-  console.log(cartItems)
+  useEffect(() => {
+    const newTotal = cartItems.reduce((total, product) => {
+      return total + product.cost * product.quantity;
+    }, 0);
+  
+    setTotalCost(newTotal); // Обновляем состояние
+    localStorage.setItem("totalCost", JSON.stringify(newTotal)); // Сохраняем в localStorage
+  }, [cartItems]);
+  
+  
+  const updateTotalCost = (updatedCart) => {
+    const newTotal = updatedCart.reduce((total, product) => {
+      return total + product.cost * product.quantity;
+    }, 0);
+  
+    setTotalCost(newTotal); // Обновляем состояние
+    localStorage.setItem("totalCost", JSON.stringify(newTotal)); // Сохраняем в localStorage
+  };
+  
+  
+
   return (
     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-      {loading && isAuthorized ? (
-        <div>Завантаження кошика...</div>
-      ) : error && isAuthorized ? (
-        <div>Сталася помилка: {error}</div>
-      ) : cartItems.length === 0 ? (
-        <div>Ваш кошик порожній.</div>
-      ) : (
+      <div>
+        <h1 className="cart-title">Ваш кошик</h1>
+        <div className="cart-header">
+          <div>КІЛЬКІСТЬ</div>
+          <div>ВАРТІСТЬ</div>
+        </div>
+        <CartItems
+          updateTotalCost={updateTotalCost} // Передаем callback для обновления общей стоимости
+        />
+        <div className="promocode-form-block">
+          <PromocodeForm />
+        </div>
         <div>
-          <h1 className="cart-title">Ваш кошик</h1>
-          <div className="cart-header">
-            <div>КІЛЬКІСТЬ</div>
-            <div>ВАРТІСТЬ</div>
-          </div>
-          <ul className="cart-list">
-            {cartItems.map((product) => (
-              <li className="cart-item" key={product._id || product.id}>
-                <ProductImage src={product.img} />
-                <div className="cart-product-description">
-                  {product.title}
-                  <div className="cart-product-description-size-color">
-                    РОЗМІР: {product.size}, КОЛІР: {product.color}
-                  </div>
-                </div>
-                <div className="cart-item-quantity-cost">
-                  <ProductQuantitySelector count={product.quantity} setCount={setCount} />
-                </div>
-                <div className="cart-item-cost">{product.cost}$</div>
-               
-                <img onClick={() => handleRemoveItem(product._id, product)} src={BucketImg} alt="" />
-              </li>
-            ))}
-          </ul>
+          <TotalCost totalPrice={totalCost} />
+        </div>
+        <div className="cart-bottom-buttons">
+          <CartButton text={"ПРОДОВЖИТИ ПОКУПКИ"} />
           <Link to="/register-order">
-            <button>Перейти до оформлення</button>
+            <CartButton text={"ПЕРЕЙТИ ДО ОФОРМЛЕННЯ"} />
           </Link>
         </div>
-
-      )}
+      </div>
     </Modal>
-
   );
 };

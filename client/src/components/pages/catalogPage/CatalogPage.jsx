@@ -25,9 +25,19 @@ export const CatalogPage = () => {
             </div>
             <div className="catalog-page-container">
                 <div className="recently-viewed-container">
-                    <h2>Recently Viewed</h2>
-                    <CarouselListByTypes type={null} getdata={JSON.parse(localStorage.getItem("recentlyViewed"))} countSlide={4} />
+                    {JSON.parse(localStorage.getItem("recentlyViewed"))?.length > 0 && (
+                        <>
+                            <h2>ПЕРЕГЛЯНУТІ 
+                            ТОВАРИ:</h2>
+                            <CarouselListByTypes
+                                type={null}
+                                getdata={JSON.parse(localStorage.getItem("recentlyViewed"))}
+                                countSlide={4}
+                            />
+                        </>
+                    )}
                 </div>
+
             </div>
             <Footer />
         </>

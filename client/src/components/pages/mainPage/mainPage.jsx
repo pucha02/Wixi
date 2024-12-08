@@ -14,6 +14,7 @@ import Banner4 from '../../../assets/svg/banner4.svg'
 export const MainPage = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        
     }, []);
     const images = [
         Banner1,
