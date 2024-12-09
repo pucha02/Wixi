@@ -1,6 +1,9 @@
-export const RegistrationFormEmailInputAtom = ({handleChange, userData}) => {
+import './ClientRegistrationForm.css'
+
+export const RegistrationFormEmailInputAtom = ({ handleChange, userData }) => {
     return (
         <input
+            className='login-input'
             type="email"
             name="email"
             placeholder="Email"

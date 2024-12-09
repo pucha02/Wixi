@@ -1,0 +1,63 @@
+.notification {
+    position: absolute;
+    width: 150px;
+    text-align: center;
+    left: 50%;  /* Центрируем уведомление */
+    transform: translateX(-50%);  /* Центрируем относительно родителя */
+    background-color: black;
+    color: white;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Псевдоэлемент для треугольника */
+.notification::after {
+    content: '';
+    position: absolute;
+    top: -10px;  /* Положение треугольника выше блока уведомления */
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid black;  /* Цвет треугольника, совпадает с фоном уведомления */
+}
+
+
+.right-header-el {
+    position: relative;
+}
+
+.right-header-el-count {
+    position: absolute;
+    background-color: #8F8D8D;
+    border-radius: 30px;
+    width: 13px;
+    height: 13px;
+    font-size: 9px;
+    top: -6px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .right-header-el label{
+        display: none;
+    }
+    .notification{
+        left: -400%;
+        font-size: 12px;
+    }
+    .notification::after {
+        content: '';
+        position: absolute;
+        top: -10px;  /* Положение треугольника выше блока уведомления */
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 0;  /* Цвет треугольника, совпадает с фоном уведомления */
+    }
+}

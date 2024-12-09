@@ -1,17 +1,22 @@
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import { Header } from "../../atomic/templates/Header/Header";
-import { ProductPageItem } from "../../atomic/organisms/productPageItem/productPageItem";
+import { ProductItem } from "../../atomic/organisms/productItem/ProductItem";
+import { Footer } from "../../atomic/templates/Footer/Footer";
+import { useState } from "react";
 
 export const ProductPage = () => {
+    const [notification, setNotification] = useState("");
 
-    const location = useLocation();
-
-    const { localProductCost, localProductId, localProductName, localProductColors, localProductDiscount, localProductType } = location.state || {};
-    return(
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+    
+    return (
         <div>
-            <Header/>
-            <ProductPageItem/>
-            
+            <Header notification={notification} setNotification={setNotification}/>
+            <ProductItem notification={notification} setNotification={setNotification}/>
+            <Footer />
+
         </div>
     )
 }

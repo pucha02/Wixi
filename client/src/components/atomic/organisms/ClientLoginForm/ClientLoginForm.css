@@ -1,0 +1,31 @@
+.login-form-head{
+    font-size: 27px;
+    margin-bottom: 60px;
+}
+
+.login-form-modal .modal-overlay .modal-content{
+    padding: 60px;
+}
+
+.login-form-btns:first-child{
+    background-color: black;
+    color: white;
+}
+
+.login-form-info{
+    margin-top: 60px;
+}
+
+@media (max-width:768px) {
+    .login-form-modal .modal-overlay .modal-content{
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .login-form-head{
+        font-size: 18px;
+        width: 100%;
+    }
+}

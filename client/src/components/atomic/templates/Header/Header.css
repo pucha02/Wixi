@@ -1,35 +1,35 @@
-.header{
+.header {
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
 }
 
-.header-top{
+.header-top {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 40px;
+    height: 30px;
     background-color: black;
     color: white;
 }
 
-.header-bottom-block{
+.header-bottom-block {
     width: 100%;
     background-color: white;
 }
 
-.header-bottom{
-    width: 95%;
+.header-bottom {
+    width: 85%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 100px;
+    height: 90px;
     background-color: white;
 }
 
-.right-elements-block{
+.right-elements-block {
     display: flex;
     justify-content: space-between;
     width: 500px;
@@ -38,11 +38,34 @@
 .left-elements-block {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 500px;
 }
 
-.search-block{
+.search-block {
     display: flex;
     justify-content: space-between;
     width: 60%;
+}
+
+@media (max-width: 768px) {
+    .header-bottom {
+        width: 95%;
+        height: 50px;
+    }
+
+    .header-top p{
+        font-size: 10px;
+    }
+
+    .left-elements-block {
+        width: 30%;
+    }
+
+    .right-elements-block {
+        width: 30%;
+    }
+    /* .header{
+        position: unset;
+    } */
 }

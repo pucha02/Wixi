@@ -1,8 +1,12 @@
 .heart-container{
     display: flex;
+    height: max-content;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
 }
 
 .heart-container img {
@@ -13,5 +17,16 @@
   .heart-container img.liked {
     filter: invert(38%) sepia(80%) saturate(2183%) hue-rotate(330deg) brightness(95%) contrast(106%);
     fill: red;
+  }
+
+  @media (max-width:768px) {
+    .heart-container{
+      top: 6px;
+      right: 6px;
+    }
+    .heart-container img{
+      width: 15px;
+      height: 15px;
+    }
   }
   

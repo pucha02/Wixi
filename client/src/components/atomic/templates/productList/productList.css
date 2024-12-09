@@ -11,11 +11,13 @@ a{
 
 .product-list{
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
+    justify-content: start; /* Или space-between */
     padding: 0;
     margin: 0;
 }
+
+
 
 .catalog-container{
     width: 95%;
@@ -31,4 +33,39 @@ a{
 .category-title{
     display: flex;
     justify-content: space-between;
+}
+
+.recently-viewed-container{
+    margin: 0 auto;
+}
+
+.recently-viewed-container .main-container{
+    width: auto;
+}
+
+.product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start; /* Или space-between */
+    gap: 10px; /* Одинаковое расстояние между элементами */
+  }
+  
+
+.product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container .color-circle{
+    width: 33px;
+    height: 33px;
+    margin: 0;
+}
+
+@media (max-width:768px) {
+    .catalog-container{
+        width: 88%;
+    }
+    .product-list{
+        justify-content: space-between;
+    }
+    .product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container .color-circle{
+        width: 15px;
+        height: 15px;
+    }
 }

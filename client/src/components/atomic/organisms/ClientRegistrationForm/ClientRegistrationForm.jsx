@@ -7,8 +7,11 @@ import { EmailRegistrationMolecule } from "../../molecules/ClientRegistrationFor
 import { RegistrationFormSubmitButtonAtom } from "../../atoms/ClientRegistrationForm/SubmitButton";
 import { validateFields } from "../../../../utils/ValidateForm";
 import { handleChangeInput } from "../../../../utils/handleChangeInput";
+import { Modal } from "../../../../common/Modal";
 
-const ClientRegistrationForm = () => {
+import './ClientRegistrationForm.css'
+
+const ClientRegistrationForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, setIsModalOpenReg }) => {
     const [userData, setUserData] = useState({
         number_phone: '',
         firstname: '',
@@ -53,14 +56,23 @@ const ClientRegistrationForm = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmitRegistrationUser}>
-                <EmailRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
-                <PhoneRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
-                <FirstNameRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
-                <LastNameRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
-                <PasswordRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
-                <RegistrationFormSubmitButtonAtom />
-            </form>
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <div className="login-form-head">ВХІД ДО ОСОБИСТОГО КАБІНЕТУ</div>
+                <form onSubmit={handleSubmitRegistrationUser}>
+                    {/* <EmailRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} /> */}
+                    <PhoneRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
+                    <FirstNameRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
+                    {/* <LastNameRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} /> */}
+                    <PasswordRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
+                    <div className="login-form-btns">
+                        <RegistrationFormSubmitButtonAtom text={"ЗАРЕЄСТРУВАТИСЯ"} />
+                        <RegistrationFormSubmitButtonAtom type="button" text={"ВЖЕ МАЮ ОСОБИСТИЙ КАБІНЕТ"} setIsModalOpenLogin={setIsModalOpenLogin} setIsModalOpenReg={setIsModalOpenReg}/>
+                    </div>
+                </form>
+                <div className="login-form-info">
+                    Здійснюючи реєстрацію або вхід з використанням cвого профілю в соціальній мережі, я тим самим даю згоду на зв'язування мого аккаунта відповідно до положень Політики конфіденційності
+                </div>
+            </Modal >
         </>
     )
 }

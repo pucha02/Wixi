@@ -1,5 +1,42 @@
-.product-image img{
-    width: 435px;
-    height: 500px;
+.product-image img {
+    width: 360px;
+    height: 425px;
     object-fit: cover;
+}
+
+.product-image.main-page img {
+    width: 420px;
+    height: 470px;
+    object-fit: cover;
+}
+.product-image.main-page{
+    width: max-content;
+}
+
+@media (max-width: 1310px) {
+    .product-image.main-page img {
+        width: 320px;
+        height: 370px;
+        object-fit: cover;
+    }
+
+    .product-image.main-page {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-image.main-page img {
+        width: 150px;
+        height: 175px;
+    }
+    .product-item{
+        width: 150px;
+    }
+
+    .product-image img{
+        width: 150px;
+        height: 175px;
+    }
 }

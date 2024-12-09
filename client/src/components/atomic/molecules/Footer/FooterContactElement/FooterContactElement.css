@@ -1,0 +1,24 @@
+.footer-contact-element-top{
+    display: flex;
+}
+
+.footer-contact-element-top .footer-element-head-text{
+    margin-left: 18px;
+}
+
+.footer-contact-element-block{
+    margin-top: 30px;
+}
+
+.footer-contact-element-bottom{
+    margin-top: 15px;
+    color: white;
+    font-size: 24px;
+    font-family: 'Helvetica Neue Cyr Ultra Light';
+}
+
+@media (max-width: 768px) {
+    .footer-contact-element-top .footer-element-head-text{
+        font-size: 15px;
+    }
+}

@@ -37,7 +37,7 @@ export default function Carousel({ activeColor }) {
       </Swiper>
 
       <Swiper
-        onSwiper={(swiper) => (thumbsSwiperRef.current = swiper)} // Инициализируем thumbsSwiper через useRef
+        onSwiper={(swiper) => (thumbsSwiperRef.current = swiper)}
         loop={true}
         spaceBetween={10}
         slidesPerView={4}

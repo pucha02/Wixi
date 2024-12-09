@@ -1,13 +1,14 @@
-import { ProductCost } from "../../atoms/atomsProduct/Cost";
-import { ProductDescription } from "../../atoms/atomsProduct/Description";
-import { ProductName } from "../../atoms/atomsProduct/Name";
-import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button";
+import { ProductCost } from "../../atoms/atomsProduct/Cost/Cost";
+import { ProductName } from "../../atoms/atomsProduct/Name/Name";
+import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button/ButtonImage";
 import { ProductType } from "../../atoms/atomsProduct/Type";
 import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
-import { ProductArticle } from "../../atoms/atomsProduct/Article/Article";
+import { ProductDiscount } from "../../atoms/atomsProduct/Discount/Discount";
 import { ColorList } from "../../molecules/ColorList/ColorList";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
-
+import { CarouselListByTypes } from "../CarouselListByTypes/CarouselListByTypes";
+import { handleAddToCart } from "../../../../utils/cartOperations";
+import { handleAddToWishList } from "../../../../utils/wishListOperations";
 import { addItem } from "../../../../redux/reducers/cartReducer";
 import { addItemToCart } from "../../../../redux/reducers/cartReducer";
 
@@ -27,18 +28,31 @@ import {
 
 const ProductList = () => {
   const [data, setData] = useState([]);
+
+  const [recentlyViewed, setRecentlyViewed] = useState([]);
+  const [likedItems, setLikedItems] = useState({});
+  const [activeSize, setActiveSize] = useState(0);
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLiked, setLiked] = useState();
   const [filteredData, setFilteredData] = useState(null);
 
   const childRefs = useRef([]);
 
+
   let { id } = useParams();
   const { getAllProductByCategory } = useGetDataProduct();
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const token = localStorage.getItem("token");
+  const product = useSelector((state) => state.cart.items);
+
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    loadRecentlyViewed();
+  }, []);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,26 +68,18 @@ const ProductList = () => {
       }
     };
 
+    window.scrollTo(0, 0);
+    fetchData();
+  }, [id]);
+
+  const loadRecentlyViewed = () => {
+    const data = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
+    setRecentlyViewed(data);
+
+
     fetchData();
   }, []);
 
-  const handleAddToCart = (product, activeColor) => {
-    const item = {
-      title: product.title,
-      _id: product._id,
-      cost: product.cost,
-      color: activeColor?.name,
-      quantity: 1,
-    };
-    console.log(token);
-    if (token) {
-      const userId = localStorage.getItem("userid");
-      dispatch(addItemToCart({ item, userId }));
-    } else {
-      dispatch(addItem(item));
-      console.log(item);
-    }
-  };
 
   const handleAddToWishlist = (product, index) => {
     const item = { title: product.title, _id: product._id, cost: product.cost };
@@ -98,68 +104,84 @@ const ProductList = () => {
     );
   };
 
+  const addToRecentlyViewed = (product) => {
+    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
+    if (!recentlyViewed.some((item) => item._id === product._id)) {
+      recentlyViewed.push(product);
+      localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed));
+    }
+  };
+
+
   const renderItems = (arr) => {
     const items = arr.map((item, i) => {
       const activeColor = item.color?.[item.activeIndex] || item.color?.[0];
       const activeImage =
         activeColor?.img?.[0]?.img_link || "/placeholder-image.png";
 
+
       return (
         <li className="product-item-li" key={i}>
-          <div className="product-item">
-            <Link to={`${location.pathname}/${item.title}`}>
-              <ProductImage src={activeImage} className={""} />
-            </Link>
-            <div className="name-heart">
-              <ProductName name={item.title} className={""} />
-              <ProductHeart
+    <div className="product-item">
+        <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
+            <ProductImage src={activeImage} className={""} />
+        </Link>
+        <div className="name-heart">
+            <ProductName name={item.title} className={""} />
+            <ProductHeart
                 src={HeartIcon}
                 toggleHeart={() => handleAddToWishlist(item, i)}
                 id={item._id}
                 ref={(el) => (childRefs.current[i] = el)}
-              />
-            </div>
-            <ProductDescription description={item.description} className={""} />
-            <ProductType productType={item.type} className={""} />
-            <div className="cost-article">
-              {activeColor?.sizes?.reduce(
-                (total, size) => total + size.availableQuantity,
-                0
-              ) > 0 ? (
-                <div className="availability-text">В наличии</div>
-              ) : (
-                <div className="availability-text">Нет в наличии</div>
-              )}
-              <ProductArticle article={item.article || "—"} className={""} />
-            </div>
-            <div className="cost-addBtn">
-              <ProductCost
+            />
+            <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
+                <ProductButtonAddToCart
+                />
+            </Link>
+        </div>
+        <div className="cost-addBtn">
+            <ProductCost cost={item.cost} discount={item.discount.percentage} />
+            {item.discount.percentage > 0 ? <ProductDiscount discount={item.discount.percentage} /> : null}
+
+        </div>
+        {/* <div className="cost-article">
+    {activeColor?.sizes?.reduce(
+      (total, size) => total + size.availableQuantity,
+      0
+    ) > 0 ? (
+      <div className="availability-text">В наличии</div>
+    ) : (
+      <div className="availability-text">Нет в наличии</div>
+    )}
+  </div> */}
+        <div className="cost-addBtn">
+            <ProductCost
                 cost={item.cost}
                 discount={item.discount}
                 className={""}
-              />
-              <ProductButtonAddToCart
-                handleAddToCart={() => handleAddToCart(item, activeColor)}
-                className={""}
-              />
-            </div>
-            <ColorList
-              colors={item.color}
-              setActiveIndex={(index) => handleSetActiveIndex(item._id, index)}
-              activeIndex={item.activeIndex}
-              className={""}
             />
-          </div>
-        </li>
+        </div>
+        <ColorList
+            colors={item.color}
+            setActiveIndex={(index) => handleSetActiveIndex(item._id, index)}
+            activeIndex={item.activeIndex}
+            setActiveSize={setActiveSize}
+            activeSize={activeSize}
+            classname={"isDisplaySizes"}
+        />
+    </div>
+</li>
       );
     });
     return <ul className="product-list">{items}</ul>;
   };
 
   const elements = useMemo(() => {
+
     const finallyData = filteredData ? filteredData : data
     return renderItems(finallyData);
   }, [data, activeIndex, isLiked, filteredData]);
+
 
   return (
     <div className="catalog-container">
@@ -167,8 +189,11 @@ const ProductList = () => {
         {id}
         <FilterIcon src={FilterImg} />
       </div>
+
       <Filter data={data} filteredData={setFilteredData}/>
+
       {elements}
+
     </div>
   );
 };

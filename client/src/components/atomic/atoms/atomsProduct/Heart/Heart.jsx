@@ -1,6 +1,7 @@
 import React from "react";
 import "./Heart.css";
 
+
 export const ProductHeart = React.forwardRef(({ src, toggleHeart, id }, ref) => {
   const storedArray = JSON.parse(localStorage.getItem("wishlist")) || []; // Защита от null
 

@@ -1,0 +1,23 @@
+.contact-info-inputs-profile{
+    margin-top: 0px;
+}
+
+.contact-info-contacts, .contact-info-full-name{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.contact-info-contacts{
+    margin-top: 21px;
+}
+
+.contact-info-head{
+    font-size: 24px;
+}
+
+@media (max-width:1480px) {
+    .contact-info-full-name, .contact-info-contacts{
+        justify-content: space-between;
+    }
+}

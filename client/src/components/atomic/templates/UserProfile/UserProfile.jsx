@@ -1,68 +1,98 @@
 import React, { useState, useEffect } from 'react';
-import { UserProfileInfoLabelAtom } from '../../atoms/UserProfile/UserProfileInfoLabel';
-import { UserProfileLogoutButton } from '../../atoms/UserProfile/UserProfileLogoutButton';
+import { ContactInfo } from '../../molecules/UserProfileInfoForm/ContactInfo/ContactInfo';
+import { DeliveryInfo } from '../../molecules/UserProfileInfoForm/DeliveryInfo/DeliveryInfo';
+import { validateFields } from '../../../../utils/ValidateForm';
+import { OrdersList } from '../OrderList/OrderList';
+import { fetchDataUser, handleLogout, handleSave } from '../../../../utils/userDataOperations';
+import { useNavigate } from "react-router-dom";
+import { CartButton } from '../../atoms/Cart/Button/CartButton';
+import { handleChangeInput } from '../../../../utils/handleChangeInput';
+import UserProfileMenu from '../../molecules/UserProfileMenu/UserProfileMenu';
+import UserProfImg from '../../../../assets/svg/user_profile.svg'
+import UserProfDeliveryImg from '../../../../assets/svg/user_profile_delivery.svg'
+import UserProfOrderImg from '../../../../assets/svg/user_profile_order.svg'
+import UserProfPromocodeImg from '../../../../assets/svg/user_profile_promocode.svg'
+import UserProfLogoutImg from '../../../../assets/svg/user_profile_logout.svg'
+import './UserProfile.css'
 
 function UserProfile() {
     const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true); 
+    const [activeTab, setActiveTab] = useState("personalData");
+    const [validationErrors, setValidationErrors] = useState({});
+    
+    const [orderDetails, setOrderDetails] = useState({
+        number_section_NP: "",
+        firstname: "",
+        lastname: "",
+        coment: "",
+        city: "",
+    });
 
+    const navigate = useNavigate();
     useEffect(() => {
-        fetchDataUser();
+        fetchDataUser(setUser, setOrderDetails, setIsLoading);
+        window.scrollTo(0, 0);
     }, []);
 
-    const fetchDataUser = async () => {
-        const token = localStorage.getItem('token');
-    
-        try {
-            const response = await fetch('http://localhost:5000/api/auth/get-information-for-user-account', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-    
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-    
-            const data = await response.json();
-            setUser(data);
-        } catch (error) {
-            console.error('Помилка при отриманні даних користувача:', error);
+    const tabs = [
+        { id: "personalData", label: "ОСОБИСТІ ДАНІ", src: UserProfImg },
+        { id: "deliveryAddress", label: "АДРЕСА ДОСТАВКИ", src: UserProfDeliveryImg },
+        { id: "orderHistory", label: "ІСТОРІЯ ЗАМОВЛЕНЬ", src: UserProfOrderImg },
+        { id: "promocodes", label: "МОЇ ПРОМОКОДИ", src: UserProfPromocodeImg },
+        { id: "logout", label: "ВИЙТИ", src: UserProfLogoutImg, onClick: () => handleLogout(setUser, navigate) }
+    ];
+
+    const renderTabContent = () => {
+        switch (activeTab) {
+            case "personalData":
+                return (
+                    <form onSubmit={(e) => handleSave(e, setUser, orderDetails)}>
+                        <ContactInfo
+                            userData={orderDetails}
+                            validationErrors={validationErrors}
+                            handleChange={(e) =>
+                                handleChangeInput(e, setOrderDetails, orderDetails)
+                            }
+                        />
+                        <CartButton type="submit" text={"ЗБЕРЕГТИ"} />
+                    </form>
+                );
+            case "deliveryAddress":
+                return (
+                    <div className="user-profile-delivery-form">
+                        <DeliveryInfo
+                            userData={orderDetails}
+                            validationErrors={validationErrors}
+                            handleChange={(e) =>
+                                handleChangeInput(e, setOrderDetails, orderDetails)
+                            }
+                        />
+
+                    </div>
+                );
+
+            case "orderHistory":
+                return <div><OrdersList/></div>;
+            case "promocodes":
+                return <div>Мої промокоди</div>;
+            case "logout":
+                return <div>Вихід</div>;
+            default:
+                return null;
         }
     };
 
-    const handleLogout = async () => {
-        try {
-            const response = await fetch('http://localhost:5000/api/auth/logout-user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-            });
-    
-            if (response.ok) {
-                setUser(null);
-                localStorage.removeItem('token');
-            } else {
-                console.error('Logout failed:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error logging out:', error);
-        }
-    };
-    
-
-    if (!user) return <p>Не авторизован</p>;
+    if (isLoading) return <p>Завантаження...</p>; // Отображение загрузки
 
     return (
-        <div>
-            <h2>Ваш акаунт</h2>
-            <UserProfileInfoLabelAtom user={user.number_phone}/>
-            <UserProfileInfoLabelAtom user={user.firstname}/>
-            <UserProfileInfoLabelAtom user={user.lastname}/>
-            <UserProfileInfoLabelAtom user={user.email}/>
-            <UserProfileLogoutButton logout={handleLogout}/>
+        <div className="profile-tabs">
+            <div className="profile-tabs-container">
+                <UserProfileMenu tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+                <div className="tab-content-container">
+                    <div className="tab-content-profile">{renderTabContent()}</div>
+                </div>
+            </div>
         </div>
     );
 }

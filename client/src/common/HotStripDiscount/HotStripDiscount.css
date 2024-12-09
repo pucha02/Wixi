@@ -1,36 +1,102 @@
-.hot-strip {
-    background-color: #ffffff; /* Цвет фона полосы */
-    color: #C3C1C1; /* Цвет текста */
-    overflow: hidden;
-    width: 100%;
-    white-space: nowrap;
-    position: relative;
-  }
-  
-  .hot-strip-text {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 10px 0;
-    font-size: 24px;
-    font-weight: bold;
-    animation: scroll 20s linear infinite;
-    white-space: nowrap;
-  }
-  
+.wrap {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+.items-wrap {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+}
+.items-wrap:before,
+.items-wrap:after {
+  height: 100%;
+  top: 0;
+  width: 10%;
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+.items-wrap:before {
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+.items-wrap:after {
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+.items {
+  flex-shrink: 0;
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  min-width: 100%;
+}
+.item {
+  background: #ffffff;
+  padding: 8px;
+  flex: 0 0 auto;
+  height: 0px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 19px;
+  font-weight: bold;
+  color: #c2bbbb;
+  margin: 10px 0;
+  transition: all 0.1s ease-in-out;
+}
 
-  .hot-strip-text::after {
-    
-    white-space: nowrap;
+.marquee {
+  animation: scroll 30s linear infinite;
+}
+.reverce {
+  animation-direction: reverse;
+}
+
+.perfscan {
+  margin: 20px 0;
+  text-align: center;
+  bottom: 0;
+  background: #fff;
+  padding: 5px;
+}
+.perfscan hr {
+  border: solid #999;
+  border-width: 1px 0 0 0;
+  max-width: 50%;
+  margin: 0 auto 20px;
+}
+.perfscan a {
+  color: #000;
+  font-weight: bold;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
   }
-  
-  /* Анимация движения текста */
-  @keyframes scroll {
-    from {
-      transform: translateX(0%);
-    }
-    to {
-      transform: translateX(100%);
-    }
+  to {
+    transform: translateX(calc(-100% - 20px));
   }
-  
+}
+
+@media (max-width:768px) {
+  .item{
+    font-size: 12px;
+    padding: 0;
+  }
+}

@@ -1,0 +1,19 @@
+.promocode-form{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 21px;
+}
+
+@media (max-width:768px) {
+    .promo-head{
+        display: none;
+    }
+    .promocode-form .cart-button{
+        width: 115px;
+        font-size: 12px;
+        height: 30px;
+        padding: 6px;
+    }
+}

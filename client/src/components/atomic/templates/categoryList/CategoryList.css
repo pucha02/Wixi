@@ -1,0 +1,34 @@
+.category-list-block{
+    width: 450px;
+    height: max-content;
+    background-color: white;
+    margin-left: 100px;
+}
+
+.category-list-ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.category-list{
+    padding: 40px;
+}
+
+.category-list h3{
+    margin: 0;
+}
+
+.categories{
+    margin-top: 24px;
+}
+
+.name-category{
+    margin-top: 12px;
+}
+
+@media (max-width:768px) {
+    .category-list-block{
+        margin-left: 0;
+    }
+}

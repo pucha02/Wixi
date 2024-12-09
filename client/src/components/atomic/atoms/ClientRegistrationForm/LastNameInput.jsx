@@ -1,6 +1,10 @@
+import './ClientRegistrationForm.css'
+
+
 export const RegistrationFormLastNameInputAtom = ({handleChange, userData}) => {
     return (
         <input
+        className='login-input'
             type="lastname"
             name="lastname"
             placeholder="Прізвище"

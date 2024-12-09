@@ -1,0 +1,20 @@
+.tab-button {
+    padding: 29px 20px;
+    margin: 0 5px;
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .tab-button.active {
+    border-bottom: 2px solid;
+  }
+
+  @media (max-width:768px) {
+    .tab-button{
+      font-size: 15px;
+    }
+  }
