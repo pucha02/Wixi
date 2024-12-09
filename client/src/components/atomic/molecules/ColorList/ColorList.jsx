@@ -2,7 +2,7 @@ import { ProductColor } from "../../atoms/atomsProduct/Color/Color";
 import { ProductSize } from "../../atoms/atomsProduct/Size/ProductSize";
 import './ColorList.css';
 
-export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, activeSize, classname }) => {
+export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, activeSize, classname, notifications }) => {
   const activeColor = colors[activeIndex];
 
   return (
@@ -36,6 +36,7 @@ export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, 
       {activeColor && (
         <div className={`size-list ${classname}`}>
           <div>РОЗМІР</div>
+          {/* {notifications && <div className="notification">{notifications}</div>} */}
           {activeColor.sizes.map((size, sizeIndex) => (
               <ProductSize
                 key={sizeIndex}

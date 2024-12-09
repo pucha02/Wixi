@@ -95,37 +95,33 @@ const cartSlice = createSlice({
 
     addItem: (state, action) => {
       const { _id, color, size } = action.payload;
-
+      const isAuthorized = !!localStorage.getItem("token");
+  
       if (!_id || !color?.color_name || !size) {
-        console.error('Некорректные данные товара:', action.payload);
-        return;
+          console.error('Некорректные данные товара:', action.payload);
+          return;
       }
-
-      // Найти существующий элемент с учётом размера
+  
       const existingItem = state.items.find((item) =>
-        item._id === _id &&
-        item.color.color_name === color.color_name &&
-        item.size === size // Проверка точного совпадения размера
+          item._id === _id &&
+          item.color.color_name === color.color_name &&
+          item.size === size
       );
-
+  
       if (existingItem) {
-        existingItem.quantity += 1;
+          existingItem.quantity += 1;
       } else {
-        const newItem = {
-          ...action.payload,
-          quantity: 1
-        };
-        state.items.push(newItem);
+          state.items.push({ ...action.payload, quantity: 1 });
       }
-
-      try {
-        localStorage.setItem('cart', JSON.stringify(state.items));
-      } catch (error) {
-        console.error('Ошибка при сохранении данных в localStorage:', error);
+  
+      if (!isAuthorized) {
+          try {
+              localStorage.setItem('cart', JSON.stringify(state.items));
+          } catch (error) {
+              console.error('Ошибка при сохранении данных в localStorage:', error);
+          }
       }
-    }
-
-    ,
+  },
 
     removeItem: (state, action) => {
       const { _id, color, size } = action.payload;

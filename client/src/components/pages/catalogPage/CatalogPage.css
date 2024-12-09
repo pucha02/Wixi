@@ -15,3 +15,14 @@
     width: 90%;
     margin: 0 auto;
 }
+
+@media (max-width:768px) {
+    .product-list-block{
+        width: auto;
+        margin: 0;
+    }
+    .filter-block{
+        position: absolute;
+        z-index: 1000;
+    }
+}

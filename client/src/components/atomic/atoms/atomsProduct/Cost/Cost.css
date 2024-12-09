@@ -16,3 +16,17 @@
 .discount-price{
     font-size: 0.8em;
 }
+
+@media (max-width:768px) {
+    .price{
+        font-size: 11px;
+    }
+
+    .discount-price{
+        font-size: 9px;
+    }
+
+    .cost-block p{
+        margin-top: 5px;
+    }
+}

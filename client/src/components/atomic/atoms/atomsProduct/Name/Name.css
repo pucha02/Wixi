@@ -1,4 +1,12 @@
 .name-block p{
     margin: 0;
+    font-size: 18px;
     margin-top: 21px;
+}
+
+@media (max-width:768px) {
+    .name-block p{
+        font-size: 11px;
+        margin-top: 9px;
+    }
 }

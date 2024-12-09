@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { BurgerMenuButton } from "../../molecules/BurgerMenuButton/BurgerMenuButton"
 import { RightHeaderElement } from "../../molecules/RightHeaderElement/RightHeaderElement"
 import { SearchLoupe } from "../../atoms/Header/SearchLoupe/SearchLoupe"
@@ -20,18 +21,29 @@ import PhoneImg from '../../../../assets/svg/phone.svg'
 import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
 
-export const Header = () => {
-    const [viewCategories, setViewCategories] = useState(false)
+export const Header = ({notification, setNotification}) => {
+    const [viewCategories, setViewCategories] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenLogin, setIsModalOpenLogin] = useState(false);
     const [isModalOpenReg, setIsModalOpenReg] = useState(false);
 
+    const navigate = useNavigate();
+    const userId = localStorage.getItem('token');
 
     const handleToggleCategories = () => {
-        setViewCategories(!viewCategories)
-    }
+        setViewCategories(!viewCategories);
+    };
 
-    const products = useSelector((state => state.cart.items))
+    const handleAccountClick = () => {
+        if (userId) {
+            navigate('/profile');
+        } else {
+            setIsModalOpenLogin(true);
+        }
+    };
+
+    const products = useSelector((state) => state.cart.items);
+
     return (
         <div className="header">
             <div className="header-top">
@@ -40,35 +52,58 @@ export const Header = () => {
             <div className="header-bottom-block">
                 <div className="header-bottom">
                     <div className="left-elements-block">
-                        <BurgerMenuButton handleToggleCategories={handleToggleCategories} viewCategories={viewCategories} />
+                        <BurgerMenuButton 
+                            handleToggleCategories={handleToggleCategories} 
+                            viewCategories={viewCategories} 
+                        />
                         <div className="search-block">
-                            <SearchLoupe src={SearchLoupeImg} /><SearchBar />
+                            <SearchLoupe src={SearchLoupeImg} />
+                            <SearchBar />
                         </div>
                     </div>
                     <div className="logo-block">
                         <Link to={'/'}>
                             <Logo src={LogoImg} />
                         </Link>
-
                     </div>
                     <div className="right-elements-block">
                         <RightHeaderElement src={PhoneImg} />
-                        <RightHeaderElement src={PersonalCabinetImg} label={'Акаунт'} onClick={() => setIsModalOpenLogin(true)} />
+                        <RightHeaderElement 
+                            src={PersonalCabinetImg} 
+                            label={'Акаунт'} 
+                            onClick={handleAccountClick} // Добавлено обработчик
+                        />
                         <RightHeaderElement src={HeartImg} label={'Вішлист'} />
-                        <RightHeaderElement src={CartImg} label={'Кошик'} onClick={() => setIsModalOpen(true)} />
-
-                        <div>{products?.length || 0}</div>
+                        <RightHeaderElement 
+                            src={CartImg} 
+                            label={'Кошик'} 
+                            onClick={() => setIsModalOpen(true)} 
+                            notification={notification}
+                            setNotification={setNotification}
+                            products={products}
+                        />
+                        
                     </div>
                 </div>
                 <CartPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
                 <div className="client-login-form-block">
-                    <ClientLoginForm isModalOpen={isModalOpenLogin} setIsModalOpen={setIsModalOpenLogin} setIsModalOpenLogin={setIsModalOpenLogin} setIsModalOpenReg={setIsModalOpenReg}/>
+                    <ClientLoginForm 
+                        isModalOpen={isModalOpenLogin} 
+                        setIsModalOpen={setIsModalOpenLogin} 
+                        setIsModalOpenLogin={setIsModalOpenLogin} 
+                        setIsModalOpenReg={setIsModalOpenReg} 
+                    />
                 </div>
                 <div className="client-reg-form-block">
-                    <ClientRegistrationForm isModalOpen={isModalOpenReg} setIsModalOpen={setIsModalOpenReg} setIsModalOpenLogin={setIsModalOpenLogin} setIsModalOpenReg={setIsModalOpenReg}/>
+                    <ClientRegistrationForm 
+                        isModalOpen={isModalOpenReg} 
+                        setIsModalOpen={setIsModalOpenReg} 
+                        setIsModalOpenLogin={setIsModalOpenLogin} 
+                        setIsModalOpenReg={setIsModalOpenReg} 
+                    />
                 </div>
             </div>
             {viewCategories && <CategoryList />}
         </div>
-    )
-}
+    );
+};

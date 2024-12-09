@@ -1,4 +1,4 @@
-import './FooterElementText.jsx'
+import './FooterElementText.css'
 
 export const FooterElementText = ({text}) => {
     return(

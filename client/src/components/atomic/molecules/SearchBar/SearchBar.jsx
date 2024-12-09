@@ -39,15 +39,39 @@ const SearchBar = () => {
 
   function renderItems(arr) {
     return (
-      <ul>
-        {arr.map((item, i) => (
-          <Link key={i} to={`/category/productList/${item.category}/${item.title}`}>
-            <li>{item.title}</li>
-          </Link>
-        ))}
-      </ul>
+      <div className="search-results">
+        {arr.length ? (
+          <ul>
+            {arr.map((item, i) => {
+              // Безопасная проверка на наличие данных
+              const imgLink =
+                item?.color?.[0]?.img?.[0]?.img_link || "placeholder.png"; // Путь к изображению или заглушка
+  
+              return (
+                <Link key={i} to={`/category/productList/${item.category}/${item.title}`}>
+                  <li className="search-item">
+                    <img
+                      src={imgLink} // Используем найденную ссылку или заглушку
+                      alt={item.title || "No title"} // Защита от отсутствующего заголовка
+                    />
+                    <div className="item-info">
+                      <span className="item-title">{item.title || "Название недоступно"}</span>
+                      <span className="item-price">{item.cost ? `${item.cost}$` : "Ціна не вказана"}</span>
+                    </div>
+                  </li>
+                </Link>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="no-results">Ничего не найдено</p>
+        )}
+      </div>
     );
   }
+  
+  
+  
 
   return (
     <div className="search-bar">

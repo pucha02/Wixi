@@ -1,17 +1,46 @@
-.contact-info-inputs{
+.contact-info-inputs {
     margin-top: 30px;
 }
 
-.contact-info-contacts, .contact-info-full-name{
+.contact-info-contacts,
+.contact-info-full-name {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 }
 
-.contact-info-contacts{
+.contact-info-contacts {
     margin-top: 21px;
 }
 
-.contact-info-head{
+.contact-info-head {
     font-size: 24px;
+}
+
+@media (max-width:768px) {
+    .contact-info-inputs .contact-info-full-name .order-form-input:first-child {
+        margin-bottom: 10px;
+    }
+
+    .contact-info-inputs .contact-info-contacts .order-form-input:first-child {
+        margin-bottom: 10px;
+    }
+
+    .contact-info-inputs .contact-info-contacts .order-form-input {
+        width: 100%;
+    }
+
+    .contact-info-inputs .contact-info-full-name .order-form-input {
+        width: 100%;
+    }
+
+    .contact-info-contacts {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width:1480px) {
+    .contact-info-full-name{
+        justify-content: space-around;
+    }
 }

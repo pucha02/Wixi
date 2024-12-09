@@ -1,6 +1,5 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { DeliveryInfo } from "../../../atomic/molecules/OrderForm/DeliveryInfo/DeliveryInfo";
 import { ComentInfo } from "../../../atomic/molecules/OrderForm/CommentInfo/CommentInfo";
 import { ContactInfo } from "../../../atomic/molecules/OrderForm/ContactInfo/ContactInfo";
@@ -8,83 +7,69 @@ import { PaymentInfo } from "../../../atomic/molecules/OrderForm/PaymentInfo/Pay
 import { handleChangeInput } from "../../../../utils/handleChangeInput";
 import { CartItems } from "../../organisms/CartItems/CartItems";
 import { TotalCost } from "../../atoms/Cart/TotalCost/TotalCost";
-import { useDispatch } from "react-redux";
 import { fetchCart } from "../../../../redux/reducers/cartReducer";
 import { CartButton } from "../../atoms/Cart/Button/CartButton";
-import useGetDataUser from "../../../../services/FetchUserData";
-import "./RegisterOrder.css"
+import { fetchDataUser } from "../../../../utils/userDataOperations";
+import "./RegisterOrder.css";
 
 export const RegisterOrder = () => {
-    const { getAllUserData } = useGetDataUser();
     const products = useSelector((state) => state.cart.items);
     const dispatch = useDispatch();
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [validationErrors, setValidationErrors] = useState({});
     const [localProducts, setLocalProducts] = useState([]);
-    const [totalCost, setTotalCost] = useState(() => {
-        const initialCart = JSON.parse(localStorage.getItem("cart")) || [];
-        return initialCart.reduce((total, product) => total + product.cost * product.quantity, 0);
-      });
-      
+    const [totalCost, setTotalCost] = useState(0);
+
     const [orderDetails, setOrderDetails] = useState({
         number_section_NP: "",
         firstname: "",
         lastname: "",
         coment: "",
-        city: "",
-        products: products,
+        products: [],
         email: '',
-        totalCost: products.reduce((total, product) => total + product.cost * product.quantity, 0),
-        number_phone: ''
+        totalCost: 0,
+        number_phone: '',
+        area: '',
+        city: '',
+        warehouse: '',
+        status: "Оформлено",
+        order_number: "test123"
     });
 
+    const isAuthorized = !!localStorage.getItem("token");
+    const cartItems = isAuthorized ? products || [] : localProducts || [];
+
+    // Загрузка корзины
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            dispatch(fetchCart()).then(() => {
-                // Убедитесь, что данные обновляются после завершения асинхронного запроса
-                const updatedProducts = JSON.parse(localStorage.getItem("cart")) || [];
-                setLocalProducts(updatedProducts);
-            });
+        if (isAuthorized) {
+            dispatch(fetchCart());
         } else {
             const localCart = JSON.parse(localStorage.getItem("cart")) || [];
             setLocalProducts(localCart);
         }
-    }, [dispatch]);
+    }, [dispatch, isAuthorized]);
 
-
-
+    // Загрузка данных пользователя
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await getAllUserData();
-                console.log(result);
-                if (result) {
-                    setOrderDetails((prevDetails) => ({
-                        ...prevDetails,
-                        email: result.email || '',
-                    }));
-                }
-
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        fetchData();
+        fetchDataUser(setUser, setOrderDetails, setIsLoading);
+        window.scrollTo(0, 0);
     }, []);
 
+    // Пересчет общей стоимости корзины
     useEffect(() => {
-        const currentCart = products.length > 0 ? products : localProducts;
-        const newTotal = currentCart.reduce((total, product) => total + product.cost * product.quantity, 0);
-        setTotalCost(newTotal);
-        localStorage.setItem("totalCost", JSON.stringify(newTotal));
-    }, [products, localProducts]);
+        const currentCart = isAuthorized ? products : localProducts;
+        const newTotalCost = currentCart.reduce((total, product) => total + product.cost * product.quantity, 0);
 
-    const updateTotalCost = (updatedCart) => {
-        const newTotal = updatedCart.reduce((total, product) => total + product.cost * product.quantity, 0);
-        setTotalCost(newTotal);
-        localStorage.setItem("totalCost", JSON.stringify(newTotal));
-    };
+        setOrderDetails((prevDetails) => ({
+            ...prevDetails,
+            products: currentCart,
+            totalCost: newTotalCost,
+        }));
+
+        setTotalCost(newTotalCost);
+        localStorage.setItem("totalCost", JSON.stringify(newTotalCost));
+    }, [products, localProducts, isAuthorized]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -96,6 +81,7 @@ export const RegisterOrder = () => {
             });
             if (response.ok) {
                 alert("Замовлення успішно оформлено!");
+                console.log(orderDetails);
             } else {
                 alert("Сталася помилка при оформленні замовлення.");
             }
@@ -107,16 +93,30 @@ export const RegisterOrder = () => {
 
     return (
         <div className="register-order-block">
-            <div className="register-order-block-container">
-                <form className="register-order-form" onSubmit={handleSubmit}>
+            <form className="register-order-block-container" onSubmit={handleSubmit}>
+                <div className="register-order-form">
                     <ContactInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />
                     <DeliveryInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />
                     <PaymentInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />
                     <ComentInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />
-                </form>
+                    <div className="mobile-create-order">
+                        <div>
+                            <TotalCost totalPrice={totalCost} />
+                        </div>
+                        <div className="checkboxes-block">
+                            <div className="checkbox-block">
+                                <input type="checkbox" /> <div>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
+                            </div>
+                            <div className="checkbox-block">
+                                <input type="checkbox" /> <div>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
+                            </div>
+                        </div>
+                        <CartButton text={'Оформити замовлення'} type="submit" />
+                    </div>
+                </div>
                 <div className="register-order-products-block">
                     <div className="register-order-products-head">ВАШЕ ЗАМОВЛЕННЯ</div>
-                    <CartItems updateTotalCost={updateTotalCost} />
+                    <CartItems updateTotalCost={setTotalCost} />
                     <div>
                         <TotalCost totalPrice={totalCost} />
                     </div>
@@ -130,7 +130,7 @@ export const RegisterOrder = () => {
                     </div>
                     <CartButton text={'Оформити замовлення'} type="submit" />
                 </div>
-            </div>
+            </form>
         </div>
     );
 };

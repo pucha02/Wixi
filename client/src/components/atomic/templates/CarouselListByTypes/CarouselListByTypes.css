@@ -98,6 +98,17 @@
 
 
 .main-container .mySwiper .swiper-wrapper .swiper-slide .product-item.main-page .color-list .colors-container .color-circle{
-
   margin: 0;
+}
+
+@media (max-width: 1310px) {
+  .product-item.main-page{
+    width: 320px;
+  }
+}
+
+@media (max-width:768px) {
+  .product-item.main-page{
+    width: 150px;
+  }
 }

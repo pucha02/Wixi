@@ -93,3 +93,10 @@
     transform: translateX(calc(-100% - 20px));
   }
 }
+
+@media (max-width:768px) {
+  .item{
+    font-size: 12px;
+    padding: 0;
+  }
+}

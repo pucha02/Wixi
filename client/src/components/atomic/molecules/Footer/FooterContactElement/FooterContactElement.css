@@ -16,3 +16,9 @@
     font-size: 24px;
     font-family: 'Helvetica Neue Cyr Ultra Light';
 }
+
+@media (max-width: 768px) {
+    .footer-contact-element-top .footer-element-head-text{
+        font-size: 15px;
+    }
+}

@@ -10,6 +10,15 @@ const ImageSlider = ({ images }) => {
   const swiperRef = useRef(null);
   const mainImageRef = useRef(null);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize(); // Проверить сразу при загрузке
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     if (images && images.length > 0 && images[0]?.img_link) {
       setSelectedImage(images[0].img_link);
@@ -43,8 +52,8 @@ const ImageSlider = ({ images }) => {
       <Swiper
         modules={[Navigation]}
         onSwiper={(swiper) => (swiperRef.current = swiper)}
-        direction="vertical"
-        slidesPerView={2}
+        direction={isMobile ? "horizontal" : "vertical"} // Меняем направление
+        slidesPerView={isMobile ? 3 : 2}
         spaceBetween={10}
         className="thumbnails"
       >
@@ -53,15 +62,13 @@ const ImageSlider = ({ images }) => {
             <img
               src={img.img_link}
               alt={`Thumbnail ${index}`}
-              className={`thumbnail ${
-                selectedImage === img.img_link ? "active" : ""
-              }`}
+              className={`thumbnail ${selectedImage === img.img_link ? "active" : ""
+                }`}
               onClick={() => handleThumbnailClick(img, index)}
             />
           </SwiperSlide>
         ))}
-      </Swiper>
-
+      </Swiper>;
       {/* Основное изображение */}
       <div
         className="main-image"

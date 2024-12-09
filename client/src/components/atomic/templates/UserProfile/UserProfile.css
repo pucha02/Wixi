@@ -1,0 +1,35 @@
+.profile-tabs{
+    margin-top: 150px;
+
+}
+
+.profile-tabs-container{
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.tab-content-container{
+    width: 80%;
+    padding: 30px;
+    padding-top: 0;
+}
+
+.tab-content-profile{
+    width: 710px;
+    height: 100%;
+}
+
+.tab-content-profile form .cart-button{
+    background-color: black;
+    color: white;
+    margin-top: 60px;
+    width: 100%;
+}
+
+.user-profile-delivery-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}

@@ -19,7 +19,8 @@ export const handleRemoveItem = (
   removeItemCart,
   localProducts,
   updateLocalProducts, // Функция для обновления локального состояния
-  removeItem
+  removeItem,
+  updateTotalCost
 ) => {
   const isAuthorized = !!localStorage.getItem("token");
 
@@ -42,9 +43,9 @@ export const handleRemoveItem = (
 
     updateLocalProducts(updatedProducts); // Обновляем состояние локальной корзины
     dispatch(removeItem({ _id, color, size })); // Обновляем Redux для соответствия
+    updateTotalCost(updatedProducts); // Обновляем общую стоимость
   }
 };
-
 
 export const handleAddToCart = (product, activeColor, activeSize, dispatch, addItemToCart, addItem, token) => {
     
@@ -67,50 +68,51 @@ export const handleAddToCart = (product, activeColor, activeSize, dispatch, addI
     
     if (token) {
       const userId = localStorage.getItem('userid');
-      
       dispatch(addItemToCart({ item, userId })).then(() => {
-        dispatch(fetchCart());
+          dispatch(fetchCart());
       });
-    } else {
-      dispatch(addItem(item))
-
-    }
+  } else {
+      dispatch(addItem(item)); 
+  }
+  
   };
   
 
- export const handleQuantityChange = (
+  export const handleQuantityChange = (
     newCount,
     product,
     isAuthorized,
     localProducts,
     setLocalProducts,
     dispatch,
-    updateCartItemQuantity
-) => {
+    updateCartItemQuantity,
+    updateTotalCost 
+  ) => {
     const { _id, color, size } = product;
-    console.log(color)
+  
     if (isAuthorized) {
-        const userId = localStorage.getItem("userid");
-        dispatch(
-            updateCartItemQuantity({
-                productId: _id,
-                color: color,
-                size,
-                quantity: newCount,
-                userId
-            })
-        ).then(() => {
-            dispatch(fetchCart()); // Перезагружаем корзину после обновления
-        });
+      const userId = localStorage.getItem("userid");
+      dispatch(
+        updateCartItemQuantity({
+          productId: _id,
+          color: color,
+          size,
+          quantity: newCount,
+          userId,
+        })
+      ).then(() => {
+        dispatch(fetchCart()); // Перезагружаем корзину после обновления
+      });
     } else {
-        // Обновляем в localStorage для неавторизованных пользователей
-        const updatedProducts = localProducts.map((item) =>
-            item._id === _id &&
-                item.color.color_name === color.color_name &&
-                item.size === size
-                ? { ...item, quantity: newCount }
-                : item
-        );
-        setLocalProducts(updatedProducts);
+      const updatedProducts = localProducts.map((item) =>
+        item._id === _id &&
+        item.color.color_name === color.color_name &&
+        item.size === size
+          ? { ...item, quantity: newCount }
+          : item
+      );
+      setLocalProducts(updatedProducts); // Обновляем локальные продукты
+      updateTotalCost(updatedProducts); // Обновляем общую стоимость
     }
-};
+  };
+  

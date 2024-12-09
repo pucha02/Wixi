@@ -1,6 +1,7 @@
 import { handleRemoveItem } from "../../../../utils/cartOperations";
 import { removeItem, updateCartItemQuantity } from "../../../../redux/reducers/cartReducer";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart, removeItemCart } from "../../../../redux/reducers/cartReducer";
 import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
@@ -13,14 +14,51 @@ import BucketImg from '../../../../assets/svg/bucket.svg';
 export const CartItems = ({ updateTotalCost }) => {
   const { items: products = [], loading, error } = useSelector((state) => state.cart);
   const [localProducts, setLocalProducts] = useState([]);
+  const [prevIsAuthorized, setPrevIsAuthorized] = useState(null);
   const isAuthorized = !!localStorage.getItem("token");
-  const cartItems = isAuthorized ? products : localProducts;
+  const cartItems = useMemo(() => (isAuthorized ? products : localProducts), [isAuthorized, products, localProducts]);
   const dispatch = useDispatch();
+  const scrollPosition = useRef(0);
+  const listRef = useRef(null);
 
+  const saveScrollPosition = () => {
+    if (listRef.current) {
+      scrollPosition.current = listRef.current.scrollTop;
+    }
+  };
+
+  const restoreScrollPosition = () => {
+    if (listRef.current) {
+      listRef.current.scrollTop = scrollPosition.current;
+    }
+  };
+
+  const handleQuantityChangeWrapper = (newCount, product) => {
+    saveScrollPosition();
+    handleQuantityChange(
+      newCount,
+      product,
+      isAuthorized,
+      localProducts,
+      setLocalProducts,
+      dispatch,
+      updateCartItemQuantity,
+      updateTotalCost
+    );
+  };
+
+  useEffect(() => {
+    restoreScrollPosition();
+  });
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (token) {
+      // Сохраняем гостевую корзину при входе
+      const guestCart = localStorage.getItem("cart");
+      if (guestCart) {
+        localStorage.setItem("guestCart", guestCart);
+      }
       dispatch(fetchCart());
     } else {
       try {
@@ -31,6 +69,18 @@ export const CartItems = ({ updateTotalCost }) => {
       }
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!isAuthorized && prevIsAuthorized) {
+      // Восстанавливаем гостевую корзину при выходе
+      const guestCart = localStorage.getItem("guestCart");
+      if (guestCart) {
+        localStorage.setItem("cart", guestCart);
+        setLocalProducts(JSON.parse(guestCart));
+      }
+    }
+    setPrevIsAuthorized(isAuthorized);
+  }, [isAuthorized, prevIsAuthorized]);
 
   useEffect(() => {
     if (!isAuthorized && localProducts.length > 0) {
@@ -49,7 +99,7 @@ export const CartItems = ({ updateTotalCost }) => {
   }, [cartItems, updateTotalCost]);
 
   return (
-    <ul className="cart-list">
+    <ul className="cart-list" ref={listRef}>
       {loading && isAuthorized ? (
         <div>Завантаження кошика...</div>
       ) : error && isAuthorized ? (
@@ -64,21 +114,22 @@ export const CartItems = ({ updateTotalCost }) => {
               <div className="cart-product-description">
                 {product.title}
                 <div className="cart-product-description-size-color">
-                  РОЗМІР: {product.size}, КОЛІР: {product.color ? product.color.color_name : 'Не вказано'}
+                  РОЗМІР: {product.size}, КОЛІР: {isAuthorized ? product.color : product.color.color_name}
                 </div>
+
               </div>
               <div className="cart-item-quantity-cost">
                 <ProductQuantitySelector
                   count={product.quantity}
                   setCount={(newCount) =>
-                    handleQuantityChange(newCount, product, isAuthorized, localProducts, setLocalProducts, dispatch, updateCartItemQuantity)
+                    handleQuantityChangeWrapper(newCount, product, isAuthorized, localProducts, setLocalProducts, dispatch, updateCartItemQuantity, updateTotalCost)
                   }
                 />
               </div>
               <div className="cart-item-cost">{product.cost}$</div>
               <img
                 className="bucket-img"
-                onClick={() => handleRemoveItem(product._id, product, dispatch, removeItemCart, localProducts, (updatedProducts) => setLocalProducts(updatedProducts), removeItem)}
+                onClick={() => handleRemoveItem(product._id, product, dispatch, removeItemCart, localProducts, (updatedProducts) => setLocalProducts(updatedProducts), removeItem, updateTotalCost)}
                 src={BucketImg}
                 alt=""
               />

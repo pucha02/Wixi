@@ -10,7 +10,7 @@ import { CartItems } from "../../atomic/organisms/CartItems/CartItems";
 import './Cart.css';
 
 export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
-  const { items: products, loading, error } = useSelector((state) => state.cart);
+  const { items: products } = useSelector((state) => state.cart);
   const [localProducts, setLocalProducts] = useState([]);
   const [totalCost, setTotalCost] = useState(
     JSON.parse(localStorage.getItem("totalCost")) || 0
@@ -22,20 +22,24 @@ export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
-      dispatch(fetchCart());
+        dispatch(fetchCart());
+        localStorage.removeItem("cart"); // Удалить локальную корзину для авторизованных пользователей
     } else {
-      try {
-        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-        setLocalProducts(localCart);
-      } catch (error) {
-        console.error("Ошибка при чтении данных из localStorage:", error);
-      }
+        try {
+            const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+            setLocalProducts(localCart);
+        } catch (error) {
+            console.error("Ошибка при чтении данных из localStorage:", error);
+        }
     }
-  }, [dispatch]);
+}, [dispatch]);
+
 
   useEffect(() => {
     if (!isAuthorized && localProducts.length > 0) {
+      
       try {
         const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
         if (JSON.stringify(currentCart) !== JSON.stringify(localProducts)) {
@@ -52,11 +56,12 @@ export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
       return total + product.cost * product.quantity;
     }, 0);
   
-    setTotalCost(newTotal); // Обновляем состояние
-    localStorage.setItem("totalCost", JSON.stringify(newTotal)); // Сохраняем в localStorage
+    setTotalCost(newTotal);
+    localStorage.setItem("totalCost", JSON.stringify(newTotal));
   }, [cartItems]);
-  
-  
+
+  console.log(localStorage.getItem("cart"))
+
   const updateTotalCost = (updatedCart) => {
     const newTotal = updatedCart.reduce((total, product) => {
       return total + product.cost * product.quantity;
@@ -66,16 +71,15 @@ export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
     localStorage.setItem("totalCost", JSON.stringify(newTotal)); // Сохраняем в localStorage
   };
   
-  
 
   return (
     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-      <div>
+      <div className="cart-modal-block">
         <h1 className="cart-title">Ваш кошик</h1>
-        <div className="cart-header">
+        {/* <div className="cart-header">
           <div>КІЛЬКІСТЬ</div>
           <div>ВАРТІСТЬ</div>
-        </div>
+        </div> */}
         <CartItems
           updateTotalCost={updateTotalCost} // Передаем callback для обновления общей стоимости
         />

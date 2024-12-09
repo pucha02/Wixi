@@ -16,3 +16,14 @@
     margin-top: 45px;
     font-size: 21px;
 }
+
+@media (max-width:768px) {
+    .add-to-cart-btn img{
+        width: 10px;
+        height: 10px;
+    }
+    .add-to-cart-btn-with-txt{
+        width: 100%;
+        font-size: 14px;
+    }
+}

@@ -1,10 +1,10 @@
 import './OrderFormInput.css'
 
-export const OrderFormInput = ({ handleChange, userData, name, placeholder }) => {
+export const OrderFormInput = ({ handleChange, userData, name, placeholder, type='text' }) => {
     return (
         <input
             className='order-form-input'
-            type="text"
+            type={type}
             name={name}
             placeholder={placeholder}
             value={userData}

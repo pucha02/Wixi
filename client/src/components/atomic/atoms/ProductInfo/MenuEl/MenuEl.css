@@ -12,3 +12,9 @@
   .tab-button.active {
     border-bottom: 2px solid;
   }
+
+  @media (max-width:768px) {
+    .tab-button{
+      font-size: 15px;
+    }
+  }

@@ -35,3 +35,28 @@
     width: 342px;
     font-size: 18px;
 }
+
+@media (max-width:768px) {
+    .delivery-info-selects .css-b62m3t-container .css-13cymwt-control{
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    .delivery-info-bottom-select{
+        margin-top: 0px;
+        width: 100%;
+    }
+    .delivery-info-selects .css-b62m3t-container{
+        width: 100%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1480px) {
+    .delivery-info-selects .css-b62m3t-container .css-13cymwt-control{
+        justify-content: space-around;
+        width: 250px;
+    }
+    .delivery-info-selects .css-b62m3t-container{
+        width: 250px;
+        
+    }
+}

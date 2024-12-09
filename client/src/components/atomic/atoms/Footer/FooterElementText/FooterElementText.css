@@ -3,3 +3,9 @@
     font-family: 'Helvetica Neue Cyr Ultra Light';
     color: white;
 }
+
+@media (max-width: 768px) {
+    .footer-element-text{
+        font-size: 15px;
+    }
+}

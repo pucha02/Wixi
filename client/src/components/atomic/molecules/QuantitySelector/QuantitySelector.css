@@ -17,5 +17,8 @@
 @media (max-width: 768px) {
     .product-quantity-selector-container{
         padding: 8px;
+        width: 45%;
+        margin-left: 20px;
+        margin-top: 10px;
     }
 }

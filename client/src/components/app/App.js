@@ -1,6 +1,5 @@
 import ClientRegistrationForm from "../atomic/organisms/ClientRegistrationForm/ClientRegistrationForm";
 import ClientLoginForm from "../atomic/organisms/ClientLoginForm/ClientLoginForm";
-import UserProfile from "../atomic/templates/UserProfile/UserProfile";
 import { ProductPage } from "../pages/productPage/productPage";
 import CategoryList from "../atomic/templates/categoryList/CategoryList";
 import { CatalogPage } from "../pages/catalogPage/CatalogPage";
@@ -8,6 +7,7 @@ import { HashRouter  as Router, Route, Routes } from "react-router-dom";
 import { RegisterOrderPage } from "../pages/registerOrderPage/RegisterOrderPage";
 import { CartPage } from "../pages/cartPage/CartPage";
 import { MainPage } from "../pages/mainPage/mainPage";
+import { UserProfilePage } from "../pages/userProfilePage/userProfilePage";
 
 const App = () => {
   return (
@@ -22,7 +22,7 @@ const App = () => {
           <Route path="/category/productList/:id/:productName" element={<ProductPage />} />
           <Route path="/registration" element={<ClientRegistrationForm />} />
           <Route path="/login" element={<ClientLoginForm />} />
-          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/profile" element={<UserProfilePage />} />
         </Routes>
       </Router>
       {/* <TestButtonShowCart /> */}

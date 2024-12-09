@@ -2,3 +2,10 @@
     width: 125px;
     height: 125px;
 }
+
+@media (max-width:768px) {
+    .logo-img{
+        width: 80px;
+        height: 80px;
+    }
+}

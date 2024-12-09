@@ -12,3 +12,13 @@
     top: -10px;
     left: -10px;
 }
+
+@media (max-width:768px) {
+    .product-discount{
+        font-size: 7px;
+        width: 21px;
+        height: 21px;
+        top: -5px;
+        left: -5px;
+    }
+}

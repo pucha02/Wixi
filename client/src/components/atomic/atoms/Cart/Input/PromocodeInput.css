@@ -3,3 +3,11 @@
     padding: 11px 0 11px 9px;
     font-size: 18px;
 }
+
+@media (max-width:768px) {
+    .promocode-input{
+        width: 190px;
+        font-size: 12px;
+        height: 30px;
+    }
+}

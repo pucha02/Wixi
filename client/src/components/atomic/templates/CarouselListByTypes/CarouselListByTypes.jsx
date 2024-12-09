@@ -102,7 +102,20 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
       <Swiper
         slidesPerView={countSlide}
         spaceBetween={0}
-
+        breakpoints={{
+          320: {
+            slidesPerView: 2, // 2 slides for mobile devices
+            spaceBetween: 10, // Adjust the space between slides if necessary
+          },
+          768: {
+            slidesPerView: 2, // 3 slides for tablets and larger screens
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 3, // 4 slides for desktops
+            spaceBetween: 30,
+          },
+        }}
         navigation={true}
         modules={[Pagination, Navigation]}
         className="mySwiper"

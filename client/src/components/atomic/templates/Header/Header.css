@@ -47,3 +47,25 @@
     justify-content: space-between;
     width: 60%;
 }
+
+@media (max-width: 768px) {
+    .header-bottom {
+        width: 95%;
+        height: 50px;
+    }
+
+    .header-top p{
+        font-size: 10px;
+    }
+
+    .left-elements-block {
+        width: 30%;
+    }
+
+    .right-elements-block {
+        width: 30%;
+    }
+    /* .header{
+        position: unset;
+    } */
+}

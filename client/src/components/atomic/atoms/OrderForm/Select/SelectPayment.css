@@ -3,3 +3,9 @@
     width: 342px;
     font-size: 18px;
 }
+
+@media (max-width:768px) {
+    .select-payment{
+        width: 100%;
+    }
+}

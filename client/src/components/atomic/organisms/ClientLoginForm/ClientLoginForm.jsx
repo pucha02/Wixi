@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PhoneLoginMolecule } from "../../molecules/ClientLoginForm/PhoneMolecule";
 import { PasswordLoginMolecule } from "../../molecules/ClientLoginForm/PasswordMolecule";
 import { LoginFormSubmitButtonAtom } from "../../atoms/ClientLoginForm/SubmitButton";
@@ -15,7 +16,7 @@ const ClientLoginForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, set
     });
 
     const [validationErrors, setValidationErrors] = useState({});
-
+    const navigate = useNavigate();
     const handleSubmitLoginUser = async (e) => {
         e.preventDefault();
 
@@ -45,6 +46,7 @@ const ClientLoginForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, set
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('userid', data.id)
                 alert('Ви успішно увійшли до системи');
+                navigate('/profile');
             } else {
                 console.log('Помилка входу');
             }

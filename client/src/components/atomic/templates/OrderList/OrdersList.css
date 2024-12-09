@@ -1,0 +1,147 @@
+.orders-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .order-card {
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .order-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+  }
+  
+  .order-summary {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .order-total {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .order-info {
+    color: #666;
+    margin-top: 5px;
+  }
+  
+  .order-status {
+    margin-top: 8px;
+    font-weight: bold;
+  }
+  
+  .status-delivered {
+    color: green;
+  }
+  
+  .status-canceled {
+    color: red;
+  }
+  
+  .toggle-arrow {
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .toggle-arrow.expanded {
+    transform: rotate(180deg);
+  }
+  
+  .order-details {
+    padding: 15px;
+  }
+  
+  .order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .order-item:last-child {
+    border-bottom: none;
+  }
+  
+  .item-image img {
+    width: 120px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  .item-info {
+    flex: 1;
+    margin-left: 15px;
+  }
+  
+  .item-title {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .item-details {
+    color: #777;
+    margin-top: 5px;
+  }
+  
+  .item-quantity {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .item-cost {
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 20px;
+  }
+  
+  .order-total-cost {
+    text-align: right;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  .no-orders {
+    text-align: center;
+    color: #555;
+    font-size: 18px;
+  }
+
+  .order-header{
+    width: 100%;
+  }
+
+  .order-summary{
+    width: 95%;
+  }
+
+  .order-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .order-info img{
+    width: 120px;
+    height: 150px;
+  }

@@ -38,3 +38,12 @@
     height: 64px;
     font-size: 19px;
 }
+
+@media (max-width:768px) {
+    .color-list{
+        margin-top: 9px;
+    }
+    .colors-container{
+        margin-top: 0;
+    }
+}

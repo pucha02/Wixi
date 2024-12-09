@@ -56,3 +56,16 @@ a{
     height: 33px;
     margin: 0;
 }
+
+@media (max-width:768px) {
+    .catalog-container{
+        width: 88%;
+    }
+    .product-list{
+        justify-content: space-between;
+    }
+    .product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container .color-circle{
+        width: 15px;
+        height: 15px;
+    }
+}

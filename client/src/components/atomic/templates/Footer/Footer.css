@@ -58,3 +58,26 @@
     justify-content: space-between;
     margin-top: 70px;
 }
+
+.bottom-footer-col{
+    margin-left: 50px;
+}
+
+.bottom-footer-col:first-child{
+    margin-left: 0;
+}
+
+@media (max-width: 768px) {
+    .bottom-footer{
+        display: block;
+    }
+    .footer-container{
+        padding: 30px;
+    }
+    .footer-logo-block img{
+        margin: 0;
+    }
+    .bottom-footer-col{
+        margin-left: 0;
+    }
+}
