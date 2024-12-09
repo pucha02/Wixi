@@ -1,9 +1,17 @@
 import { useState } from "react";
 
 function Filter({ data, filteredData }) {
-
   const sizeFilter = ["XS", "S", "M", "L", "XL"];
-  const colorFilter = ["чорний", "сірий", "голубий", "світлосірий", "чорно-сірий", 'чорно-білий', 'графітовий', 'білий'];
+  const colorFilter = [
+    "чорний",
+    "сірий",
+    "голубий",
+    "світлосірий",
+    "чорно-сірий",
+    "чорно-білий",
+    "графітовий",
+    "білий",
+  ];
   const allFilters = [sizeFilter, colorFilter];
   const filterName = ["Size", "Color"];
 
@@ -11,6 +19,36 @@ function Filter({ data, filteredData }) {
     Size: [],
     Color: [],
   });
+  const [minPrice, setMinPrice] = useState(449);
+  const [maxPrice, setMaxPrice] = useState(3000);
+
+  const handleMinChange = (e) => {
+    const value = Number(e.target.value);
+    setMinPrice(value);
+  };
+
+  const handleMaxChange = (e) => {
+    const value = Number(e.target.value);
+    setMaxPrice(value);
+  };
+
+  const handleBlurMin = () => {
+    if (minPrice > maxPrice) {
+      setMinPrice(maxPrice);
+    }
+    if (minPrice < 449) {
+      setMinPrice(449);
+    }
+  };
+
+  const handleBlurMax = () => {
+    if (maxPrice < minPrice) {
+      setMaxPrice(minPrice);
+    }
+    if (maxPrice > 3000) {
+      setMaxPrice(3000);
+    }
+  };
 
   const handleCheckboxChange = (name, value, isChecked) => {
     setSelectedFilters((prevFilters) => {
@@ -34,18 +72,20 @@ function Filter({ data, filteredData }) {
         const matchesColor =
           selectedFilters.Color.length === 0 ||
           selectedFilters.Color.includes(color.color_name);
-          console.log(matchesColor)
+        console.log(matchesColor);
         const matchesSize =
           selectedFilters.Size.length === 0 ||
           color.sizes.some((size) =>
             selectedFilters.Size.includes(size.size_name)
           );
-  
-        return matchesColor && matchesSize; 
+
+        const matchesPrice = item.cost >= minPrice && item.cost <= maxPrice;
+
+        return matchesColor && matchesSize && matchesPrice;
       });
     });
-  
-    console.log(filteredItems)
+
+    console.log(filteredItems);
     filteredData(filteredItems);
   };
 
@@ -75,19 +115,70 @@ function Filter({ data, filteredData }) {
             </li>
           );
         })}
+        <CostView
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          handleMaxChange={handleMaxChange}
+          handleMinChange={handleMinChange}
+          handleBlurMax={handleBlurMax}
+          handleBlurMin={handleBlurMin}
+        />
         <button
-        onClick={() => {
-          renderDataFiltered();
-          console.log(selectedFilters, "\n allData", data[1].color[0].sizes[0].size_name);
-        }}
-      >
-        Застосувати
-      </button>
+          onClick={() => {
+            renderDataFiltered();
+            console.log(selectedFilters);
+          }}
+        >
+          Застосувати
+        </button>
       </ul>
-      
     </div>
   );
 }
+
+const CostView = ({
+  minPrice,
+  handleMinChange,
+  maxPrice,
+  handleMaxChange,
+  handleBlurMin,
+  handleBlurMax,
+}) => {
+  return (
+    <div>
+      <label htmlFor="minPrice">Ціна</label>
+      <input
+        id="minPrice"
+        type="number"
+        value={minPrice}
+        onChange={handleMinChange}
+        onBlur={handleBlurMin}
+        style={{
+          width: "80px",
+          padding: "4px",
+          border: "1px solid #ccc",
+          borderRadius: "4px",
+          textAlign: "center",
+        }}
+      />
+      <span>–</span>
+      <input
+        id="maxPrice"
+        type="number"
+        value={maxPrice}
+        onChange={handleMaxChange}
+        onFocus={handleBlurMax}
+        style={{
+          width: "80px",
+          padding: "4px",
+          border: "1px solid #ccc",
+          borderRadius: "4px",
+          textAlign: "center",
+        }}
+      />
+    </div>
+  );
+};
 
 const CheckBoxView = ({
   handleCheckboxChange,
