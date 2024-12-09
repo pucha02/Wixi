@@ -84,6 +84,7 @@ export const ProductItem = ({ notification, setNotification }) => {
 
     return (
       <div className="product-item">
+
         <div className="name-heart">
           <ProductName name={item.title} className={""} />
           <img
@@ -116,6 +117,7 @@ export const ProductItem = ({ notification, setNotification }) => {
         <SizeTable />
         <ProductButtonAddToCartTxt
           handleAddToCart={handleAddToCartWithValidation}
+
           className={""}
         />
       </div>

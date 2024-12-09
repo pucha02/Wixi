@@ -2,7 +2,11 @@ import { NameCategory } from "../../atoms/Category/NameField";
 import { useEffect, useMemo, useState } from "react";
 import useGetDataCategories from "../../../../services/FetchDataCategory";
 import { Link } from "react-router-dom";
+
 import './CategoryList.css'
+
+import Filter from "../../organisms/Filter/Filter";
+
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
@@ -39,6 +43,7 @@ const CategoryList = () => {
     return renderItems(categories);
   }, [categories]);
 
+
   return (
     <div className="category-list-block">
       <div className="category-list">
@@ -49,6 +54,7 @@ const CategoryList = () => {
       </div>
     </div>
   )
+
 
 };
 
