@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ContactInfo } from '../../molecules/UserProfileInfoForm/ContactInfo/ContactInfo';
 import { DeliveryInfo } from '../../molecules/UserProfileInfoForm/DeliveryInfo/DeliveryInfo';
 import { validateFields } from '../../../../utils/ValidateForm';
+import UserProfileMobileMenu from '../../molecules/UserProfileMenu/UserProfileMobileMenu';
 import { OrdersList } from '../OrderList/OrderList';
 import { fetchDataUser, handleLogout, handleSave } from '../../../../utils/userDataOperations';
 import { useNavigate } from "react-router-dom";
@@ -17,10 +18,10 @@ import './UserProfile.css'
 
 function UserProfile() {
     const [user, setUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true); 
+    const [isLoading, setIsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState("personalData");
     const [validationErrors, setValidationErrors] = useState({});
-    
+
     const [orderDetails, setOrderDetails] = useState({
         number_section_NP: "",
         firstname: "",
@@ -73,7 +74,7 @@ function UserProfile() {
                 );
 
             case "orderHistory":
-                return <div><OrdersList/></div>;
+                return <div><OrdersList /></div>;
             case "promocodes":
                 return <div>Мої промокоди</div>;
             case "logout":
@@ -88,7 +89,17 @@ function UserProfile() {
     return (
         <div className="profile-tabs">
             <div className="profile-tabs-container">
-                <UserProfileMenu tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+                <div className='comp-pers-cab'>
+                    <UserProfileMenu tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+                </div>
+                <div className='mobile-pers-cab'>
+                    <UserProfileMobileMenu
+                        tabs={tabs}
+                        activeTab={activeTab}
+                        onTabChange={setActiveTab}
+                        renderContent={renderTabContent}
+                    />
+                </div>
                 <div className="tab-content-container">
                     <div className="tab-content-profile">{renderTabContent()}</div>
                 </div>

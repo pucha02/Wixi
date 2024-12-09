@@ -67,7 +67,7 @@ export const Header = ({notification, setNotification}) => {
                         </Link>
                     </div>
                     <div className="right-elements-block">
-                        <RightHeaderElement src={PhoneImg} />
+                        {/* <RightHeaderElement src={PhoneImg} /> */}
                         <RightHeaderElement 
                             src={PersonalCabinetImg} 
                             label={'Акаунт'} 

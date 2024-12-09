@@ -17,6 +17,7 @@
 .header-bottom-block {
     width: 100%;
     background-color: white;
+    box-shadow: 0 4px 10px #8F8D8D40;
 }
 
 .header-bottom {
@@ -64,6 +65,10 @@
 
     .right-elements-block {
         width: 30%;
+    }
+    .search-block{
+        width: 100%;
+        margin-left: 11px;
     }
     /* .header{
         position: unset;

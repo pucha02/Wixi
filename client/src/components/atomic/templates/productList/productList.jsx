@@ -75,11 +75,7 @@ const ProductList = () => {
   const loadRecentlyViewed = () => {
     const data = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
     setRecentlyViewed(data);
-
-
-    fetchData();
-  }, []);
-
+  };
 
   const handleAddToWishlist = (product, index) => {
     const item = { title: product.title, _id: product._id, cost: product.cost };
@@ -154,13 +150,7 @@ const ProductList = () => {
       <div className="availability-text">Нет в наличии</div>
     )}
   </div> */}
-        <div className="cost-addBtn">
-            <ProductCost
-                cost={item.cost}
-                discount={item.discount}
-                className={""}
-            />
-        </div>
+       
         <ColorList
             colors={item.color}
             setActiveIndex={(index) => handleSetActiveIndex(item._id, index)}
@@ -193,7 +183,7 @@ const ProductList = () => {
       <Filter data={data} filteredData={setFilteredData}/>
 
       {elements}
-
+      
     </div>
   );
 };

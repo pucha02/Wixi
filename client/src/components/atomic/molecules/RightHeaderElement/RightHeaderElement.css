@@ -60,4 +60,7 @@
         border-right: 0;
         border-bottom: 0;  /* Цвет треугольника, совпадает с фоном уведомления */
     }
+    .right-header-el-count{
+        right: -5px;
+    }
 }

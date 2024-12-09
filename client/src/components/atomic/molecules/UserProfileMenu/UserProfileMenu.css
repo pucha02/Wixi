@@ -3,3 +3,70 @@
     flex-direction: column;
     width: 20%;
 }
+
+.mobile-menu {
+    width: 100%;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+  }
+  
+  .menu-item {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .menu-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    justify-content: space-between;
+  }
+  
+  .menu-header.expanded {
+    background-color: #f9f9f9;
+  }
+  
+  .menu-content {
+    display: none;
+    padding: 10px 15px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+  }
+  
+  .menu-item .menu-content {
+    display: block; /* Открытие при активной секции */
+  }
+  
+  .tab-button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .tab-button.active {
+    color: #000;
+    font-weight: bold;
+  }
+  
+  .tab-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+  
+  .tab-label {
+    font-size: 16px;
+    text-align: left;
+    flex: 1;
+  }
+  
+
+  @media (min-width: 1920px) {
+    .profile-tabs-container {
+        max-width: calc(1920px + 510px);
+        padding: 0 355px !important;
+    }
+}

@@ -1,35 +1,93 @@
-.profile-tabs{
+.profile-tabs {
     margin-top: 150px;
 
 }
 
-.profile-tabs-container{
+.profile-tabs-container {
     display: flex;
     width: 90%;
     margin: 0 auto;
 }
 
-.tab-content-container{
+.tab-content-container {
     width: 80%;
     padding: 30px;
     padding-top: 0;
 }
 
-.tab-content-profile{
+.tab-content-profile {
     width: 710px;
     height: 100%;
 }
 
-.tab-content-profile form .cart-button{
+.tab-content-profile form .cart-button {
     background-color: black;
     color: white;
     margin-top: 60px;
     width: 100%;
 }
 
-.user-profile-delivery-form{
+.user-profile-delivery-form {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+}
+
+.mobile-pers-cab {
+    display: none;
+}
+
+@media (max-width:768px) {
+    .mobile-pers-cab {
+        display: block;
+        width: 100%;
+    }
+
+    .menu-header-content img {
+        display: none;
+    }
+
+    .tab-content-container,
+    .comp-pers-cab {
+        display: none;
+    }
+
+    .menu-content{
+        padding: 0;
+        margin-top: 12px;
+        margin-bottom: 30px;
+    }
+
+    .menu-content .contact-info-block .contact-info-profile-inputs .contact-info-full-name .order-form-input:first-child {
+        margin-bottom: 9px;
+    }
+
+    .menu-content .contact-info-block .contact-info-profile-inputs .contact-info-contacts {
+        margin-top: 9px;
+    }
+
+    .menu-content .contact-info-block .contact-info-profile-inputs .contact-info-contacts .order-form-input:first-child {
+        margin-bottom: 9px;
+    }
+
+    .menu-content .cart-button {
+        width: 100%;
+        background-color: black;
+        color: white;
+    }
+
+    .menu-content .delivery-info-profile-selects .css-b62m3t-container .css-13cymwt-control{
+        width: auto;
+        margin-top: 9px;
+    }
+    .menu-content .delivery-info-profile-selects .delivery-info-bottom-select .css-b62m3t-container{
+        width: auto;
+        margin-top: 9px;
+        margin-bottom: 9px;
+    }
+
+    .orders-container{
+        padding: 0;
+    }
 }

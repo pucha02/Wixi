@@ -30,3 +30,14 @@
     background-color: black;
     color: white;
 }
+
+@media (max-width:768px) {
+    .login-input{
+        height: 40px;
+        font-size: 16px;
+    }
+    .login-button{
+        padding: 14px 14px 14px 14px;
+        font-size: 14px;
+    }
+}
