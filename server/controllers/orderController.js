@@ -3,44 +3,47 @@ import { User } from '../MongooseModels/User.js';
 import { Order } from '../MongooseModels/User.js';
 
 export const registerOrder = async (req, res) => {
-    let orderDetails = req.body
+    const orderDetails = req.body;
+
     try {
-        console.log(req.body)
+        console.log(req.body);
         const user = await User.findOne({ number_phone: orderDetails.number_phone });
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // const products = await Product.find({ _id: { $in: orderData.products.map(p => p.product) } });
-
-        // if (products.length !== orderData.products.length) {
-        //     return res.status(400).json({ message: 'One or more products not found' });
-        // }
-
         const newOrder = {
-            number_section_NP: orderDetails.number_section_NP,
+            area: orderDetails.area,
             city: orderDetails.city,
+            warehouse: orderDetails.warehouse,
             products: orderDetails.products.map(item => ({
                 product: item.product,
+                title: item.title,
                 color: item.color,
                 size: item.size,
                 quantity: item.quantity,
-                cost: item.cost
+                cost: item.cost,
+                img: item.img,
             })),
             totalCost: orderDetails.totalCost,
-            number_phone: orderDetails.number_phone
+            status: orderDetails.status,
+            order_number: orderDetails.order_number,
+            number_phone: orderDetails.number_phone,
         };
+
         const order = new Order(newOrder);
 
+        if (!user) {
+            // Если пользователь не найден, просто сохраняем заказ
+            await order.save();
+            return res.status(201).json({ message: 'Order placed successfully', order: newOrder });
+        }
 
+        // Если пользователь найден, добавляем заказ к его данным
         user.orders.push(newOrder);
-        await order.save()
+        await order.save();
         await user.save();
 
-        res.status(201).json({ message: 'Order placed successfully', order: newOrder });
+        return res.status(201).json({ message: 'Order placed successfully', order: newOrder });
     } catch (error) {
         console.error('Error placing order:', error);
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 };

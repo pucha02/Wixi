@@ -117,36 +117,55 @@ export const updateCartQuantity = async (req, res) => {
     console.log("Received request to update product quantity in cart:", req.body);
 
     try {
-        // Проверка обязательных данных
         if (!userId || !productId || !color || !size || quantity == null) {
             console.error("Invalid data: userId, productId, color, size, and quantity are required");
             return res.status(400).json({ error: 'Invalid data: userId, productId, color, size, and quantity are required' });
         }
 
-        // Проверка на неотрицательное количество
         if (quantity < 0) {
             console.error("Quantity must be non-negative");
             return res.status(400).json({ error: 'Quantity must be non-negative' });
         }
 
-        console.log(`Attempting to update product quantity with:
-        - ID: ${productId}
-        - Color: ${color}
-        - Size: ${size}
-        - Quantity: ${quantity}
-        - User ID: ${userId}`);
-
-        // Логирование текущего состояния корзины пользователя перед изменением
         const user = await User.findById(userId).select('cart');
         console.log("User's current cart:", user?.cart);
 
-        // Обновление количества товара
-        const result = await User.updateOne(
-            { _id: userId, 'cart._id': new ObjectId(productId), 'cart.color': color, 'cart.size': size },
-            { $set: { 'cart.$.quantity': quantity } }
+        const existingProduct = user?.cart.find(item =>
+            item._id.equals(new ObjectId(productId)) &&
+            item.color === color &&
+            item.size === size
         );
 
-        // Логирование результата обновления
+        if (!existingProduct) {
+            console.warn("Product not found in cart with specified parameters");
+            return res.status(404).json({ error: 'Product variation not found in cart' });
+        }
+
+        const result = await User.updateOne(
+            { 
+                _id: userId, 
+                cart: {
+                    $elemMatch: {
+                        _id: new ObjectId(productId),
+                        color: color,
+                        size: size
+                    }
+                }
+            },
+            { $set: { 'cart.$.quantity': quantity } }
+        );
+        console.log("Using $elemMatch filter for update:", {
+            _id: userId,
+            cart: {
+                $elemMatch: {
+                    _id: new ObjectId(productId),
+                    color: color,
+                    size: size
+                }
+            }
+        });
+                
+
         console.log("Update result:", result);
 
         if (result.modifiedCount === 0) {
@@ -154,7 +173,6 @@ export const updateCartQuantity = async (req, res) => {
             return res.status(404).json({ error: 'Product variation not found in cart' });
         }
 
-        // Логирование текущего состояния корзины пользователя после изменения
         const updatedUser = await User.findById(userId).select('cart');
         console.log("User's updated cart:", updatedUser?.cart);
 

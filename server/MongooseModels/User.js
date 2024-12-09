@@ -9,12 +9,13 @@ const cartItemSchema = new mongoose.Schema({
     cost: { type: Number },
     discount: { type: Number },
     originalCost: { type: Number },
-    img: {type: String}
+    img: { type: String }
 });
 
 const orderSchema = new mongoose.Schema({
-    number_section_NP: { type: String },
+    area: { type: String },
     city: { type: String },
+    warehouse: { type: String },
     products: [
         {
             productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
@@ -22,10 +23,13 @@ const orderSchema = new mongoose.Schema({
             color: { type: String },
             size: { type: String },
             quantity: { type: Number },
-            cost: { type: Number }
+            cost: { type: Number },
+            img: { type: String }
         }
     ],
     totalCost: { type: Number, required: true },
+    status: { type: String },
+    order_number: { type: String },
     number_phone: { type: String }
 });
 
@@ -35,8 +39,20 @@ const userSchema = new mongoose.Schema({
     lastname: { type: String, required: true },
     email: { type: String },
     password: { type: String, required: true },
-    cart: [cartItemSchema], // Добавляем корзину
-    orders: [orderSchema]
+    cart: [cartItemSchema],
+    orders: [orderSchema],
+    deliveryInfo: {
+        area: String,
+        city: String,
+        warehouse: String,
+    },
+    promoCodes: [
+        {
+            code: { type: String }, // Код промокода
+            activatedAt: { type: Date, default: Date.now }, // Дата активации
+            isUsed: { type: Boolean, default: false }, // Статус использования
+        }
+    ]
 });
 
 export const User = mongoose.model('User', userSchema);
