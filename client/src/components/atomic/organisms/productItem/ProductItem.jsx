@@ -95,7 +95,7 @@ export const ProductItem = () => {
  
       <div className="name-heart">
         <ProductName name={item.title} className={""} />
-        {/* <ProductHeart
+        {/* <ProductHeart 
           src={HeartIcon}
           isLiked={isLiked}
           toggleHeart={() => handleAddToWishList(i)}

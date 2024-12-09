@@ -6,10 +6,9 @@ import { Link } from "react-router-dom";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
-  const [data, setData] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { getAllProduct, getAllProductBySearch } = useGetDataProduct();
+  const { getAllProductBySearch } = useGetDataProduct();
 
   const fetchAndFilterProducts = useCallback(
     debounce(async (searchQuery) => {
@@ -17,7 +16,6 @@ const SearchBar = () => {
       setFilteredProducts([]);
       try {
         const result = await getAllProductBySearch(searchQuery);
-        setData(result);
         setFilteredProducts(result);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -30,11 +28,11 @@ const SearchBar = () => {
 
   const handleInputChange = (e) => {
     const newValue = e.target.value;
-    setQuery(newValue);
-    setFilteredProducts([]);
+    console.log(newValue)
     if (newValue) {
       fetchAndFilterProducts(newValue);
     }
+    setQuery(newValue);
   };
 
   function renderItems(arr) {
