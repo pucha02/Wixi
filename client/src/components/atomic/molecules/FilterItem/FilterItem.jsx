@@ -4,11 +4,11 @@ import FilterCount from "../../atoms/FilterItem/FilterCount"
 
 import './FilterItem.css'
 
-export default function FilterItem({size, count}) {
+export default function FilterItem({nameFilterItem, count, handleCheckboxChange}) {
   return (
     <div className="filter_item">
-      <FilterCheckBox/>
-      <FilterName filterName={size}/>
+      <FilterCheckBox handleCheckboxChange={handleCheckboxChange}/>
+      <FilterName filterName={nameFilterItem}/>
       <FilterCount filterCount={count}/>
     </div>
   )

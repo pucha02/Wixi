@@ -28,7 +28,8 @@ import {
 const ProductList = () => {
   const [data, setData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isLiked, setLiked] = useState()
+  const [isLiked, setLiked] = useState();
+  const [filteredData, setFilteredData] = useState(null);
 
   const childRefs = useRef([]);
 
@@ -83,7 +84,7 @@ const ProductList = () => {
     } else {
       dispatch(addItemToWishlist(item));
     }
-    setLiked(!isLiked)
+    setLiked(!isLiked);
     // if (userId) {
     //   addToCart(userId, item);
     // }
@@ -114,7 +115,7 @@ const ProductList = () => {
               <ProductHeart
                 src={HeartIcon}
                 toggleHeart={() => handleAddToWishlist(item, i)}
-                id = {item._id}
+                id={item._id}
                 ref={(el) => (childRefs.current[i] = el)}
               />
             </div>
@@ -156,8 +157,9 @@ const ProductList = () => {
   };
 
   const elements = useMemo(() => {
-    return renderItems(data);
-  }, [data, activeIndex, isLiked]);
+    const finallyData = filteredData ? filteredData : data
+    return renderItems(finallyData);
+  }, [data, activeIndex, isLiked, filteredData]);
 
   return (
     <div className="catalog-container">
@@ -165,7 +167,7 @@ const ProductList = () => {
         {id}
         <FilterIcon src={FilterImg} />
       </div>
-      <Filter />
+      <Filter data={data} filteredData={setFilteredData}/>
       {elements}
     </div>
   );
