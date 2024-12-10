@@ -25,14 +25,7 @@
         align-items: center;
     }
 
-    .client-reg-form-block,
-    .modal-overlay .modal-content {
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
+    
 
     .login-form-head {
         font-size: 18px;

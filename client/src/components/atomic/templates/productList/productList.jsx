@@ -17,8 +17,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import useGetDataProduct from "../../../../services/FetchData";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { FilterIcon } from "../../atoms/Filter/FilterIcon/FilterIcon";
-import FilterImg from "../../../../assets/svg/filter.svg";
+import FilterImg from "../../../../assets/svg/filter1.svg";
 import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
+import HeartIcon2 from "../../../../assets/svg/little-heart-3.svg";
 import "./productList.css";
 import Filter from "../../organisms/Filter/Filter";
 import {
@@ -32,6 +33,7 @@ const ProductList = () => {
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [activeSize, setActiveSize] = useState(0);
+  const [viewMobileFilter, setViewMobileFilter] = useState(false)
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLiked, setLiked] = useState();
@@ -52,6 +54,9 @@ const ProductList = () => {
     loadRecentlyViewed();
   }, []);
 
+  
+  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -61,6 +66,7 @@ const ProductList = () => {
           activeIndex: 0,
         }));
         setData(updatedData);
+        setFilteredData(null); // Сброс фильтрованных данных
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -68,7 +74,8 @@ const ProductList = () => {
 
     window.scrollTo(0, 0);
     fetchData();
-  }, [id]);
+  }, [id]); // Добавьте зависимости, чтобы предотвратить ошибки
+
 
   const loadRecentlyViewed = () => {
     const data = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
@@ -77,19 +84,22 @@ const ProductList = () => {
 
   const handleAddToWishlist = (product, index) => {
     const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
-    const activeImage = product.color?.[product.activeIndex].img?.[0]?.img_link || "/placeholder-image.png";
+    const activeImage = product.color?.[product.activeIndex]?.img?.[0]?.img_link || "/placeholder-image.png";
     const item = { title: product.title, _id: product._id, cost: product.cost, img: activeImage, color: activeColor, category: product.category };
-
-    if (childRefs.current[index]?.classList.contains("liked")) {
+  
+    const isCurrentlyLiked = likedItems[product._id];
+    
+    if (isCurrentlyLiked) {
       dispatch(removeItemFromWishlist(item));
+      setLikedItems((prev) => ({ ...prev, [product._id]: false }));
     } else {
       dispatch(addItemToWishlist(item));
+      setLikedItems((prev) => ({ ...prev, [product._id]: true }));
     }
-    setLiked(!isLiked);
-    // if (userId) {
-    //   addToCart(userId, item);
-    // }
+  
+    setLiked(!isLiked); // Обновление общего состояния лайков
   };
+  
 
   const handleSetActiveIndex = (productId, index) => {
     setData((prevData) =>
@@ -97,7 +107,19 @@ const ProductList = () => {
         item._id === productId ? { ...item, activeIndex: index } : item
       )
     );
+
+    if (filteredData) {
+      setFilteredData((prevFiltered) =>
+        prevFiltered.map((item) =>
+          item._id === productId ? { ...item, activeIndex: index } : item
+        )
+      );
+    }
   };
+
+  const handleViewMobileFilter = () => {
+    setViewMobileFilter(!viewMobileFilter)
+  }
 
   const addToRecentlyViewed = (product) => {
     const recentlyViewed =
@@ -124,11 +146,12 @@ const ProductList = () => {
             <div className="name-heart">
               <ProductName name={item.title} className={""} />
               <ProductHeart
-                src={HeartIcon}
+                src={likedItems[item._id] ? HeartIcon2 : HeartIcon} // Условное переключение иконки
                 toggleHeart={() => handleAddToWishlist(item, i)}
                 id={item._id}
                 ref={(el) => (childRefs.current[i] = el)}
               />
+
               <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
                 <ProductButtonAddToCart
                 />
@@ -165,30 +188,34 @@ const ProductList = () => {
     return <ul className="product-list">{items}</ul>;
   };
 
-const elements = useMemo(() => {
-  const finallyData = filteredData ? filteredData : data;
-  return renderItems(finallyData);
-}, [data, activeIndex, isLiked, filteredData]);
+  const elements = useMemo(() => {
+    const finallyData = filteredData ? filteredData : data;
+    return renderItems(finallyData);
+  }, [data, activeIndex, isLiked, filteredData]);
 
-return (
-  <div className="catalog-container">
-
-
-    <div className="category-title">
-      {id}
-    </div>
+  return (
+    <div className="catalog-container">
 
 
-    <div className="catalog-content">
-      <div className="filter-block">
-        <Filter data={data} filteredData={setFilteredData} />
+      <div className="category-title">
+        {id}
       </div>
-      {elements}
+
+      <FilterIcon src={FilterImg} onClick={handleViewMobileFilter} />
+      <div className="catalog-content">
+        <div className="filter-block">
+          <Filter data={data} filteredData={setFilteredData} />
+        </div>
+        {viewMobileFilter && <div className="filter-block-mobile">
+          <div className="close-filter-block-mobile" onClick={() => setViewMobileFilter(false)}> &times;</div>
+          <Filter data={data} filteredData={setFilteredData} />
+        </div>}
+        {elements}
+      </div>
+
+
     </div>
-
-
-  </div>
-);
+  );
 };
 
 export default ProductList;

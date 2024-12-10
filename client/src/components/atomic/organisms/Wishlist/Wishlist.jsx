@@ -3,6 +3,8 @@ import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
 import { Link } from 'react-router-dom';
 import { ProductColor } from '../../atoms/atomsProduct/Color/Color';
 import { CartButton } from '../../atoms/Cart/Button/CartButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeItemFromWishlist } from '../../../../redux/reducers/wishlistReducer';
 import './Wishlist.css';
 
 export const WishlistItems = () => {
@@ -10,15 +12,17 @@ export const WishlistItems = () => {
   const [activeSize, setActiveSize] = useState(null);
 
   // Получаем список из localStorage
-  const [wishListItems, setWishListItems] = useState(() =>
-    JSON.parse(localStorage.getItem('wishlist')) || []
-  );
-
+  const wishListItems = useSelector((state) => state.wishlist.items);
+  const dispatch = useDispatch();
   // Функция для удаления элемента из списка
   const handleRemoveFromWishlist = (productId) => {
+    // Обновление локального состояния и LocalStorage
     const updatedList = wishListItems.filter((product) => product._id !== productId);
-    setWishListItems(updatedList);
+   
     localStorage.setItem('wishlist', JSON.stringify(updatedList));
+
+    // Удаление из Redux
+    dispatch(removeItemFromWishlist({ _id: productId }));
   };
 
   return (

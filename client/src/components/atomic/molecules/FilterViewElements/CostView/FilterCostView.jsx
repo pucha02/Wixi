@@ -1,3 +1,5 @@
+import './FilterCostView.css'
+
 const FilterCostView = ({
     minPrice,
     handleMinChange,
@@ -11,32 +13,22 @@ const FilterCostView = ({
        <div htmlFor="minPrice" className="filter-head">Ціна, грн</div>
         <input
           id="minPrice"
+          className='minPrice'
           type="number"
           value={minPrice}
           onChange={handleMinChange}
           onBlur={handleBlurMin}
-          style={{
-            width: "80px",
-            padding: "4px",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            textAlign: "center",
-          }}
+         
         />
         <span>–</span>
         <input
           id="maxPrice"
+          className='maxPrice'
           type="number"
           value={maxPrice}
           onChange={handleMaxChange}
           onFocus={handleBlurMax}
-          style={{
-            width: "80px",
-            padding: "4px",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            textAlign: "center",
-          }}
+          
         />
       </div>
     );

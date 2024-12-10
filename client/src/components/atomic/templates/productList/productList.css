@@ -18,6 +18,10 @@ a {
     width: 100%;
 }
 
+.filter-block-mobile{
+    display: none;
+}
+
 .catalog-content {
     display: flex;
 }
@@ -92,6 +96,7 @@ a {
 @media (max-width:768px) {
     .catalog-container {
         width: 88%;
+        margin-top: 100px;
     }
 
     .product-list {
@@ -102,4 +107,24 @@ a {
         width: 15px;
         height: 15px;
     }
+    .filter-block-mobile{
+        display: block;
+        position: absolute;
+        background-color: white;
+        z-index: 1000;
+        padding: 30px;
+        left: 0;
+        width: 80%;
+    }
+    .filter-block-mobile ul {
+        list-style-type: none;
+    }
+
+    .close-filter-block-mobile{
+        position: absolute;
+        right: 10px;
+        font-size: 25px;
+    }
+
+    
 }

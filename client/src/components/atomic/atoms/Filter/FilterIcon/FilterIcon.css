@@ -1,0 +1,13 @@
+.filter-icon{
+    display: none;
+}
+
+@media (max-width:768px) {
+    .filter-icon{
+        display: flex;
+    }
+    .filter-icon-text{
+        margin-left: 12px;
+        font-size: 12px;
+    }
+}

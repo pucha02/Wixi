@@ -55,7 +55,7 @@ const ClientRegistrationForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLog
     };
 
     return (
-        <>
+        <div className="reg-form-modal">
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <div className="login-form-head">ВХІД ДО ОСОБИСТОГО КАБІНЕТУ</div>
                 <form onSubmit={handleSubmitRegistrationUser}>
@@ -73,7 +73,7 @@ const ClientRegistrationForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLog
                     Здійснюючи реєстрацію або вхід з використанням cвого профілю в соціальній мережі, я тим самим даю згоду на зв'язування мого аккаунта відповідно до положень Політики конфіденційності
                 </div>
             </Modal >
-        </>
+        </div>
     )
 }
 
