@@ -54,9 +54,6 @@ const ProductList = () => {
     loadRecentlyViewed();
   }, []);
 
-  
-  
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -86,9 +83,9 @@ const ProductList = () => {
     const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
     const activeImage = product.color?.[product.activeIndex]?.img?.[0]?.img_link || "/placeholder-image.png";
     const item = { title: product.title, _id: product._id, cost: product.cost, img: activeImage, color: activeColor, category: product.category };
-  
+
     const isCurrentlyLiked = likedItems[product._id];
-    
+
     if (isCurrentlyLiked) {
       dispatch(removeItemFromWishlist(item));
       setLikedItems((prev) => ({ ...prev, [product._id]: false }));
@@ -96,10 +93,10 @@ const ProductList = () => {
       dispatch(addItemToWishlist(item));
       setLikedItems((prev) => ({ ...prev, [product._id]: true }));
     }
-  
+
     setLiked(!isLiked); // Обновление общего состояния лайков
   };
-  
+
 
   const handleSetActiveIndex = (productId, index) => {
     setData((prevData) =>
@@ -195,12 +192,9 @@ const ProductList = () => {
 
   return (
     <div className="catalog-container">
-
-
       <div className="category-title">
         {id}
       </div>
-
       <FilterIcon src={FilterImg} onClick={handleViewMobileFilter} />
       <div className="catalog-content">
         <div className="filter-block">
@@ -212,8 +206,6 @@ const ProductList = () => {
         </div>}
         {elements}
       </div>
-
-
     </div>
   );
 };

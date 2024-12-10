@@ -1,10 +1,10 @@
 import { Header } from "../../atomic/templates/Header/Header";
 import MySlider from "../../atomic/templates/Slider/Slider";
 import HotStripDiscount from "../../../common/HotStripDiscount/HotStripDiscount";
-import HotStripTop from "../../../common/HotStripTop/HotStripTop";
 import { CarouselListByTypes } from "../../atomic/templates/CarouselListByTypes/CarouselListByTypes";
 import { Footer } from "../../atomic/templates/Footer/Footer";
 import { useEffect } from "react";
+import './mainPage.css'
 import Banner1 from '../../../assets/svg/banner1.svg'
 import Banner2 from '../../../assets/svg/banner2.svg'
 import Banner3 from '../../../assets/svg/banner3.svg'
@@ -28,7 +28,7 @@ export const MainPage = () => {
             <MySlider images={images} />
             <HotStripDiscount content={'ЗНИЖКИ!'}/>
             <CarouselListByTypes type={'sale'}/>
-            <HotStripDiscount content={'НОВИНКИ!'}/>
+            <h1 className="main-new">НОВИНКИ</h1>
             <CarouselListByTypes type={'new'}/>
             <HotStripDiscount content={'ТОП ПРОДАЖІВ!'}/>
             <CarouselListByTypes type={'top'}/>

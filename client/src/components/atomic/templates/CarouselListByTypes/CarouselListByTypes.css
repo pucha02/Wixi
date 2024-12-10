@@ -108,6 +108,13 @@
 }
 
 @media (max-width:768px) {
+  .product-page-container .product-item.main-page .name-block p{
+    margin-top: 6px;
+    font-size: 10px;
+  }
+  .product-page-container .product-item.main-page .cost-addBtn .price{
+    font-size: 12px;
+  }
   .product-item.main-page{
     width: 150px;
   }

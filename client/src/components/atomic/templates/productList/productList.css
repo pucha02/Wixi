@@ -62,7 +62,7 @@ a {
 }
 
 .recently-viewed-container .main-container {
-    width: auto;
+    width: 100%;
 }
 
 .product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container {

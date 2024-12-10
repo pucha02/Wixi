@@ -15,7 +15,7 @@ export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
   const [totalCost, setTotalCost] = useState(
     JSON.parse(localStorage.getItem("totalCost")) || 0
   );
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const isAuthorized = !!localStorage.getItem("token");
   const cartItems = isAuthorized ? products || [] : localProducts || [];
@@ -24,22 +24,22 @@ export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
     const token = localStorage.getItem("token");
 
     if (token) {
-        dispatch(fetchCart());
-        localStorage.removeItem("cart"); // Удалить локальную корзину для авторизованных пользователей
+      dispatch(fetchCart());
+      localStorage.removeItem("cart"); // Удалить локальную корзину для авторизованных пользователей
     } else {
-        try {
-            const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-            setLocalProducts(localCart);
-        } catch (error) {
-            console.error("Ошибка при чтении данных из localStorage:", error);
-        }
+      try {
+        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+        setLocalProducts(localCart);
+      } catch (error) {
+        console.error("Ошибка при чтении данных из localStorage:", error);
+      }
     }
-}, [dispatch]);
+  }, [dispatch]);
 
 
   useEffect(() => {
     if (!isAuthorized && localProducts.length > 0) {
-      
+
       try {
         const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
         if (JSON.stringify(currentCart) !== JSON.stringify(localProducts)) {
@@ -52,26 +52,30 @@ export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
   }, [localProducts]);
 
   useEffect(() => {
+    if (!isAuthorized) {
+      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setLocalProducts(localCart);
+    }
+  }, [localStorage.getItem("cart")]);
+
+  useEffect(() => {
     const newTotal = (cartItems || []).reduce((total, product) => {
       return total + product.cost * product.quantity;
-   }, 0);
-   
-  
+    }, 0);
     setTotalCost(newTotal);
     localStorage.setItem("totalCost", JSON.stringify(newTotal));
   }, [cartItems]);
 
-  console.log(localStorage.getItem("cart"))
 
   const updateTotalCost = (updatedCart) => {
     const newTotal = updatedCart.reduce((total, product) => {
       return total + product.cost * product.quantity;
     }, 0);
-  
+
     setTotalCost(newTotal); // Обновляем состояние
     localStorage.setItem("totalCost", JSON.stringify(newTotal)); // Сохраняем в localStorage
   };
-  
+
 
   return (
     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
@@ -84,18 +88,20 @@ export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
         <CartItems
           updateTotalCost={updateTotalCost} // Передаем callback для обновления общей стоимости
         />
-        <div className="promocode-form-block">
-          <PromocodeForm />
-        </div>
-        <div>
-          <TotalCost totalPrice={totalCost} />
-        </div>
-        <div className="cart-bottom-buttons">
-          <CartButton text={"ПРОДОВЖИТИ ПОКУПКИ"} />
-          <Link to="/register-order">
-            <CartButton text={"ПЕРЕЙТИ ДО ОФОРМЛЕННЯ"} />
-          </Link>
-        </div>
+        {cartItems.length > 0 && <>
+          <div className="promocode-form-block">
+            <PromocodeForm />
+          </div>
+          <div>
+            <TotalCost totalPrice={totalCost} />
+          </div>
+          <div className="cart-bottom-buttons">
+            <CartButton handleClick={() => setIsModalOpen(false)} text={"ПРОДОВЖИТИ ПОКУПКИ"} />
+            <Link to="/register-order">
+              <CartButton text={"ПЕРЕЙТИ ДО ОФОРМЛЕННЯ"} />
+            </Link>
+          </div>
+        </>}
       </div>
     </Modal>
   );

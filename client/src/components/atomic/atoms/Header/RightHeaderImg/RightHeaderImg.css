@@ -6,14 +6,14 @@
 }    
 
 .right-header-img img{
-    width: 20px;
-    height: 18px;
+    width: 24px;
+    height: 22px;
     cursor: pointer;
 }
 
 @media (max-width:768px) {
     .right-header-img img{
-        width: 15px;
-        height: 13px;
+        width: 20px;
+        height: 18px;
     }
 }

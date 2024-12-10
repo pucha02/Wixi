@@ -30,6 +30,12 @@
     }
     .add-to-cart-btn-with-txt{
         width: 100%;
-        font-size: 14px;
+        font-size: 12px;
+        height: 42px;
+    }
+
+    .size-table-btn{
+        font-size: 15px;
+        margin-top: 18px;
     }
 }

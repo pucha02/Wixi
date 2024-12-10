@@ -16,5 +16,6 @@
   @media (max-width:768px) {
     .tab-button{
       font-size: 15px;
+      padding: 10px 20px;
     }
   }

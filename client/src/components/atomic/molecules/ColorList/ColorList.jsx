@@ -7,7 +7,7 @@ export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, 
 
   return (
     <div className={`color-list`}>
-      <div className={classname}>КОЛІР</div>
+      <div className={`${classname} color-header`}>КОЛІР</div>
       <div className="colors-container">
         {colors.map((color, index) => {
           const totalAvailableQuantity = color.sizes.reduce(
