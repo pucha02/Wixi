@@ -1,0 +1,13 @@
+.main-new{
+    margin-top: 30px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+@media (max-width:768px) {
+    .main-new{
+        margin-top: 5px;
+        margin-bottom: 12px;
+        font-size: 24px;
+    }
+}

@@ -2,6 +2,8 @@
     width: 60px;
     height: 27px;
     text-align: center;
+    border: 1px solid #C3C1C1;
+    border-radius: 4px;
 }
 
 .minPrice{
@@ -10,4 +12,14 @@
 
 .maxPrice{
     margin-left: 6px;
+}
+
+.minPrice::-webkit-inner-spin-button,
+.minPrice::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.maxPrice::-webkit-inner-spin-button,
+.maxPrice::-webkit-outer-spin-button {
+  -webkit-appearance: none;
 }

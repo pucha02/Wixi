@@ -22,7 +22,7 @@ export const RightHeaderElement = ({ src, label, onClick, notification = false, 
             <RightHeaderImg src={src} className={className}/>
             <RightHeaderLabel label={label} />
             {notification && <div className="notification">{notification}</div>}
-            {products ? <div className="right-header-el-count">{products?.length}</div> : ''}
+            {products?.length > 0 ? <div className="right-header-el-count">{products?.length}</div> : ''}
         </div>
     );
 };

@@ -1,7 +1,9 @@
 .size-button {
     margin: 5px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
+    color: #000;
+    background-color: white;
     cursor: pointer;
   }
   

@@ -8,6 +8,7 @@ const SearchBar = () => {
   const [query, setQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false); // Для управления фокусом
   const { getAllProductBySearch } = useGetDataProduct();
 
   const fetchAndFilterProducts = useCallback(
@@ -35,27 +36,45 @@ const SearchBar = () => {
     if (newValue) {
       fetchAndFilterProducts(newValue);
     }
-    setQuery(newValue);
+  };
+
+  const handleBlur = () => {
+    if (!isFocused) {
+      setQuery(""); // Очищаем поле, если пользователь не выбирает элемент
+      setFilteredProducts([]);
+    }
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true); // Активируем фокус
+  };
+
+  const handleMouseDown = () => {
+    setIsFocused(true); // Отключаем немедленное очищение при выборе элемента
+  };
+
+  const handleMouseUp = () => {
+    setIsFocused(false); // Сбрасываем фокус после выбора
   };
 
   function renderItems(arr) {
     return (
-
       <div className="search-results">
         {arr.length ? (
           <ul>
             {arr.map((item, i) => {
-              // Безопасная проверка на наличие данных
               const imgLink =
-                item?.color?.[0]?.img?.[0]?.img_link || "placeholder.png"; // Путь к изображению или заглушка
+                item?.color?.[0]?.img?.[0]?.img_link || "placeholder.png";
 
               return (
-                <Link key={i} to={`/category/productList/${item.category}/${item.title}`}>
-                  <li className="search-item" onClick={() => setQuery('')}>
-                    <img
-                      src={imgLink} // Используем найденную ссылку или заглушку
-                      alt={item.title || "No title"} // Защита от отсутствующего заголовка
-                    />
+                <Link
+                  key={i}
+                  to={`/category/productList/${item.category}/${item.title}`}
+                  onMouseDown={handleMouseDown} // Отключаем очищение при клике
+                  onMouseUp={handleMouseUp} // Сбрасываем состояние после клика
+                >
+                  <li className="search-item">
+                    <img src={imgLink} alt={item.title || "No title"} />
                     <div className="item-info">
                       <span className="item-title">{item.title || ""}</span>
                       <span className="item-price">{item.cost ? `${item.cost} UAH` : "Ціна не вказана"}</span>
@@ -69,12 +88,8 @@ const SearchBar = () => {
           <p className="no-results">Товарів не знайдено</p>
         )}
       </div>
-
     );
   }
-
-
-
 
   return (
     <div className="search-bar">
@@ -84,8 +99,10 @@ const SearchBar = () => {
         placeholder="Знайти товар..."
         value={query}
         onChange={handleInputChange}
+        onBlur={handleBlur} // Проверка потери фокуса
+        onFocus={handleFocus} // Обработка фокуса
       />
-      {isLoading && <p>Загрузка...</p>}
+      {isLoading && <p>Завантаження...</p>}
       {!isLoading && query && renderItems(filteredProducts)}
     </div>
   );

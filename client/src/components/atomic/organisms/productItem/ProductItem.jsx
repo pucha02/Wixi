@@ -141,7 +141,7 @@ export const ProductItem = ({ notification, setNotification }) => {
         <div className="recently-viewed-container">
           {JSON.parse(localStorage.getItem("recentlyViewed"))?.length > 0 && (
             <>
-              <h2>ПЕРЕГЛЯНУТІ ТОВАРИ:</h2>
+              <h2 className="product-item-view-head">ПЕРЕГЛЯНУТІ ТОВАРИ:</h2>
               <CarouselListByTypes
                 type={null}
                 getdata={JSON.parse(localStorage.getItem("recentlyViewed"))}
@@ -150,7 +150,7 @@ export const ProductItem = ({ notification, setNotification }) => {
             </>
           )}
         </div>
-         {/* Сообщения */}
+
       </div>
     </div>
   );

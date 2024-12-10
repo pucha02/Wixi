@@ -33,22 +33,22 @@ const ImageSlider = ({ images }) => {
   };
 
   const handleMouseMove = (e) => {
-    if (!mainImageRef.current) return;
+    if (isMobile || !mainImageRef.current) return; // Отключаем приближение на мобильных устройствах
 
     const rect = mainImageRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 30; 
     const y = ((e.clientY - rect.top) / rect.height) * 30; 
 
-    setZoom({ scale: 2, x, y }); // Устанавливаем масштаб и позицию
+    setZoom({ scale: 2, x, y }); 
   };
 
   const handleMouseLeave = () => {
-    setZoom({ scale: 1, x: 0, y: 0 }); // Возвращаем к исходному состоянию
+    if (isMobile) return; // Отключаем сброс зума на мобильных устройствах
+    setZoom({ scale: 1, x: 0, y: 0 });
   };
 
   return (
     <div className="slider-cont">
-      {/* Вертикальные миниатюры */}
       <Swiper
         modules={[Navigation]}
         onSwiper={(swiper) => (swiperRef.current = swiper)}
@@ -68,8 +68,7 @@ const ImageSlider = ({ images }) => {
             />
           </SwiperSlide>
         ))}
-      </Swiper>;
-      {/* Основное изображение */}
+      </Swiper>
       <div
         className="main-image"
         ref={mainImageRef}

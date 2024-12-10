@@ -23,7 +23,7 @@ import HeartImg2 from '../../../../assets/svg/little-heart-3.svg'
 import PhoneImg from '../../../../assets/svg/phone.svg'
 import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
- 
+
 export const Header = ({ notification, setNotification }) => {
     const [viewCategories, setViewCategories] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,11 +42,7 @@ export const Header = ({ notification, setNotification }) => {
             const wishlistFromStorage = JSON.parse(localStorage.getItem("wishlist")) || [];
             setWishlist(wishlistFromStorage);
         };
-
-        // Инициализация состояния
         updateWishlist();
-
-        // Добавляем слушатель события storage для синхронизации между вкладками
         window.addEventListener("storage", updateWishlist);
 
         return () => {
@@ -56,7 +52,7 @@ export const Header = ({ notification, setNotification }) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            
+
             setIsBouncing(true);
             setTimeout(() => setIsBouncing(false), 500);
         }, 10000);
@@ -107,7 +103,7 @@ export const Header = ({ notification, setNotification }) => {
                             <RightHeaderElement
                                 src={wishlistItems.length > 0 ? HeartImg2 : HeartImg}
                                 label={"Вішлист"}
-                                
+                                products={wishlistItems}
                             />
                         </Link>
                         <RightHeaderElement
@@ -117,7 +113,7 @@ export const Header = ({ notification, setNotification }) => {
                             notification={notification}
                             setNotification={setNotification}
                             products={products}
-                            className={`cart-icon ${isBouncing ? "cart-bounce" : ""}`}
+                            className={`cart-icon ${isBouncing && products.length > 0 ? "cart-bounce" : ""}`}
                         />
                     </div>
                 </div>
