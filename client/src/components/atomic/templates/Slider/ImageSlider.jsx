@@ -36,8 +36,8 @@ const ImageSlider = ({ images }) => {
     if (!mainImageRef.current) return;
 
     const rect = mainImageRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 30; // Процентная позиция по X
-    const y = ((e.clientY - rect.top) / rect.height) * 30; // Процентная позиция по Y
+    const x = ((e.clientX - rect.left) / rect.width) * 30; 
+    const y = ((e.clientY - rect.top) / rect.height) * 30; 
 
     setZoom({ scale: 2, x, y }); // Устанавливаем масштаб и позицию
   };

@@ -4,7 +4,7 @@ import './RightHeaderElement.css'
 
 import { useEffect } from 'react';
 
-export const RightHeaderElement = ({ src, label, onClick, notification = false, products = null, setNotification }) => {
+export const RightHeaderElement = ({ src, label, onClick, notification = false, products = null, setNotification, className }) => {
 
     useEffect(() => {
         if (notification) {
@@ -18,8 +18,8 @@ export const RightHeaderElement = ({ src, label, onClick, notification = false, 
     }, [notification]); // Запускаем эффект, когда notification изменяется
 
     return (
-        <div className="right-header-el">
-            <RightHeaderImg src={src} onClick={onClick} />
+        <div className="right-header-el" onClick={onClick} >
+            <RightHeaderImg src={src} className={className}/>
             <RightHeaderLabel label={label} />
             {notification && <div className="notification">{notification}</div>}
             {products ? <div className="right-header-el-count">{products?.length}</div> : ''}

@@ -1,6 +1,6 @@
-import './OrderFormInput.css'
+import './OrderFormInput.css';
 
-export const OrderFormInput = ({ handleChange, userData, name, placeholder, type='text' }) => {
+export const OrderFormInput = ({ handleChange, userData, name, placeholder, type = 'text', required = false }) => {
     return (
         <input
             className='order-form-input'
@@ -9,6 +9,7 @@ export const OrderFormInput = ({ handleChange, userData, name, placeholder, type
             placeholder={placeholder}
             value={userData}
             onChange={handleChange}
+            required={required} // Добавляем поддержку required
         />
-    )
-}
+    );
+};

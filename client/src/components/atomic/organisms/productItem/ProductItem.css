@@ -9,6 +9,10 @@
     margin-top: 30px;
     position: relative;
     margin-left: 24px;
+    
+}
+.product-item:first-child {
+    margin-left: auto;
 }
 
 .cost-addBtn {
@@ -85,6 +89,26 @@
     align-items: flex-start;
 }
 
+.recently-viewed-container h2{
+    margin-right: 20px;
+}
+
+
+
+@media (max-width:1490px) {
+
+    .product-item{
+        width: 300px;
+    }
+}
+
+@media (max-width:1300px) {
+  
+    .product-item{
+        width: 250px;
+    }
+}
+
 @media (max-width: 768px) {
     .product-item {
         width: 150px;
@@ -144,5 +168,9 @@
         font-size: 12px;
         margin-left: 0;
         margin-right: 10px;
+    }
+
+    .recently-viewed-container .main-container .mySwiper .swiper-wrapper .swiper-slide .product-item.main-page{
+        width: auto;
     }
 }

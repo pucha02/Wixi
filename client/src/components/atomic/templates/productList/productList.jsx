@@ -76,8 +76,9 @@ const ProductList = () => {
   };
 
   const handleAddToWishlist = (product, index) => {
-    const item = { title: product.title, _id: product._id, cost: product.cost };
-    console.log(childRefs.current);
+    const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
+    const activeImage = product.color?.[product.activeIndex].img?.[0]?.img_link || "/placeholder-image.png";
+    const item = { title: product.title, _id: product._id, cost: product.cost, img: activeImage, color: activeColor, category: product.category };
 
     if (childRefs.current[index]?.classList.contains("liked")) {
       dispatch(removeItemFromWishlist(item));
@@ -116,10 +117,8 @@ const ProductList = () => {
       return (
         <li className="product-item-li" key={i}>
           <div className="product-item">
-            <Link
-              to={`${location.pathname}/${item.title}`}
-              onClick={() => addToRecentlyViewed(item)}
-            >
+            <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
+
               <ProductImage src={activeImage} className={""} />
             </Link>
             <div className="name-heart">
@@ -130,21 +129,23 @@ const ProductList = () => {
                 id={item._id}
                 ref={(el) => (childRefs.current[i] = el)}
               />
-              <Link
-                to={`${location.pathname}/${item.title}`}
-                onClick={() => addToRecentlyViewed(item)}
-              >
-                <ProductButtonAddToCart />
-              </Link>
-            </div>
-            <div className="cost-addBtn">
-              <ProductCost
-                cost={item.cost}
-                discount={item.discount.percentage}
-              />
-              {item.discount.percentage > 0 ? (
-                <ProductDiscount discount={item.discount.percentage} />
-              ) : null}
+<Link
+  to={`${location.pathname}/${item.title}`}
+  onClick={() => addToRecentlyViewed(item)}
+>
+  <ProductButtonAddToCart />
+</Link>
+</div>
+<div className="cost-addBtn">
+  <ProductCost
+    cost={item.cost}
+    discount={item.discount.percentage}
+  />
+  {item.discount.percentage > 0 ? (
+    <ProductDiscount discount={item.discount.percentage} />
+  ) : null}
+</div>
+
             </div>
             {/* <div className="cost-article">
     {activeColor?.sizes?.reduce(
@@ -179,14 +180,21 @@ const ProductList = () => {
 
   return (
     <div className="catalog-container">
+
+
       <div className="category-title">
         {id}
-        <FilterIcon src={FilterImg} />
       </div>
 
-      <Filter data={data} filteredData={setFilteredData} />
 
-      {elements}
+      <div className="catalog-content">
+        <div className="filter-block">
+          <Filter data={data} filteredData={setFilteredData} />
+        </div>
+        {elements}
+      </div>
+
+
     </div>
   );
 };

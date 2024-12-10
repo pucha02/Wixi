@@ -44,6 +44,12 @@
     margin-top: 55px;
 }
 
+.register-order-products-block .cart-button:hover{
+    background-color: white;
+    color: black;
+    border: 2px solid;
+}
+
 .checkboxes-block {
     margin-top: 48px;
 }

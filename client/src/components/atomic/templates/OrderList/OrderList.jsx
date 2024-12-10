@@ -46,15 +46,15 @@ export const OrdersList = () => {
 
                                 <div className="order-info">
                                     <img src={order.products[0].img} alt="" />
-                                    <div className="order-total">{order.totalCost}$</div>
+                                    <div className="order-total">{order.totalCost} UAH</div>
                                     <div>ЗАМОВЛЕННЯ №: {order.order_number}, {order.date}  <div
-                                    className={`order-status ${order.status === "Доставлено" ? "status-delivered" : "status-canceled"
-                                        }`}
-                                >
-                                    {order.status}
-                                </div></div>
+                                        className={`order-status ${order.status === "Оформлено" ? "status-delivered" : "status-canceled"
+                                            }`}
+                                    >
+                                        {order.status}
+                                    </div></div>
                                 </div>
-                               
+
                             </div>
                             <div
                                 className={`toggle-arrow ${expandedOrder === index ? "expanded" : ""}`}
@@ -71,18 +71,21 @@ export const OrdersList = () => {
                                         <div className="item-image">
                                             <img src={item.img} alt={item.title} />
                                         </div>
-                                        <div className="item-info">
-                                            {console.log(item)}
-                                            <div className="item-title">{item.title}</div>
-                                            <div className="item-details">
-                                                КОЛІР {item.color}, РОЗМІР {item.size}
+                                        <div className="order-item-info-block">
+                                            <div className="item-info">
+                                                <div className="item-title">{item.title}</div>
+                                                <div className="item-details">
+                                                    КОЛІР {item.color}, РОЗМІР {item.size}
+                                                </div>
+                                            </div>
+                                            <div className="order-details-quantity-cost">
+                                                <div className="item-quantity">{item.quantity} ШТ</div>
+                                                <div className="item-cost">{item.cost} UAH</div>
                                             </div>
                                         </div>
-                                        <div className="item-quantity">{item.quantity} ШТ</div>
-                                        <div className="item-cost">{item.cost}$</div>
                                     </div>
                                 ))}
-                                <div className="order-total-cost">ДО СПЛАТИ: {order.totalCost}$</div>
+                                <div className="order-total-cost">ДО СПЛАТИ: {order.totalCost} UAH</div>
                             </div>
                         )}
                     </div>

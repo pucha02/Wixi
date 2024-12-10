@@ -8,7 +8,7 @@ import './CategoryList.css'
 import Filter from "../../organisms/Filter/Filter";
 
 
-const CategoryList = () => {
+const CategoryList = ({setViewCategories}) => {
   const [categories, setCategories] = useState([]);
 
   const { getAllCategories } = useGetDataCategories();
@@ -30,7 +30,7 @@ const CategoryList = () => {
     const items = arr.map((item, i) => {
       return (
         <Link key={i} state={{ title: item.title }} to={`/category/productList/${item.title}`} >
-          <li className="name-category">
+          <li className="name-category" onClick={()=>setViewCategories(false)}>
             <NameCategory name={item.title} />
           </li>
         </Link>

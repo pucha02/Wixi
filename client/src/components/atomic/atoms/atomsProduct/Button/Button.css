@@ -17,6 +17,12 @@
     font-size: 21px;
 }
 
+.add-to-cart-btn-with-txt:hover{
+    background-color: white;
+    color: black;
+    border: 2px solid;
+}
+
 @media (max-width:768px) {
     .add-to-cart-btn img{
         width: 10px;

@@ -58,7 +58,7 @@ export const RegisterOrder = () => {
 
     // Пересчет общей стоимости корзины
     useEffect(() => {
-        const currentCart = isAuthorized ? products : localProducts;
+        const currentCart = isAuthorized ? products || [] : localProducts || [];
         const newTotalCost = currentCart.reduce((total, product) => total + product.cost * product.quantity, 0);
 
         setOrderDetails((prevDetails) => ({

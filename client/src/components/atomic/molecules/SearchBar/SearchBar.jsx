@@ -48,17 +48,17 @@ const SearchBar = () => {
               // Безопасная проверка на наличие данных
               const imgLink =
                 item?.color?.[0]?.img?.[0]?.img_link || "placeholder.png"; // Путь к изображению или заглушка
-  
+
               return (
                 <Link key={i} to={`/category/productList/${item.category}/${item.title}`}>
-                  <li className="search-item">
+                  <li className="search-item" onClick={() => setQuery('')}>
                     <img
                       src={imgLink} // Используем найденную ссылку или заглушку
                       alt={item.title || "No title"} // Защита от отсутствующего заголовка
                     />
                     <div className="item-info">
-                      <span className="item-title">{item.title || "Название недоступно"}</span>
-                      <span className="item-price">{item.cost ? `${item.cost}$` : "Ціна не вказана"}</span>
+                      <span className="item-title">{item.title || ""}</span>
+                      <span className="item-price">{item.cost ? `${item.cost} UAH` : "Ціна не вказана"}</span>
                     </div>
                   </li>
                 </Link>
@@ -66,15 +66,15 @@ const SearchBar = () => {
             })}
           </ul>
         ) : (
-          <p className="no-results">Ничего не найдено</p>
+          <p className="no-results">Товарів не знайдено</p>
         )}
       </div>
 
     );
   }
-  
-  
-  
+
+
+
 
   return (
     <div className="search-bar">
