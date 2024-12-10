@@ -8,7 +8,7 @@ const FilterCostView = ({
   }) => {
     return (
       <div>
-        <div htmlFor="minPrice">Ціна</div>
+       <div htmlFor="minPrice" className="filter-head">Ціна, грн</div>
         <input
           id="minPrice"
           type="number"

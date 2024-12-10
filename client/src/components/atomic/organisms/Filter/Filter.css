@@ -11,19 +11,44 @@
     justify-content: space-between;
 }
 
-.filter-checkbox{
+.filter-checkbox {
     display: flex;
     align-items: center;
     font-size: 21px;
     margin-top: 9px;
+    cursor: pointer;
 }
 
-.filter-checkbox input{
-    margin-right: 12px;
+.filter-checkbox input {
+    appearance: none; /* Сбрасываем стандартный стиль чекбокса */
+    -webkit-appearance: none;
     width: 27px;
     height: 27px;
+    border: 2px solid #000; /* Цвет рамки */
+    border-radius: 20%; /* Закругленные углы */
+    outline: none;
+    position: relative;
+    display: inline-block;
+    background-color: #fff; /* Цвет фона по умолчанию */
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    margin-right: 12px;
 }
 
 .filter-checkbox input:checked {
-    accent-color: black; /* Работает в большинстве современных браузеров */
+    background-color: #000000; /* Цвет фона при выборе */
+    
 }
+
+.filter-checkbox input:checked::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -70%) rotate(45deg);
+    width: 7px; /* Длина галочки */
+    height: 17px; /* Высота галочки */
+    border: solid #fff; /* Цвет галочки */
+    border-width: 0 3px 3px 0; /* Толщина линий */
+}
+

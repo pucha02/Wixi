@@ -1,7 +1,7 @@
 export const RightHeaderLabel = ({ label }) => {
     return (
         <div>
-            <div>{label}</div>
+            <div className="header-label">{label}</div>
         </div>
     )
 }

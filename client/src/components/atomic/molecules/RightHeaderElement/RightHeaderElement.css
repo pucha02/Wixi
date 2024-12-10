@@ -48,7 +48,7 @@
 }
 
 @media (max-width: 768px) {
-    .right-header-el label{
+    .right-header-el .header-label{
         display: none;
     }
     .notification{
