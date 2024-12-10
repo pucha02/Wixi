@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { BurgerMenuButton } from "../../molecules/BurgerMenuButton/BurgerMenuButton"
+import { useSelector } from "react-redux";
 import { RightHeaderElement } from "../../molecules/RightHeaderElement/RightHeaderElement"
 import { SearchLoupe } from "../../atoms/Header/SearchLoupe/SearchLoupe"
 import ClientLoginForm from "../../organisms/ClientLoginForm/ClientLoginForm"
 import ClientRegistrationForm from "../../organisms/ClientRegistrationForm/ClientRegistrationForm"
 import { Logo } from "../../atoms/Header/Logo/Logo"
 import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
+
 import { useState } from "react"
 import { CartPage } from "../../../pages/cartPage/CartPage"
 import { useEffect } from "react";
@@ -21,22 +22,41 @@ import HeartImg from '../../../../assets/svg/little-heart.svg'
 import PhoneImg from '../../../../assets/svg/phone.svg'
 import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
-
+ 
 export const Header = ({ notification, setNotification }) => {
     const [viewCategories, setViewCategories] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenLogin, setIsModalOpenLogin] = useState(false);
     const [isModalOpenReg, setIsModalOpenReg] = useState(false);
     const [isBouncing, setIsBouncing] = useState(false);
+    const [wishlist, setWishlist] = useState([]); // Состояние для отслеживания wishlist
 
     const navigate = useNavigate();
-    const userId = localStorage.getItem('token');
+    const userId = localStorage.getItem("token");
+    const products = useSelector((state) => state.cart.items);
+    const wishlistItems = useSelector((state) => state.wishlist.items);
+    // Обновление wishlist при загрузке компонента и изменениях
+    useEffect(() => {
+        const updateWishlist = () => {
+            const wishlistFromStorage = JSON.parse(localStorage.getItem("wishlist")) || [];
+            setWishlist(wishlistFromStorage);
+        };
 
+        // Инициализация состояния
+        updateWishlist();
+
+        // Добавляем слушатель события storage для синхронизации между вкладками
+        window.addEventListener("storage", updateWishlist);
+
+        return () => {
+            window.removeEventListener("storage", updateWishlist);
+        };
+    }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setIsBouncing(true);
-            setTimeout(() => setIsBouncing(false), 500); 
+            setTimeout(() => setIsBouncing(false), 500);
         }, 10000);
         return () => clearInterval(interval);
     }, []);
@@ -47,13 +67,11 @@ export const Header = ({ notification, setNotification }) => {
 
     const handleAccountClick = () => {
         if (userId) {
-            navigate('/profile');
+            navigate("/profile");
         } else {
             setIsModalOpenLogin(true);
         }
     };
-
-    const products = useSelector((state) => state.cart.items);
 
     return (
         <div className="header">
@@ -73,19 +91,22 @@ export const Header = ({ notification, setNotification }) => {
                         </div>
                     </div>
                     <div className="logo-block">
-                        <Link to={'/'}>
+                        <Link to={"/"}>
                             <Logo src={LogoImg} />
                         </Link>
                     </div>
                     <div className="right-elements-block">
-                        {/* <RightHeaderElement src={PhoneImg} /> */}
                         <RightHeaderElement
                             src={PersonalCabinetImg}
-                            label={'Акаунт'}
-                            onClick={handleAccountClick} // Добавлено обработчик
+                            label={"Акаунт"}
+                            onClick={handleAccountClick}
                         />
-                        <Link to={'/wishlist'}>
-                            <RightHeaderElement src={HeartImg} label={'Вішлист'} />
+                        <Link to={"/wishlist"}>
+                            <RightHeaderElement
+                                src={HeartImg}
+                                label={"Вішлист"}
+                                className={wishlistItems.length > 0 ? "wishlist-active" : ""}
+                            />
                         </Link>
                         <RightHeaderElement
                             src={CartImg}
@@ -94,9 +115,8 @@ export const Header = ({ notification, setNotification }) => {
                             notification={notification}
                             setNotification={setNotification}
                             products={products}
-                            className={`cart-icon ${isBouncing ? "cart-bounce" : ""}`} // Добавляем класс анимации
+                            className={`cart-icon ${isBouncing ? "cart-bounce" : ""}`}
                         />
-
                     </div>
                 </div>
                 <CartPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
@@ -117,7 +137,7 @@ export const Header = ({ notification, setNotification }) => {
                     />
                 </div>
             </div>
-            {viewCategories && <CategoryList setViewCategories={setViewCategories}/>}
+            {viewCategories && <CategoryList setViewCategories={setViewCategories} />}
         </div>
     );
 };

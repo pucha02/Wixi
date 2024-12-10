@@ -114,11 +114,11 @@ const ProductList = () => {
       const activeImage =
         activeColor?.img?.[0]?.img_link || "/placeholder-image.png";
 
+
       return (
         <li className="product-item-li" key={i}>
           <div className="product-item">
             <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
-
               <ProductImage src={activeImage} className={""} />
             </Link>
             <div className="name-heart">
@@ -129,22 +129,14 @@ const ProductList = () => {
                 id={item._id}
                 ref={(el) => (childRefs.current[i] = el)}
               />
-<Link
-  to={`${location.pathname}/${item.title}`}
-  onClick={() => addToRecentlyViewed(item)}
->
-  <ProductButtonAddToCart />
-</Link>
-</div>
-<div className="cost-addBtn">
-  <ProductCost
-    cost={item.cost}
-    discount={item.discount.percentage}
-  />
-  {item.discount.percentage > 0 ? (
-    <ProductDiscount discount={item.discount.percentage} />
-  ) : null}
-</div>
+              <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
+                <ProductButtonAddToCart
+                />
+              </Link>
+            </div>
+            <div className="cost-addBtn">
+              <ProductCost cost={item.cost} discount={item.discount.percentage} />
+              {item.discount.percentage > 0 ? <ProductDiscount discount={item.discount.percentage} /> : null}
 
             </div>
             {/* <div className="cost-article">
@@ -173,30 +165,30 @@ const ProductList = () => {
     return <ul className="product-list">{items}</ul>;
   };
 
-  const elements = useMemo(() => {
-    const finallyData = filteredData ? filteredData : data;
-    return renderItems(finallyData);
-  }, [data, activeIndex, isLiked, filteredData]);
+const elements = useMemo(() => {
+  const finallyData = filteredData ? filteredData : data;
+  return renderItems(finallyData);
+}, [data, activeIndex, isLiked, filteredData]);
 
-  return (
-    <div className="catalog-container">
-
-
-      <div className="category-title">
-        {id}
-      </div>
+return (
+  <div className="catalog-container">
 
 
-      <div className="catalog-content">
-        <div className="filter-block">
-          <Filter data={data} filteredData={setFilteredData} />
-        </div>
-        {elements}
-      </div>
-
-
+    <div className="category-title">
+      {id}
     </div>
-  );
+
+
+    <div className="catalog-content">
+      <div className="filter-block">
+        <Filter data={data} filteredData={setFilteredData} />
+      </div>
+      {elements}
+    </div>
+
+
+  </div>
+);
 };
 
 export default ProductList;

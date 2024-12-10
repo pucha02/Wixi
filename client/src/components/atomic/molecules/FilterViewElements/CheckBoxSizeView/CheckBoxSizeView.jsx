@@ -9,8 +9,8 @@ const CheckBoxSizeView = ({
   };
 
   return (
-    <div>
-      <label>
+    <div className="filter-checkbox">
+      
         <input
           type="checkbox"
           name={filterName}
@@ -19,7 +19,7 @@ const CheckBoxSizeView = ({
           checked={isChecked}
         />
         {filterValue}
-      </label>
+      
     </div>
   );
 };

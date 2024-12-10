@@ -60,7 +60,7 @@ function Filter({ data, filteredData }) {
   const handleCheckboxChange = (name, value, isChecked) => {
     setSelectedFilters((prevFilters) => {
       const updatedFilters = { ...prevFilters };
-  
+
       if (isChecked) {
         updatedFilters[name] = [...updatedFilters[name], value];
       } else {
@@ -68,7 +68,7 @@ function Filter({ data, filteredData }) {
           (item) => item !== value
         );
       }
-  
+
       // После обновления состояния сразу фильтруем данные
       renderDataFiltered(updatedFilters);
       return updatedFilters;
@@ -81,19 +81,19 @@ function Filter({ data, filteredData }) {
         const matchesColor =
           currentFilters.Color.length === 0 ||
           currentFilters.Color.includes(color.color_name);
-  
+
         const matchesSize =
           currentFilters.Size.length === 0 ||
           color.sizes.some((size) =>
             currentFilters.Size.includes(size.size_name)
           );
-  
+
         const matchesPrice = item.cost >= minPrice && item.cost <= maxPrice;
-  
+
         return matchesColor && matchesSize && matchesPrice;
       });
     });
-  
+
     filteredData(filteredItems);
   };
 
@@ -101,22 +101,22 @@ function Filter({ data, filteredData }) {
     <div>
       <ul>
         <div className="price-filter">
-          <CostView
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            handleMaxChange={handleMaxChange}
-            handleMinChange={handleMinChange}
-            handleBlurMax={handleBlurMax}
-            handleBlurMin={handleBlurMin}
-          />
-          <button
-            onClick={() => {
-              renderDataFiltered();
-              console.log(selectedFilters);
-            }}
-          >
-            Застосувати
-          </button>
+        <FilterCostView
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          handleMaxChange={handleMaxChange}
+          handleMinChange={handleMinChange}
+          handleBlurMax={handleBlurMax}
+          handleBlurMin={handleBlurMin}
+        />
+        <button
+          onClick={() => {
+            renderDataFiltered();
+            console.log(selectedFilters);
+          }}
+        >
+          Застосувати
+        </button>
         </div>
         {allFilters.map((item, i) => {
           return (
@@ -147,7 +147,9 @@ function Filter({ data, filteredData }) {
 
 
         <ul>
-          {filterName[1]}
+          <div className="filter-head">
+            {filterName[1] === 'Size' ? 'Розмір' : "Колір"}
+          </div>
           {colorFilter.map((elem, i) => {
             return (
               <li>
@@ -162,22 +164,7 @@ function Filter({ data, filteredData }) {
           })}
         </ul>
 
-        <FilterCostView
-          minPrice={minPrice}
-          maxPrice={maxPrice}
-          handleMaxChange={handleMaxChange}
-          handleMinChange={handleMinChange}
-          handleBlurMax={handleBlurMax}
-          handleBlurMin={handleBlurMin}
-        />
-        <button
-          onClick={() => {
-            renderDataFiltered();
-            console.log(selectedFilters);
-          }}
-        >
-          Застосувати
-        </button>
+        
 
       </ul>
     </div>
@@ -185,49 +172,49 @@ function Filter({ data, filteredData }) {
 }
 
 
-// const CostView = ({
-//   minPrice,
-//   handleMinChange,
-//   maxPrice,
-//   handleMaxChange,
-//   handleBlurMin,
-//   handleBlurMax,
-// }) => {
-//   return (
-//     <div>
-//       <div htmlFor="minPrice" className="filter-head">Ціна, грн</div>
-//       <input
-//         id="minPrice"
-//         type="number"
-//         value={minPrice}
-//         onChange={handleMinChange}
-//         onBlur={handleBlurMin}
-//         style={{
-//           width: "80px",
-//           padding: "4px",
-//           border: "1px solid #ccc",
-//           borderRadius: "4px",
-//           textAlign: "center",
-//         }}
-//       />
-//       <span>–</span>
-//       <input
-//         id="maxPrice"
-//         type="number"
-//         value={maxPrice}
-//         onChange={handleMaxChange}
-//         onFocus={handleBlurMax}
-//         style={{
-//           width: "80px",
-//           padding: "4px",
-//           border: "1px solid #ccc",
-//           borderRadius: "4px",
-//           textAlign: "center",
-//         }}
-//       />
-//     </div>
-//   );
-// };
+const CostView = ({
+  minPrice,
+  handleMinChange,
+  maxPrice,
+  handleMaxChange,
+  handleBlurMin,
+  handleBlurMax,
+}) => {
+  return (
+    <div>
+      <div htmlFor="minPrice" className="filter-head">Ціна, грн</div>
+      <input
+        id="minPrice"
+        type="number"
+        value={minPrice}
+        onChange={handleMinChange}
+        onBlur={handleBlurMin}
+        style={{
+          width: "80px",
+          padding: "4px",
+          border: "1px solid #ccc",
+          borderRadius: "4px",
+          textAlign: "center",
+        }}
+      />
+      <span>–</span>
+      <input
+        id="maxPrice"
+        type="number"
+        value={maxPrice}
+        onChange={handleMaxChange}
+        onFocus={handleBlurMax}
+        style={{
+          width: "80px",
+          padding: "4px",
+          border: "1px solid #ccc",
+          borderRadius: "4px",
+          textAlign: "center",
+        }}
+      />
+    </div>
+  );
+};
 
 // const CheckBoxView = ({
 //   handleCheckboxChange,
