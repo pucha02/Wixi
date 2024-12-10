@@ -41,7 +41,7 @@ function Filter({ data, filteredData }) {
     Size: [],
     Color: [],
   });
-  const [minPrice, setMinPrice] = useState(449);
+  const [minPrice, setMinPrice] = useState(100);
   const [maxPrice, setMaxPrice] = useState(3000);
   const [availableSizes, setAvailableSizes] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
@@ -77,14 +77,14 @@ function Filter({ data, filteredData }) {
     if (minPrice > maxPrice) {
       setMinPrice(maxPrice);
     }
-    if (minPrice < 449) {
-      setMinPrice(449);
+    if (minPrice < 100) {
+      setMinPrice(100);
     }
   };
 
   const handleBlurMax = () => {
     if (maxPrice < minPrice) {
-      setMaxPrice(minPrice);
+      setMaxPrice(minPrice+1);
     }
     if (maxPrice > 3000) {
       setMaxPrice(3000);
@@ -122,7 +122,17 @@ function Filter({ data, filteredData }) {
             currentFilters.Size.includes(size.size_name)
           );
 
-        const matchesPrice = item.cost >= minPrice && item.cost <= maxPrice;
+          
+        let matchesPrice
+        
+          if (item.discount.percentage === 0) {
+             matchesPrice = item.cost >= minPrice && item.cost <= maxPrice
+          } else {
+            const discountPrice = item.cost - (item.discount.percentage / 100 * item.cost)
+            matchesPrice = discountPrice >= minPrice && discountPrice <= maxPrice
+          };
+          
+        
 
         return matchesColor && matchesSize && matchesPrice;
       });

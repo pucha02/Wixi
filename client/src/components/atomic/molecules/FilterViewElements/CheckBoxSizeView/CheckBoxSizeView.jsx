@@ -17,6 +17,7 @@ const CheckBoxSizeView = ({
           value={filterValue}
           onChange={handleChange}
           checked={isChecked}
+          disabled={false}
         />
         {filterValue}
       

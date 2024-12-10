@@ -15,19 +15,18 @@ const FilterCostView = ({
           id="minPrice"
           className='minPrice'
           type="number"
-          value={minPrice}
+          value={minPrice === 0 ? "" : minPrice}
           onChange={handleMinChange}
           onBlur={handleBlurMin}
-         
         />
         <span>–</span>
         <input
           id="maxPrice"
           className='maxPrice'
           type="number"
-          value={maxPrice}
+          value={maxPrice === 0 ? "" : maxPrice}
           onChange={handleMaxChange}
-          onFocus={handleBlurMax}
+          onBlur={handleBlurMax}
           
         />
       </div>
