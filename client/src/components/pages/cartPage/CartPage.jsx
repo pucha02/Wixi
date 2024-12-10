@@ -61,7 +61,6 @@ export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
     localStorage.setItem("totalCost", JSON.stringify(newTotal));
   }, [cartItems]);
 
-  console.log(localStorage.getItem("cart"))
 
   const updateTotalCost = (updatedCart) => {
     const newTotal = updatedCart.reduce((total, product) => {
