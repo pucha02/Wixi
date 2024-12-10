@@ -14,14 +14,17 @@
   width: 27px;
   height: 27px;
   border-radius: 50%; /* Круглая форма */
-  border: 2px solid #000; /* Цвет рамки */
   margin-right: 8px;
   display: inline-block;
   position: relative;
   transition: all 0.3s ease;
 }
 
-.filter-checkbox input:checked + .color-indicator {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  border-color: #007bff; /* Изменение рамки при выборе */
+.filter-checkbox-x input:checked + .color-indicator {
+    box-shadow: 
+    0 0 0 2px #ffffff, /* Белая обводка */
+    0 0 0 3px #000000; /* Черная тонкая граница */
+  border-color: transparent; /* Убираем рамку */
+  border: 2px solid #ffffff; /* Цвет рамки */
+
 }

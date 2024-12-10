@@ -18,7 +18,8 @@ import SearchBar from "../../molecules/SearchBar/SearchBar"
 import LogoImg from '../../../../assets/svg/Logo-Wixi.svg'
 import CartImg from '../../../../assets/svg/cart.svg'
 import PersonalCabinetImg from '../../../../assets/svg/person.svg'
-import HeartImg from '../../../../assets/svg/little-heart.svg'
+import HeartImg from '../../../../assets/svg/little-heart-2.svg'
+import HeartImg2 from '../../../../assets/svg/little-heart-3.svg'
 import PhoneImg from '../../../../assets/svg/phone.svg'
 import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
@@ -55,6 +56,7 @@ export const Header = ({ notification, setNotification }) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
+            
             setIsBouncing(true);
             setTimeout(() => setIsBouncing(false), 500);
         }, 10000);
@@ -103,9 +105,9 @@ export const Header = ({ notification, setNotification }) => {
                         />
                         <Link to={"/wishlist"}>
                             <RightHeaderElement
-                                src={HeartImg}
+                                src={wishlistItems.length > 0 ? HeartImg2 : HeartImg}
                                 label={"Вішлист"}
-                                className={wishlistItems.length > 0 ? "wishlist-active" : ""}
+                                
                             />
                         </Link>
                         <RightHeaderElement

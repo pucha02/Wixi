@@ -5,7 +5,7 @@
     display: inline-block;
     cursor: pointer;
     border: 1px solid #ccc;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     position: relative; /* Для размещения внутреннего круга */
 }
 
@@ -14,8 +14,11 @@
 }
 
 .color-circle.active {
-    border: 2px solid #000; /* Подчеркиваем активный цвет */
     transform: scale(1.1); /* Увеличиваем размер */
+    border: none; /* Убираем стандартную рамку */
+    box-shadow: 
+        0 0 0 3px #ffffff, /* Белая обводка */
+        0 0 0 4px #000000; /* Тонкая черная рамка */
 }
 
 .color-circle.active::before {

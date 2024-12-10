@@ -46,7 +46,7 @@
 .search-block {
     display: flex;
     justify-content: space-between;
-    width: 75%;
+    width: 65%;
 }
 
 @keyframes cart-bounce {

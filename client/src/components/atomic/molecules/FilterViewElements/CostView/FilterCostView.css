@@ -1,0 +1,13 @@
+.minPrice, .maxPrice{
+    width: 60px;
+    height: 27px;
+    text-align: center;
+}
+
+.minPrice{
+    margin-right: 6px;
+}
+
+.maxPrice{
+    margin-left: 6px;
+}

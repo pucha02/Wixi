@@ -1,8 +1,9 @@
-export const FilterIcon = ({ src }) => {
-    return (
-      <div className="filter-icon">
-        <img src={src} alt="" />
-      </div>
-    );
-  };
-  
+import './FilterIcon.css'
+
+export const FilterIcon = ({ src, onClick }) => {
+  return (
+    <div className="filter-icon" onClick={onClick}>
+      <img src={src} alt="" /> <div className='filter-icon-text'>ФІЛЬТР</div>
+    </div>
+  );
+};

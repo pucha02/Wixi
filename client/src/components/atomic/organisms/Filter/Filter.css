@@ -8,7 +8,7 @@
 .price-filter{
     display: flex;
     align-items: end;
-    justify-content: space-between;
+    
 }
 
 .filter-checkbox {
@@ -24,7 +24,7 @@
     -webkit-appearance: none;
     width: 27px;
     height: 27px;
-    border: 2px solid #000; /* Цвет рамки */
+    border: 1px solid #C3C1C1; /* Цвет рамки */
     border-radius: 20%; /* Закругленные углы */
     outline: none;
     position: relative;
@@ -52,3 +52,11 @@
     border-width: 0 3px 3px 0; /* Толщина линий */
 }
 
+.price-filter-btn{
+    margin-left: 18px;
+    height: 27px;
+    width: 36px;
+    background-color: white;
+    border: 1px solid #C3C1C1;
+    cursor: pointer;
+}
