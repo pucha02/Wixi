@@ -122,6 +122,7 @@ function Filter({ data, filteredData }) {
             currentFilters.Size.includes(size.size_name)
           );
 
+          
         let matchesPrice
         
           if (item.discount.percentage === 0) {
