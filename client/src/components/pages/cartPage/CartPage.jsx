@@ -52,9 +52,10 @@ export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
   }, [localProducts]);
 
   useEffect(() => {
-    const newTotal = cartItems.reduce((total, product) => {
+    const newTotal = (cartItems || []).reduce((total, product) => {
       return total + product.cost * product.quantity;
-    }, 0);
+   }, 0);
+   
   
     setTotalCost(newTotal);
     localStorage.setItem("totalCost", JSON.stringify(newTotal));

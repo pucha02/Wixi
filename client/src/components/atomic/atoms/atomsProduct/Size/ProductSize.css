@@ -12,5 +12,6 @@
   }
 
   .size-button.active{
-    border: 1px solid;
+    background-color: black;
+    color: white;
   }

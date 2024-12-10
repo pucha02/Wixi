@@ -1,16 +1,17 @@
 import { useState } from "react";
+import './Filter.css'
 
 function Filter({ data, filteredData }) {
   const sizeFilter = ["XS", "S", "M", "L", "XL"];
   const colorFilter = [
-    "чорний",
-    "сірий",
-    "голубий",
-    "світлосірий",
-    "чорно-сірий",
-    "чорно-білий",
-    "графітовий",
-    "білий",
+    "Чорний",
+    "Сірий",
+    "Голубий",
+    "Світло-сірий",
+    "Чорно-сірий",
+    "Чорно-білий",
+    "Графітовий",
+    "Білий",
   ];
   const allFilters = [sizeFilter, colorFilter];
   const filterName = ["Size", "Color"];
@@ -92,11 +93,31 @@ function Filter({ data, filteredData }) {
   return (
     <div>
       <ul>
+        <div className="price-filter">
+          <CostView
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            handleMaxChange={handleMaxChange}
+            handleMinChange={handleMinChange}
+            handleBlurMax={handleBlurMax}
+            handleBlurMin={handleBlurMin}
+          />
+          <button
+            onClick={() => {
+              renderDataFiltered();
+              console.log(selectedFilters);
+            }}
+          >
+            Застосувати
+          </button>
+        </div>
         {allFilters.map((item, i) => {
           return (
             <li key={i}>
               <ul>
-                {filterName[i]}
+                <div className="filter-head">
+                  {filterName[i] === 'Size' ? 'Розмір' : "Колір"}
+                </div>
                 {item.map((elem, j) => {
                   return (
                     <li key={j}>
@@ -115,22 +136,7 @@ function Filter({ data, filteredData }) {
             </li>
           );
         })}
-        <CostView
-          minPrice={minPrice}
-          maxPrice={maxPrice}
-          handleMaxChange={handleMaxChange}
-          handleMinChange={handleMinChange}
-          handleBlurMax={handleBlurMax}
-          handleBlurMin={handleBlurMin}
-        />
-        <button
-          onClick={() => {
-            renderDataFiltered();
-            console.log(selectedFilters);
-          }}
-        >
-          Застосувати
-        </button>
+
       </ul>
     </div>
   );
@@ -146,7 +152,7 @@ const CostView = ({
 }) => {
   return (
     <div>
-      <label htmlFor="minPrice">Ціна</label>
+      <div htmlFor="minPrice" className="filter-head">Ціна, грн</div>
       <input
         id="minPrice"
         type="number"
@@ -191,8 +197,7 @@ const CheckBoxView = ({
   };
 
   return (
-    <div>
-      <label>
+    <div className="filter-checkbox">
         <input
           type="checkbox"
           name={filterName}
@@ -200,8 +205,7 @@ const CheckBoxView = ({
           onChange={handleChange}
           checked={isChecked}
         />
-        {filterValue}
-      </label>
+        <div className="filter-value">{filterValue}</div>
     </div>
   );
 };

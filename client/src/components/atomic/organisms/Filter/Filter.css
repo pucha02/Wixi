@@ -1,0 +1,29 @@
+.filter-head{
+    margin-bottom: 14px;
+    margin-top: 14px;
+    font-weight: 700;
+    font-size: 21px;
+}
+
+.price-filter{
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+}
+
+.filter-checkbox{
+    display: flex;
+    align-items: center;
+    font-size: 21px;
+    margin-top: 9px;
+}
+
+.filter-checkbox input{
+    margin-right: 12px;
+    width: 27px;
+    height: 27px;
+}
+
+.filter-checkbox input:checked {
+    accent-color: black; /* Работает в большинстве современных браузеров */
+}

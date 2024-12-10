@@ -87,12 +87,12 @@ export const ProductItem = ({ notification, setNotification }) => {
 
         <div className="name-heart">
           <ProductName name={item.title} className={""} />
-          <img
+          {/* <img
             src={HeartIcon}
             alt="Heart"
             className={`heart-icon ${isLiked ? "liked" : ""}`}
             onClick={() => handleAddToWishList(item._id, setLikedItems)}
-          />
+          /> */}
         </div>
         <ProductDescription description={item.description} className={""} />
         <div className="cost-article">

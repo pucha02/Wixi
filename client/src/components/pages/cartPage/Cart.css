@@ -34,6 +34,18 @@
     color: rgb(255, 255, 255);
 }
 
+.cart-bottom-buttons a .cart-button:hover{
+    background-color: white;
+    color: black;
+    border: 2px solid;
+}
+
+.promocode-form-block .cart-button:hover{
+    background-color: white;
+    color: black;
+    border: 2px solid;
+}
+
 @media (max-width:768px) {
 
     .cart-product-description{

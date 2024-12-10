@@ -1,70 +1,104 @@
-a{
+a {
     width: max-content;
     color: black;
     text-decoration: none;
 }
 
-.product-item-li{
+.product-item-li {
     list-style-type: none;
     width: max-content;
 }
 
-.product-list{
+.product-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: start; /* Или space-between */
+    justify-content: start;
     padding: 0;
     margin: 0;
+    width: 100%;
 }
 
+.catalog-content {
+    display: flex;
+}
 
+.filter-block {
+    width: 260px;
+}
 
-.catalog-container{
+.filter-block ul {
+    list-style-type: none;
+    margin: 0;
+    width: 260px;
+    margin-top: 30px;
+}
+
+.category-title {
+    margin-bottom: 30px;
+}
+
+.catalog-container {
     width: 95%;
     margin: 0 auto;
     margin-top: 150px;
     margin-bottom: 80px;
 }
 
-.category-title{
+.category-title {
     font-size: 28px;
 }
 
-.category-title{
+.category-title {
     display: flex;
     justify-content: space-between;
 }
 
-.recently-viewed-container{
+.recently-viewed-container {
     margin: 0 auto;
 }
 
-.recently-viewed-container .main-container{
+.recently-viewed-container .main-container {
     width: auto;
 }
 
 .product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: start; /* Или space-between */
-    gap: 10px; /* Одинаковое расстояние между элементами */
-  }
-  
+    justify-content: start;
+    /* Или space-between */
+    gap: 10px;
+    /* Одинаковое расстояние между элементами */
+}
 
-.product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container .color-circle{
+
+.product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container .color-circle {
     width: 33px;
     height: 33px;
     margin: 0;
 }
 
-@media (max-width:768px) {
-    .catalog-container{
-        width: 88%;
+@media (min-width:1155px) {
+    .product-item-li{
+        width: 33%;
     }
+}
+
+@media (max-width:1154px) {
     .product-list{
         justify-content: space-between;
     }
-    .product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container .color-circle{
+}
+
+@media (max-width:768px) {
+    .catalog-container {
+        width: 88%;
+    }
+
+    .product-list {
+        justify-content: space-between;
+    }
+
+    .product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container .color-circle {
         width: 15px;
         height: 15px;
     }

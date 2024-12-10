@@ -6,3 +6,8 @@
     cursor: pointer;
 }
 
+.cart-button:hover{
+    background-color: black;
+    color: white;
+}
+

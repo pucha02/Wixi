@@ -9,6 +9,7 @@ import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useState } from "react"
 import { CartPage } from "../../../pages/cartPage/CartPage"
+import { useEffect } from "react";
 import CategoryList from "../categoryList/CategoryList"
 import './Header.css'
 
@@ -21,14 +22,24 @@ import PhoneImg from '../../../../assets/svg/phone.svg'
 import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
 
-export const Header = ({notification, setNotification}) => {
+export const Header = ({ notification, setNotification }) => {
     const [viewCategories, setViewCategories] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenLogin, setIsModalOpenLogin] = useState(false);
     const [isModalOpenReg, setIsModalOpenReg] = useState(false);
+    const [isBouncing, setIsBouncing] = useState(false);
 
     const navigate = useNavigate();
     const userId = localStorage.getItem('token');
+
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIsBouncing(true);
+            setTimeout(() => setIsBouncing(false), 500); 
+        }, 10000);
+        return () => clearInterval(interval);
+    }, []);
 
     const handleToggleCategories = () => {
         setViewCategories(!viewCategories);
@@ -52,9 +63,9 @@ export const Header = ({notification, setNotification}) => {
             <div className="header-bottom-block">
                 <div className="header-bottom">
                     <div className="left-elements-block">
-                        <BurgerMenuButton 
-                            handleToggleCategories={handleToggleCategories} 
-                            viewCategories={viewCategories} 
+                        <BurgerMenuButton
+                            handleToggleCategories={handleToggleCategories}
+                            viewCategories={viewCategories}
                         />
                         <div className="search-block">
                             <SearchLoupe src={SearchLoupeImg} />
@@ -68,42 +79,45 @@ export const Header = ({notification, setNotification}) => {
                     </div>
                     <div className="right-elements-block">
                         {/* <RightHeaderElement src={PhoneImg} /> */}
-                        <RightHeaderElement 
-                            src={PersonalCabinetImg} 
-                            label={'Акаунт'} 
+                        <RightHeaderElement
+                            src={PersonalCabinetImg}
+                            label={'Акаунт'}
                             onClick={handleAccountClick} // Добавлено обработчик
                         />
-                        <RightHeaderElement src={HeartImg} label={'Вішлист'} />
-                        <RightHeaderElement 
-                            src={CartImg} 
-                            label={'Кошик'} 
-                            onClick={() => setIsModalOpen(true)} 
+                        <Link to={'/wishlist'}>
+                            <RightHeaderElement src={HeartImg} label={'Вішлист'} />
+                        </Link>
+                        <RightHeaderElement
+                            src={CartImg}
+                            label={"Кошик"}
+                            onClick={() => setIsModalOpen(true)}
                             notification={notification}
                             setNotification={setNotification}
                             products={products}
+                            className={`cart-icon ${isBouncing ? "cart-bounce" : ""}`} // Добавляем класс анимации
                         />
-                        
+
                     </div>
                 </div>
                 <CartPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
                 <div className="client-login-form-block">
-                    <ClientLoginForm 
-                        isModalOpen={isModalOpenLogin} 
-                        setIsModalOpen={setIsModalOpenLogin} 
-                        setIsModalOpenLogin={setIsModalOpenLogin} 
-                        setIsModalOpenReg={setIsModalOpenReg} 
+                    <ClientLoginForm
+                        isModalOpen={isModalOpenLogin}
+                        setIsModalOpen={setIsModalOpenLogin}
+                        setIsModalOpenLogin={setIsModalOpenLogin}
+                        setIsModalOpenReg={setIsModalOpenReg}
                     />
                 </div>
                 <div className="client-reg-form-block">
-                    <ClientRegistrationForm 
-                        isModalOpen={isModalOpenReg} 
-                        setIsModalOpen={setIsModalOpenReg} 
-                        setIsModalOpenLogin={setIsModalOpenLogin} 
-                        setIsModalOpenReg={setIsModalOpenReg} 
+                    <ClientRegistrationForm
+                        isModalOpen={isModalOpenReg}
+                        setIsModalOpen={setIsModalOpenReg}
+                        setIsModalOpenLogin={setIsModalOpenLogin}
+                        setIsModalOpenReg={setIsModalOpenReg}
                     />
                 </div>
             </div>
-            {viewCategories && <CategoryList />}
+            {viewCategories && <CategoryList setViewCategories={setViewCategories}/>}
         </div>
     );
 };

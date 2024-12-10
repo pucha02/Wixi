@@ -33,21 +33,41 @@
 .right-elements-block {
     display: flex;
     justify-content: space-between;
-    width: 500px;
+    width: 25%;
 }
 
 .left-elements-block {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 500px;
+    width: 25%;
 }
 
 .search-block {
     display: flex;
     justify-content: space-between;
-    width: 60%;
+    width: 75%;
 }
+
+@keyframes cart-bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px); /* Подпрыгивание */
+    }
+  }
+  
+  .cart-icon {
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Класс для анимации */
+  .cart-bounce {
+    animation: cart-bounce 0.5s ease-in-out;
+  }
+  
 
 @media (max-width: 768px) {
     .header-bottom {

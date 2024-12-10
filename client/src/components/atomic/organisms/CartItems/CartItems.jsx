@@ -126,7 +126,7 @@ export const CartItems = ({ updateTotalCost }) => {
                   }
                 />
               </div>
-              <div className="cart-item-cost">{product.cost}$</div>
+              <div className="cart-item-cost">{product.cost} UAH</div>
               <img
                 className="bucket-img"
                 onClick={() => handleRemoveItem(product._id, product, dispatch, removeItemCart, localProducts, (updatedProducts) => setLocalProducts(updatedProducts), removeItem, updateTotalCost)}

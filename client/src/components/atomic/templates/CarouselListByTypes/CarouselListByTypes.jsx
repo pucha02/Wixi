@@ -107,12 +107,12 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
             slidesPerView: 2, // 2 slides for mobile devices
             spaceBetween: 10, // Adjust the space between slides if necessary
           },
-          768: {
-            slidesPerView: 2, // 3 slides for tablets and larger screens
+          1000: {
+            slidesPerView: 3,
             spaceBetween: 20,
           },
-          1024: {
-            slidesPerView: 3, // 4 slides for desktops
+          1324: {
+            slidesPerView: countSlide,
             spaceBetween: 30,
           },
         }}
