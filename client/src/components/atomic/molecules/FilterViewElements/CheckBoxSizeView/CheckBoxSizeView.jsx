@@ -3,11 +3,9 @@ const CheckBoxSizeView = ({
   filterName,
   filterValue,
   isChecked,
-  renderDataFiltered
 }) => {
   const handleChange = (event) => {
-    handleCheckboxChange(filterName, filterValue, event.target.checked)
-    renderDataFiltered()
+    handleCheckboxChange(filterName, filterValue, event.target.checked);
   };
 
   return (
@@ -17,7 +15,7 @@ const CheckBoxSizeView = ({
           type="checkbox"
           name={filterName}
           value={filterValue}
-          onChange={(e)=>{handleChange(e) }}
+          onChange={handleChange}
           checked={isChecked}
         />
         {filterValue}

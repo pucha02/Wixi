@@ -56,7 +56,7 @@ function Filter({ data, filteredData }) {
   const handleCheckboxChange = (name, value, isChecked) => {
     setSelectedFilters((prevFilters) => {
       const updatedFilters = { ...prevFilters };
-
+  
       if (isChecked) {
         updatedFilters[name] = [...updatedFilters[name], value];
       } else {
@@ -64,31 +64,32 @@ function Filter({ data, filteredData }) {
           (item) => item !== value
         );
       }
-
+  
+      // После обновления состояния сразу фильтруем данные
+      renderDataFiltered(updatedFilters);
       return updatedFilters;
     });
   };
 
-  const renderDataFiltered = () => {
+  const renderDataFiltered = (currentFilters = selectedFilters) => {
     const filteredItems = data.filter((item) => {
       return item.color.some((color) => {
         const matchesColor =
-          selectedFilters.Color.length === 0 ||
-          selectedFilters.Color.includes(color.color_name);
-        console.log(matchesColor);
+          currentFilters.Color.length === 0 ||
+          currentFilters.Color.includes(color.color_name);
+  
         const matchesSize =
-          selectedFilters.Size.length === 0 ||
+          currentFilters.Size.length === 0 ||
           color.sizes.some((size) =>
-            selectedFilters.Size.includes(size.size_name)
+            currentFilters.Size.includes(size.size_name)
           );
-
+  
         const matchesPrice = item.cost >= minPrice && item.cost <= maxPrice;
-
+  
         return matchesColor && matchesSize && matchesPrice;
       });
     });
-
-    console.log(filteredItems);
+  
     filteredData(filteredItems);
   };
 
