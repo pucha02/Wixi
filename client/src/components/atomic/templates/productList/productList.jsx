@@ -39,7 +39,6 @@ const ProductList = () => {
 
   const childRefs = useRef([]);
 
-
   let { id } = useParams();
   const { getAllProductByCategory } = useGetDataProduct();
   const location = useLocation();
@@ -47,12 +46,11 @@ const ProductList = () => {
 
   const product = useSelector((state) => state.cart.items);
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     loadRecentlyViewed();
   }, []);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,13 +100,13 @@ const ProductList = () => {
   };
 
   const addToRecentlyViewed = (product) => {
-    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
+    const recentlyViewed =
+      JSON.parse(localStorage.getItem("recentlyViewed")) || [];
     if (!recentlyViewed.some((item) => item._id === product._id)) {
       recentlyViewed.push(product);
       localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed));
     }
   };
-
 
   const renderItems = (arr) => {
     const items = arr.map((item, i) => {
@@ -116,11 +114,11 @@ const ProductList = () => {
       const activeImage =
         activeColor?.img?.[0]?.img_link || "/placeholder-image.png";
 
-
       return (
         <li className="product-item-li" key={i}>
           <div className="product-item">
             <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
+
               <ProductImage src={activeImage} className={""} />
             </Link>
             <div className="name-heart">
@@ -131,14 +129,22 @@ const ProductList = () => {
                 id={item._id}
                 ref={(el) => (childRefs.current[i] = el)}
               />
-              <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
-                <ProductButtonAddToCart
-                />
-              </Link>
-            </div>
-            <div className="cost-addBtn">
-              <ProductCost cost={item.cost} discount={item.discount.percentage} />
-              {item.discount.percentage > 0 ? <ProductDiscount discount={item.discount.percentage} /> : null}
+<Link
+  to={`${location.pathname}/${item.title}`}
+  onClick={() => addToRecentlyViewed(item)}
+>
+  <ProductButtonAddToCart />
+</Link>
+</div>
+<div className="cost-addBtn">
+  <ProductCost
+    cost={item.cost}
+    discount={item.discount.percentage}
+  />
+  {item.discount.percentage > 0 ? (
+    <ProductDiscount discount={item.discount.percentage} />
+  ) : null}
+</div>
 
             </div>
             {/* <div className="cost-article">
@@ -168,11 +174,9 @@ const ProductList = () => {
   };
 
   const elements = useMemo(() => {
-
-    const finallyData = filteredData ? filteredData : data
+    const finallyData = filteredData ? filteredData : data;
     return renderItems(finallyData);
   }, [data, activeIndex, isLiked, filteredData]);
-
 
   return (
     <div className="catalog-container">
@@ -182,12 +186,14 @@ const ProductList = () => {
         {id}
       </div>
 
+
       <div className="catalog-content">
         <div className="filter-block">
           <Filter data={data} filteredData={setFilteredData} />
         </div>
         {elements}
       </div>
+
 
     </div>
   );

@@ -1,4 +1,4 @@
-const CheckBoxView = ({
+const CheckBoxSizeView = ({
   handleCheckboxChange,
   filterName,
   filterValue,
@@ -24,4 +24,4 @@ const CheckBoxView = ({
   );
 };
 
-export default CheckBoxView;
+export default CheckBoxSizeView;

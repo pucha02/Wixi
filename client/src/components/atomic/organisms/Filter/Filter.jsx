@@ -1,5 +1,11 @@
 import { useState } from "react";
+
 import './Filter.css'
+
+import FilterCostView from "../../molecules/FilterViewElements/CostView/FilterCostView";
+import CheckBoxSizeView from "../../molecules/FilterViewElements/CheckBoxSizeView/CheckBoxSizeView";
+import CheckBoxColorView from "../../molecules/FilterViewElements/CheckBoxColorView/CheckBoxColorView";
+
 
 function Filter({ data, filteredData }) {
   const sizeFilter = ["XS", "S", "M", "L", "XL"];
@@ -13,7 +19,7 @@ function Filter({ data, filteredData }) {
     "Графітовий",
     "Білий",
   ];
-  const allFilters = [sizeFilter, colorFilter];
+  const allFilters = [sizeFilter];
   const filterName = ["Size", "Color"];
 
   const [selectedFilters, setSelectedFilters] = useState({
@@ -54,7 +60,7 @@ function Filter({ data, filteredData }) {
   const handleCheckboxChange = (name, value, isChecked) => {
     setSelectedFilters((prevFilters) => {
       const updatedFilters = { ...prevFilters };
-
+  
       if (isChecked) {
         updatedFilters[name] = [...updatedFilters[name], value];
       } else {
@@ -62,31 +68,32 @@ function Filter({ data, filteredData }) {
           (item) => item !== value
         );
       }
-
+  
+      // После обновления состояния сразу фильтруем данные
+      renderDataFiltered(updatedFilters);
       return updatedFilters;
     });
   };
 
-  const renderDataFiltered = () => {
+  const renderDataFiltered = (currentFilters = selectedFilters) => {
     const filteredItems = data.filter((item) => {
       return item.color.some((color) => {
         const matchesColor =
-          selectedFilters.Color.length === 0 ||
-          selectedFilters.Color.includes(color.color_name);
-        console.log(matchesColor);
+          currentFilters.Color.length === 0 ||
+          currentFilters.Color.includes(color.color_name);
+  
         const matchesSize =
-          selectedFilters.Size.length === 0 ||
+          currentFilters.Size.length === 0 ||
           color.sizes.some((size) =>
-            selectedFilters.Size.includes(size.size_name)
+            currentFilters.Size.includes(size.size_name)
           );
-
+  
         const matchesPrice = item.cost >= minPrice && item.cost <= maxPrice;
-
+  
         return matchesColor && matchesSize && matchesPrice;
       });
     });
-
-    console.log(filteredItems);
+  
     filteredData(filteredItems);
   };
 
@@ -121,8 +128,9 @@ function Filter({ data, filteredData }) {
                 {item.map((elem, j) => {
                   return (
                     <li key={j}>
-                      <CheckBoxView
+                      <CheckBoxSizeView
                         handleCheckboxChange={handleCheckboxChange}
+                        renderDataFiltered={renderDataFiltered}
                         filterName={filterName[i]}
                         filterValue={elem}
                         isChecked={selectedFilters[filterName[i]].includes(
@@ -137,77 +145,113 @@ function Filter({ data, filteredData }) {
           );
         })}
 
+
+        <ul>
+          {filterName[1]}
+          {colorFilter.map((elem, i) => {
+            return (
+              <li>
+                <CheckBoxColorView
+                  handleCheckboxChange={handleCheckboxChange}
+                  filterName={filterName[1]}
+                  filterValue={elem}
+                  isChecked={selectedFilters[filterName[1]].includes(elem)}
+                />
+              </li>
+            );
+          })}
+        </ul>
+
+        <FilterCostView
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          handleMaxChange={handleMaxChange}
+          handleMinChange={handleMinChange}
+          handleBlurMax={handleBlurMax}
+          handleBlurMin={handleBlurMin}
+        />
+        <button
+          onClick={() => {
+            renderDataFiltered();
+            console.log(selectedFilters);
+          }}
+        >
+          Застосувати
+        </button>
+
       </ul>
     </div>
   );
 }
 
-const CostView = ({
-  minPrice,
-  handleMinChange,
-  maxPrice,
-  handleMaxChange,
-  handleBlurMin,
-  handleBlurMax,
-}) => {
-  return (
-    <div>
-      <div htmlFor="minPrice" className="filter-head">Ціна, грн</div>
-      <input
-        id="minPrice"
-        type="number"
-        value={minPrice}
-        onChange={handleMinChange}
-        onBlur={handleBlurMin}
-        style={{
-          width: "80px",
-          padding: "4px",
-          border: "1px solid #ccc",
-          borderRadius: "4px",
-          textAlign: "center",
-        }}
-      />
-      <span>–</span>
-      <input
-        id="maxPrice"
-        type="number"
-        value={maxPrice}
-        onChange={handleMaxChange}
-        onFocus={handleBlurMax}
-        style={{
-          width: "80px",
-          padding: "4px",
-          border: "1px solid #ccc",
-          borderRadius: "4px",
-          textAlign: "center",
-        }}
-      />
-    </div>
-  );
-};
 
-const CheckBoxView = ({
-  handleCheckboxChange,
-  filterName,
-  filterValue,
-  isChecked,
-}) => {
-  const handleChange = (event) => {
-    handleCheckboxChange(filterName, filterValue, event.target.checked);
-  };
+// const CostView = ({
+//   minPrice,
+//   handleMinChange,
+//   maxPrice,
+//   handleMaxChange,
+//   handleBlurMin,
+//   handleBlurMax,
+// }) => {
+//   return (
+//     <div>
+//       <div htmlFor="minPrice" className="filter-head">Ціна, грн</div>
+//       <input
+//         id="minPrice"
+//         type="number"
+//         value={minPrice}
+//         onChange={handleMinChange}
+//         onBlur={handleBlurMin}
+//         style={{
+//           width: "80px",
+//           padding: "4px",
+//           border: "1px solid #ccc",
+//           borderRadius: "4px",
+//           textAlign: "center",
+//         }}
+//       />
+//       <span>–</span>
+//       <input
+//         id="maxPrice"
+//         type="number"
+//         value={maxPrice}
+//         onChange={handleMaxChange}
+//         onFocus={handleBlurMax}
+//         style={{
+//           width: "80px",
+//           padding: "4px",
+//           border: "1px solid #ccc",
+//           borderRadius: "4px",
+//           textAlign: "center",
+//         }}
+//       />
+//     </div>
+//   );
+// };
 
-  return (
-    <div className="filter-checkbox">
-        <input
-          type="checkbox"
-          name={filterName}
-          value={filterValue}
-          onChange={handleChange}
-          checked={isChecked}
-        />
-        <div className="filter-value">{filterValue}</div>
-    </div>
-  );
-};
+// const CheckBoxView = ({
+//   handleCheckboxChange,
+//   filterName,
+//   filterValue,
+//   isChecked,
+// }) => {
+//   const handleChange = (event) => {
+//     handleCheckboxChange(filterName, filterValue, event.target.checked);
+//   };
+
+//   return (
+//     <div className="filter-checkbox">
+//         <input
+//           type="checkbox"
+//           name={filterName}
+//           value={filterValue}
+//           onChange={handleChange}
+//           checked={isChecked}
+//         />
+//         <div className="filter-value">{filterValue}</div>
+//     </div>
+//   );
+// };
+
 
 export default Filter;
