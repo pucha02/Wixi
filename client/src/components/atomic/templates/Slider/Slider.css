@@ -1,4 +1,4 @@
-* {
+/* * {
     box-sizing: border-box;
 }
 
@@ -91,8 +91,8 @@
   }
 
   .slider-container {
-    overflow: hidden; /* Убедитесь, что нет ограничения для скролла */
-    touch-action: none; /* Убираем поведение свайпа */
+    overflow: hidden; 
+    touch-action: none; 
   }
   
   .slide-block img {
@@ -105,5 +105,117 @@
 @media (max-width:768px) {
   .slider-container {
     margin-top: 90px;
+  }
+} */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.slider-container {
+  width: 100%;
+  margin-top: 130px;
+  overflow: hidden;
+  position: relative;
+}
+
+.slide-block {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.slide-block img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.slide-block img.zoomed {
+  transform: scale(2); /* Зум по клику */
+  cursor: zoom-out;
+}
+
+.slider {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 300px;
+}
+
+.slider .slide {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.navigation-buttons {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navigation-buttons button {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.navigation-buttons button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.thumbnails {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  overflow-x: auto;
+  gap: 10px;
+}
+
+.thumbnails img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.thumbnails img.active-thumbnail {
+  border-color: #000;
+}
+
+@media (max-width: 768px) {
+  .slider-container {
+    margin-top: 90px;
+  }
+
+  .thumbnails img {
+    width: 50px;
+    height: 50px;
   }
 }
