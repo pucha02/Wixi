@@ -1,16 +1,16 @@
 import { Header } from "../../atomic/templates/Header/Header";
 import MySlider from "../../atomic/templates/Slider/Slider";
+import MySliderTest from "../../atomic/templates/Slider/Slider";
 import HotStripDiscount from "../../../common/HotStripDiscount/HotStripDiscount";
 import { CarouselListByTypes } from "../../atomic/templates/CarouselListByTypes/CarouselListByTypes";
 import { Footer } from "../../atomic/templates/Footer/Footer";
 import { useEffect } from "react";
 import { useState } from "react";
 import './mainPage.css'
-import Banner1 from '../../../assets/svg/banner1.svg'
+import Banner1 from '../../../assets/svg/baners/girls-2.png'
 import Banner2 from '../../../assets/svg/banner2.svg'
 import Banner3 from '../../../assets/svg/banner3.svg'
 import Banner4 from '../../../assets/svg/banner4.svg'
-
 
 export const MainPage = () => {
     const [viewMobileFilter, setViewMobileFilter] = useState(false)
