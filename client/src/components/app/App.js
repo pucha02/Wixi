@@ -9,6 +9,7 @@ import { CartPage } from "../pages/cartPage/CartPage";
 import { MainPage } from "../pages/mainPage/mainPage";
 import { UserProfilePage } from "../pages/userProfilePage/userProfilePage";
 import { WishListPage } from "../pages/wishListPage/wishListPage";
+import { SearchedProductPage } from "../pages/searchedProductPage/searchedProductPage";
 
 const App = () => {
   return (
@@ -25,6 +26,8 @@ const App = () => {
           <Route path="/login" element={<ClientLoginForm />} />
           <Route path="/profile" element={<UserProfilePage />} />
           <Route path="/wishlist" element={<WishListPage />} />
+          <Route path="/searchedproducts" element={<SearchedProductPage />} />
+
         </Routes>
       </Router>
       {/* <TestButtonShowCart /> */}

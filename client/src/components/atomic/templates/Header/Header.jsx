@@ -7,7 +7,7 @@ import ClientLoginForm from "../../organisms/ClientLoginForm/ClientLoginForm"
 import ClientRegistrationForm from "../../organisms/ClientRegistrationForm/ClientRegistrationForm"
 import { Logo } from "../../atoms/Header/Logo/Logo"
 import { Link } from "react-router-dom"
-
+import { MobileSearchModal } from "../../organisms/MobileSearchModal/MobileSearchModal";
 import { useState } from "react"
 import { CartPage } from "../../../pages/cartPage/CartPage"
 import { useEffect } from "react";
@@ -25,14 +25,15 @@ import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
 
 export const Header = ({ notification, setNotification, viewMobileFilter, setViewMobileFilter }) => {
-    const [overlayVisible, setOverlayVisible] = useState(false);  // Добавление состояния для оверлея
+    const [overlayVisible, setOverlayVisible] = useState(false);
 
     const [viewCategories, setViewCategories] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalSearchOpen, setIsModalSearchOpen] = useState(false);
     const [isModalOpenLogin, setIsModalOpenLogin] = useState(false);
     const [isModalOpenReg, setIsModalOpenReg] = useState(false);
     const [isBouncing, setIsBouncing] = useState(false);
-    const [wishlist, setWishlist] = useState([]); // Состояние для отслеживания wishlist
+    const [wishlist, setWishlist] = useState([]);
 
     const navigate = useNavigate();
     const userId = localStorage.getItem("token");
@@ -92,7 +93,7 @@ export const Header = ({ notification, setNotification, viewMobileFilter, setVie
                             viewCategories={viewCategories}
                         />
                         <div className="search-block">
-                            <SearchLoupe src={SearchLoupeImg} />
+                            <SearchLoupe setIsModalSearchOpen={setIsModalSearchOpen} src={SearchLoupeImg} />
                             <SearchBar />
                         </div>
                     </div>
@@ -117,7 +118,7 @@ export const Header = ({ notification, setNotification, viewMobileFilter, setVie
                         <RightHeaderElement
                             src={CartImg}
                             label={"Кошик"}
-                            onClick={() => {setIsModalOpen(true); setIsModalOpenLogin(false); setOverlayVisible(false); setViewCategories(false); setViewMobileFilter(false)}}
+                            onClick={() => { setIsModalOpen(true); setIsModalOpenLogin(false); setOverlayVisible(false); setViewCategories(false); setViewMobileFilter(false) }}
                             notification={notification}
                             setNotification={setNotification}
                             products={products}
@@ -125,7 +126,11 @@ export const Header = ({ notification, setNotification, viewMobileFilter, setVie
                         />
                     </div>
                 </div>
+
                 <CartPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+                <div className="mobile-search">
+                    <MobileSearchModal isModalOpen={isModalSearchOpen} setIsModalOpen={setIsModalSearchOpen} isOpenSearch={isModalSearchOpen} />
+                </div>
                 <div className="client-login-form-block">
                     <ClientLoginForm
                         isModalOpen={isModalOpenLogin}

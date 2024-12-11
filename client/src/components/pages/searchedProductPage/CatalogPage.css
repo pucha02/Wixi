@@ -1,0 +1,29 @@
+.main{
+    display: block;
+    position: relative;
+}
+
+.filter-block{
+    width: 260px;
+}
+
+.product-list-block{
+    width: 100%;
+}
+
+.catalog-page-container{
+    width: 90%;
+    margin: 0 auto;
+}
+
+@media (max-width:768px) {
+    .product-list-block{
+        width: 100%;
+        margin: 0;
+    }
+    .filter-block{
+        display: none;
+        position: absolute;
+        z-index: 1000;
+    }
+}

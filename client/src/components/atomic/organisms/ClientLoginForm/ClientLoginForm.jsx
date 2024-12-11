@@ -27,7 +27,7 @@ const ClientLoginForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, set
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/auth/login-user', {
+            const response = await fetch('http://16.171.32.44/api/auth/login-user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -34,7 +34,7 @@ export const DeliveryInfo = () => {
 
     useEffect(() => {
         axios
-            .post('http://localhost:5000/api/novaposhta', {
+            .post('http://16.171.32.44/api/novaposhta', {
                 modelName: 'Address',
                 calledMethod: 'getAreas',
                 methodProperties: {},
@@ -52,7 +52,7 @@ export const DeliveryInfo = () => {
     useEffect(() => {
         if (selectedArea) {
             axios
-                .post('http://localhost:5000/api/novaposhta', {
+                .post('http://16.171.32.44/api/novaposhta', {
                     modelName: 'Address',
                     calledMethod: 'getCities',
                     methodProperties: { AreaRef: selectedArea.value },
@@ -72,7 +72,7 @@ export const DeliveryInfo = () => {
     useEffect(() => {
         if (selectedCity) {
             axios
-                .post('http://localhost:5000/api/novaposhta', {
+                .post('http://16.171.32.44/api/novaposhta', {
                     modelName: 'Address',
                     calledMethod: 'getWarehouses',
                     methodProperties: { CityRef: selectedCity.value },
@@ -99,7 +99,7 @@ export const DeliveryInfo = () => {
 
                 // Загружаем города для выбранной области
                 axios
-                    .post('http://localhost:5000/api/novaposhta', {
+                    .post('http://16.171.32.44/api/novaposhta', {
                         modelName: 'Address',
                         calledMethod: 'getCities',
                         methodProperties: { AreaRef: initialArea.value },
@@ -118,7 +118,7 @@ export const DeliveryInfo = () => {
 
                             // Загружаем отделения для выбранного города
                             axios
-                                .post('http://localhost:5000/api/novaposhta', {
+                                .post('http://16.171.32.44/api/novaposhta', {
                                     modelName: 'Address',
                                     calledMethod: 'getWarehouses',
                                     methodProperties: { CityRef: initialCity.value },

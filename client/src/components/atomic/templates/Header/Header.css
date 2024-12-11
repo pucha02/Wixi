@@ -5,6 +5,13 @@
     z-index: 1300;
 }
 
+.mobile-search{
+    display: none;
+    
+}
+
+
+
 .header-top {
     display: flex;
     align-items: center;
@@ -75,6 +82,16 @@
 
 
 @media (max-width: 768px) {
+    .header .search-bar{
+        display: none;
+    }
+    .mobile-search .search-bar{
+        display: block;
+    }
+    .mobile-search{
+        display: block;
+        
+    }
     .header-bottom {
         width: 95%;
         height: 50px;
