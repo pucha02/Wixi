@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.css": "/static/css/main.0db47eb5.css",
-    "main.js": "/static/js/main.a0ebc25d.js",
+    "main.css": "/static/css/main.9d9a11d2.css",
+    "main.js": "/static/js/main.fe256be1.js",
     "static/media/banner4.svg": "/static/media/banner4.1afe799188b6a49f58686b6bf90e66c9.svg",
     "static/media/banner3.svg": "/static/media/banner3.860dc0b08b5a74ee6eb485ade76d919b.svg",
     "static/media/banner2.svg": "/static/media/banner2.2fae8c6b3ca5f7b332e96eb0e931b6d5.svg",
-    "static/media/banner1.svg": "/static/media/banner1.c5a1dd6f214ec83d7e003482241950a2.svg",
+    "static/media/girls-2.png": "/static/media/girls-2.e1906b8385881ab5a626.png",
     "static/media/inst-logo.svg": "/static/media/inst-logo.014eeba126a9329c2b74d0bcec6f2cb1.svg",
     "static/media/footer-logo.svg": "/static/media/footer-logo.af5551081c25296217c9a4cb327d5c00.svg",
     "static/media/tg-logo.svg": "/static/media/tg-logo.f22becfd303a2bc437b8f1d9992a39bc.svg",
@@ -33,11 +33,11 @@
     "static/media/footerClock.svg": "/static/media/footerClock.acb61af5cf492dbadb194bb8d5497882.svg",
     "static/media/footerInfo.svg": "/static/media/footerInfo.4b016042ca976b5950baed98b98741dc.svg",
     "static/media/loupe.svg": "/static/media/loupe.102c3dcccbe0e8a0c95a6264152f79a5.svg",
-    "main.0db47eb5.css.map": "/static/css/main.0db47eb5.css.map",
-    "main.a0ebc25d.js.map": "/static/js/main.a0ebc25d.js.map"
+    "main.9d9a11d2.css.map": "/static/css/main.9d9a11d2.css.map",
+    "main.fe256be1.js.map": "/static/js/main.fe256be1.js.map"
   },
   "entrypoints": [
-    "static/css/main.0db47eb5.css",
-    "static/js/main.a0ebc25d.js"
+    "static/css/main.9d9a11d2.css",
+    "static/js/main.fe256be1.js"
   ]
 }

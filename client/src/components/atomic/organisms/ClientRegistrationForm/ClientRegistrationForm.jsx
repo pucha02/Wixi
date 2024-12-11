@@ -44,11 +44,13 @@ const ClientRegistrationForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLog
             if (response.status === 400) {
                 alert('Користувач з таким номером телефону вже існує');
             }
+
             else if (response.status === 201) {
                 alert('Реєстрація пройшла успішно');
             } else {
                 throw new Error('Помилка під час реєстрації');
             }
+            
         } catch (error) {
             console.log('Помилка під час реєстрації');
         }

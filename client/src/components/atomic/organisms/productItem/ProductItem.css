@@ -147,9 +147,14 @@
     
     .product-page-container .heart-container{
         position: absolute;
-        top: 15px;
+        top: 27px;
         right: 15px;
         
+    }
+
+    .product-page-container .product-discount{
+        top: 15px;
+        left: 4px;
     }
 
     .product-page-container .heart-container img{
