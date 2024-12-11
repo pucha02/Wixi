@@ -31,6 +31,21 @@
     margin-top: 190px;
 }
 
+.product-page-container .product-page-data-block .heart-container{
+  
+        display: flex
+    ;
+        height: max-content;
+        justify-content: start;
+        align-items: center;
+        cursor: pointer;
+        position: absolute;
+        top: 15px;
+        left: -100px;
+        
+    
+}
+
 .product-page-data-block {
     display: flex;
     justify-content: space-between;
@@ -118,6 +133,10 @@
 }
 
 @media (max-width: 768px) {
+
+    .product-page-container .product-page-data-block .heart-container{
+        left: auto;
+    }
 
     .product-page-container{
         position: relative;

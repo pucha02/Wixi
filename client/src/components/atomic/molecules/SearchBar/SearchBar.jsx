@@ -2,15 +2,16 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import "./SearchBar.css";
 import useGetDataProduct from "../../../../services/FetchData";
 import debounce from "lodash.debounce";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const SearchBar = () => {
+const SearchBar = ({ setIsModalOpen = null }) => {
   const [query, setQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(false); // Для управления фокусом
   const { getAllProductBySearch } = useGetDataProduct();
   const searchBarRef = useRef(null); // Ссылка на контейнер поиска
+  const navigate = useNavigate(); // Хук для навигации
 
   const fetchAndFilterProducts = useCallback(
     debounce(async (searchQuery) => {
@@ -48,6 +49,20 @@ const SearchBar = () => {
     }
   };
 
+  const handleSearchRedirect = () => {
+    if (filteredProducts.length) {
+      if(setIsModalOpen){
+        setIsModalOpen(false);
+      }
+      setQuery('')
+      localStorage.setItem("searchedProducts", JSON.stringify(filteredProducts)); // Опционально
+      navigate("/searchedproducts", { state: { searchResults: filteredProducts } }); // Передаём данные через state
+      window.scrollTo(0, 0);
+    }
+  };
+
+
+
   useEffect(() => {
     // Добавляем обработчик клика
     document.addEventListener("mousedown", handleOutsideClick);
@@ -83,6 +98,9 @@ const SearchBar = () => {
                 </Link>
               );
             })}
+            <button className="search-button-comp" onClick={handleSearchRedirect}>
+              УСІ ЗНАЙДЕНІ ТОВАРИ
+            </button>
           </ul>
         ) : (
           <p className="no-results">Товарів не знайдено</p>
@@ -101,8 +119,12 @@ const SearchBar = () => {
         onChange={handleInputChange}
         onFocus={() => setIsFocused(true)} // Обработка фокуса
       />
+
       {isLoading && <p>Завантаження...</p>}
       {!isLoading && query && renderItems(filteredProducts)}
+      <button className="search-button-mobile" onClick={handleSearchRedirect}>
+        Пошук
+      </button>
     </div>
   );
 };

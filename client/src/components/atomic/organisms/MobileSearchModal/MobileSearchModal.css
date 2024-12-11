@@ -1,0 +1,43 @@
+.mobile-search-modal .search-bar{
+    width: 100%;
+    margin-left: 0;
+    border: 0.5px solid;
+    height: 35px;
+    margin-top: 30px;
+}
+
+.mobile-search-modal .modal-overlay{
+    align-items: start;
+}
+
+.mobile-search-modal .modal-content{
+    min-height: 400px;
+    justify-content: start;
+    top: 0%;
+    margin-top: 90px;
+    height: 100%;
+}
+
+.mobile-search-modal .search-bar .search-results{
+    position: unset;
+    margin-top: 10px;
+}
+
+.mobile-search-modal .search-bar .search-results .search-item{
+    height: 66px;
+    padding: 5px;
+}
+
+.mobile-search-modal .search-bar .search-results .search-item img{
+    width: 60px;
+    height: 60px;
+}
+
+.mobile-search-modal .search-bar .search-input{
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    border: 0;
+    font-size: 15px;
+    height: 100%;
+    margin-left: 6px;
+}

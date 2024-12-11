@@ -74,7 +74,7 @@ export const RegisterOrder = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:5000/api/orders/register-order", {
+            const response = await fetch("http://16.171.32.44/api/orders/register-order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(orderDetails),

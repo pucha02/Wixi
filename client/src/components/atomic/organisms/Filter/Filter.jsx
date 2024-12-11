@@ -103,8 +103,6 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
           (item) => item !== value
         );
       }
-
-      // После обновления состояния сразу фильтруем данные
       renderDataFiltered(updatedFilters);
       return updatedFilters;
     });
@@ -123,7 +121,6 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
             currentFilters.Size.includes(size.size_name)
           );
 
-          
         let matchesPrice
         
           if (item.discount.percentage === 0) {

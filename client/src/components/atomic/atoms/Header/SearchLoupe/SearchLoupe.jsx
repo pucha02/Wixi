@@ -1,9 +1,9 @@
 import './SearchLoupe.css'
 
-export const SearchLoupe = ({ src }) => {
+export const SearchLoupe = ({ src, setIsModalSearchOpen=null }) => {
     return (
         <div className="search-loupe">
-            <img src={src} alt="" />
+            <img onClick={()=>setIsModalSearchOpen(true)} src={src} alt="" />
         </div>
     )
 }
