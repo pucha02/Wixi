@@ -5,17 +5,18 @@ import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
 import { ProductDiscount } from "../../atoms/atomsProduct/Discount/Discount";
 import { ColorList } from "../../molecules/ColorList/ColorList";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
-
-import { addItem } from "../../../../redux/reducers/cartReducer";
-import { addItemToCart } from "../../../../redux/reducers/cartReducer";
-
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useGetDataProduct from "../../../../services/FetchData";
-import { handleAddToCart } from "../../../../utils/cartOperations";
 import { Link } from "react-router-dom";
+import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
+import HeartIcon2 from "../../../../assets/svg/little-heart-3.svg";
+import {
+  addItemToWishlist,
+  removeItemFromWishlist,
+} from "../../../../redux/reducers/wishlistReducer";
 
-// Swiper imports
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -25,12 +26,16 @@ import { Pagination, Navigation } from "swiper/modules";
 import "./CarouselListByTypes.css";
 
 export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) => {
+
   const [data, setData] = useState([]);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setLiked] = useState();
+  const [likedItems, setLikedItems] = useState({});
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
   const { getProductByType } = useGetDataProduct();
   const dispatch = useDispatch();
+  const childRefs = useRef([]);
+  const storedLikes = useSelector((state) => state.wishlist.items);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,11 +57,36 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
       fetchData();
     }
   }, [type, getdata]);
+
   const token = localStorage.getItem("token");
 
+  useEffect(() => {
+    const initialLikedItems = {};
+    storedLikes.forEach((item) => {
+      initialLikedItems[item._id] = true;
+    });
+    setLikedItems(initialLikedItems);
+  }, [storedLikes]);
+
+  const handleAddToWishlist = (product, index) => {
+    const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
+    const activeImage = product.color?.[product.activeIndex]?.img?.[0]?.img_link || "/placeholder-image.png";
+    const item = { title: product.title, _id: product._id, cost: product.cost, img: activeImage, color: activeColor, category: product.category };
+
+    const isCurrentlyLiked = !!likedItems[product._id]; // Проверяем, лайкнут ли товар
+
+    if (isCurrentlyLiked) {
+      dispatch(removeItemFromWishlist(item));
+    } else {
+      dispatch(addItemToWishlist(item));
+    }
+
+    // Обновляем локальное состояние сразу
+    setLikedItems((prev) => ({ ...prev, [product._id]: !isCurrentlyLiked }));
+  };
 
   const renderItems = (arr) => {
-    return arr.map((item) => {
+    return arr.map((item, i) => {
       const activeColor = item.color?.[item.activeIndex] || item.color?.[0];
       const activeImage = activeColor?.img?.[0]?.img_link || "/placeholder-image.png";
 
@@ -69,8 +99,12 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
             <div className="name-heart">
               <ProductName name={item.title} />
               <ProductHeart
-                isLiked={isLiked}
-                toggleHeart={() => setIsLiked(!isLiked)}
+                src={HeartIcon}
+                src2={HeartIcon2}
+                toggleHeart={() => handleAddToWishlist(item, i)}
+                id={item._id}
+                isLiked={likedItems[item._id]} // Передаем состояние напрямую
+                ref={(el) => (childRefs.current[i] = el)}
               />
               {/* <ProductButtonAddToCart
                 handleAddToCart={() => handleAddToCart(item, activeColor, dispatch, addItemToCart, addItem, token

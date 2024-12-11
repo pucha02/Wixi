@@ -4,7 +4,7 @@ import FilterCostView from "../../molecules/FilterViewElements/CostView/FilterCo
 import CheckBoxSizeView from "../../molecules/FilterViewElements/CheckBoxSizeView/CheckBoxSizeView";
 import CheckBoxColorView from "../../molecules/FilterViewElements/CheckBoxColorView/CheckBoxColorView";
 
-function Filter({ data, filteredData }) {
+function Filter({ data, filteredData, setViewMobileFilter }) {
   const sizeFilter = ["XS", "S", "M", "L", "XL"];
   const colorFilter = [
     "Чорний",
@@ -58,10 +58,11 @@ function Filter({ data, filteredData }) {
         });
       });
     });
-
+    
     setAvailableSizes([...sizes]);
     setAvailableColors([...colors]);
   }, [data]);
+  
 
   const handleMinChange = (e) => {
     const value = Number(e.target.value);
@@ -153,15 +154,7 @@ function Filter({ data, filteredData }) {
             handleBlurMax={handleBlurMax}
             handleBlurMin={handleBlurMin}
           />
-          <button
-          className="price-filter-btn"
-            onClick={() => {
-              renderDataFiltered();
-              console.log(selectedFilters);
-            }}
-          >
-            ОК
-          </button>
+          
         </div>
 
         {/* Фильтр размеров */}
@@ -203,7 +196,19 @@ function Filter({ data, filteredData }) {
               )
             ))}
           </ul>
+          
         )}
+        <button
+          className="price-filter-btn"
+            onClick={() => {
+              renderDataFiltered();
+              if(setViewMobileFilter){
+                setViewMobileFilter(false)
+              }
+            }}
+          >
+            ПОКАЗАТИ ОБРАНІ ТОВАРИ
+          </button>
       </ul>
     </div>
   );

@@ -2,7 +2,7 @@ import { ProductColor } from "../../atoms/atomsProduct/Color/Color";
 import { ProductSize } from "../../atoms/atomsProduct/Size/ProductSize";
 import './ColorList.css';
 
-export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, activeSize, classname, notifications }) => {
+export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, activeSize, classname, sizeError }) => {
   const activeColor = colors[activeIndex];
 
   return (
@@ -38,15 +38,17 @@ export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, 
           <div>РОЗМІР</div>
           {/* {notifications && <div className="notification">{notifications}</div>} */}
           {activeColor.sizes.map((size, sizeIndex) => (
-              <ProductSize
-                key={sizeIndex}
-                size={size.size_name}
-                available={size.availableQuantity > 0}
-                className={size.availableQuantity === 0 ? "inactive" : ""}
-                onClick={setActiveSize}
-                isActive={activeSize === size.size_name}
-              />
+            <ProductSize
+              key={sizeIndex}
+              size={size.size_name}
+              available={size.availableQuantity > 0}
+              className={size.availableQuantity === 0 ? "inactive" : ""}
+              onClick={setActiveSize}
+              isActive={activeSize === size.size_name}
+            />
+
           ))}
+          {sizeError && <div className="size-error">Будь ласка, оберіть розмір товару.</div>}
         </div>
       )}
     </div>

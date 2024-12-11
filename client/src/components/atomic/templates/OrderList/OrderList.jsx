@@ -47,12 +47,15 @@ export const OrdersList = () => {
                                 <div className="order-info">
                                     <img src={order.products[0].img} alt="" />
                                     <div className="order-total">{order.totalCost} UAH</div>
-                                    <div>ЗАМОВЛЕННЯ №: {order.order_number}, {order.date}  <div
-                                        className={`order-status ${order.status === "Оформлено" ? "status-delivered" : "status-canceled"
-                                            }`}
-                                    >
-                                        {order.status}
-                                    </div></div>
+                                    <div>
+                                        ЗАМОВЛЕННЯ №: {order.order_number}, {order.date}
+                                        <div
+                                            className={`order-status ${order.status === "Оформлено" ? "status-delivered" : "status-canceled"
+                                                }`}
+                                        >
+                                            {order.status}
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -60,7 +63,13 @@ export const OrdersList = () => {
                                 className={`toggle-arrow ${expandedOrder === index ? "expanded" : ""}`}
                                 onClick={() => toggleOrder(index)}
                             >
-                                {expandedOrder === index ? "▴" : "▾"}
+                                {expandedOrder === index ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up">
+                                    < polyline points="18 15 12 9 6 15"></polyline>
+                                </svg> :
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>}
+
                             </div>
                         </div>
                         {/* Детали заказа */}

@@ -9,6 +9,7 @@
   padding: 0px 0 30px 0;
   margin: 0 auto;
   overflow-x: hidden;
+  width: 95%;
 }
 
 .carousel-container {
@@ -101,7 +102,7 @@
   margin: 0;
 }
 
-@media (max-width: 1310px) {
+@media (max-width: 1360px) {
   .product-item.main-page{
     width: 320px;
   }
@@ -117,5 +118,13 @@
   }
   .product-item.main-page{
     width: 150px;
+  }
+
+  .main-container .mySwiper .swiper-wrapper .swiper-slide .product-item.main-page{
+    width: 95%;
+  }
+
+  .main-container{
+    width: 90%;
   }
 }

@@ -154,6 +154,7 @@
     display: flex;
     width: 100%;
   }
+  
 
   @media (max-width:786px) {
     .order-info{
@@ -174,5 +175,9 @@
     .order-total{
         margin-top: 10px;
         margin-bottom: 10px;
+    }
+    .order-info img{
+      order: 3;
+      margin-top: 18px;
     }
   }

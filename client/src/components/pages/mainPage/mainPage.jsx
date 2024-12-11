@@ -4,6 +4,7 @@ import HotStripDiscount from "../../../common/HotStripDiscount/HotStripDiscount"
 import { CarouselListByTypes } from "../../atomic/templates/CarouselListByTypes/CarouselListByTypes";
 import { Footer } from "../../atomic/templates/Footer/Footer";
 import { useEffect } from "react";
+import { useState } from "react";
 import './mainPage.css'
 import Banner1 from '../../../assets/svg/banner1.svg'
 import Banner2 from '../../../assets/svg/banner2.svg'
@@ -12,6 +13,7 @@ import Banner4 from '../../../assets/svg/banner4.svg'
 
 
 export const MainPage = () => {
+    const [viewMobileFilter, setViewMobileFilter] = useState(false)
     useEffect(() => {
         window.scrollTo(0, 0);
         
@@ -24,7 +26,7 @@ export const MainPage = () => {
     ];
     return (
         <>
-            <Header />
+            <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter}/>
             <MySlider images={images} />
             <HotStripDiscount content={'ЗНИЖКИ!'}/>
             <CarouselListByTypes type={'sale'}/>

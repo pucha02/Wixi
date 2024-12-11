@@ -17,18 +17,27 @@
 }
 
 @media (max-width:768px) {
+
+    .login-form{
+        width: 100%;
+    }
+
     .login-form-modal .modal-overlay .modal-content {
-        padding: 20px;
+        padding: 30px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
 
-    
+    .login-form-info{
+        font-size: 12px;
+        margin-top: 30px;
+    }
 
     .login-form-head {
-        font-size: 18px;
+        font-size: 15px;
         width: 100%;
+        margin-bottom: 15px;
     }
 }

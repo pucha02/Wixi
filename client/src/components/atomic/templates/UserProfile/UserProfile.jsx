@@ -41,7 +41,7 @@ function UserProfile() {
         { id: "deliveryAddress", label: "АДРЕСА ДОСТАВКИ", src: UserProfDeliveryImg },
         { id: "orderHistory", label: "ІСТОРІЯ ЗАМОВЛЕНЬ", src: UserProfOrderImg },
         { id: "promocodes", label: "МОЇ ПРОМОКОДИ", src: UserProfPromocodeImg },
-        { id: "logout", label: "ВИЙТИ", src: UserProfLogoutImg, onClick: () => handleLogout(setUser, navigate) }
+        // { id: "logout", label: "ВИЙТИ", src: UserProfLogoutImg, onClick: () => handleLogout(setUser, navigate) }
     ];
 
     const renderTabContent = () => {
@@ -98,6 +98,9 @@ function UserProfile() {
                         activeTab={activeTab}
                         onTabChange={setActiveTab}
                         renderContent={renderTabContent}
+                        handleLogout={handleLogout}
+                        navigate={navigate}
+                        setUser={setUser}
                     />
                 </div>
                 <div className="tab-content-container">

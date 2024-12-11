@@ -1,21 +1,17 @@
 import React from "react";
 import "./Heart.css";
+import { useSelector } from "react-redux";
 
-
-export const ProductHeart = React.forwardRef(({ src, toggleHeart, id }, ref) => {
-  const storedArray = JSON.parse(localStorage.getItem("wishlist")) || []; // Защита от null
-
-  // Проверяем, есть ли объект с таким id
-  const foundItem = storedArray.find((item) => item._id === id);
-
+export const ProductHeart = React.forwardRef(({ src, src2, toggleHeart, id, isLiked }, ref) => {
   return (
     <div className="heart-container" onClick={toggleHeart}>
       <img 
-        src={src} 
+        src={isLiked ? src2 : src} 
         alt="" 
         ref={ref} 
-        className={foundItem ? "liked" : ""} // Если найден, добавляем класс
+        className={isLiked ? "liked" : ""} // Если найден, добавляем класс
       />
     </div>
   );
 });
+

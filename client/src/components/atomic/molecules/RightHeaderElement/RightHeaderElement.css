@@ -11,6 +11,10 @@
     border-radius: 5px;
 }
 
+.right-header-el-count-block{
+    position: relative;
+}
+
 /* Псевдоэлемент для треугольника */
 .notification::after {
     content: '';
@@ -48,24 +52,34 @@
 }
 
 @media (max-width: 768px) {
+
     .right-header-el .header-label{
         display: none;
     }
+    .right-header-el{
+        position: unset;
+    }
     .notification{
-        left: -400%;
+        width: 100%;
         font-size: 12px;
+        border-radius: 0;
     }
     .notification::after {
         content: '';
         position: absolute;
-        top: -10px;  /* Положение треугольника выше блока уведомления */
-        left: 50%;
-        transform: translateX(-50%);
-        border-left: 0;
-        border-right: 0;
-        border-bottom: 0;  /* Цвет треугольника, совпадает с фоном уведомления */
+
     }
     .right-header-el-count{
-        right: -5px;
+        position: absolute;
+    background-color: #8F8D8D;
+    border-radius: 30px;
+    width: 10px;
+    height: 10px;
+    font-size: 9px;
+    top: -4px;
+    right: -2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     }
 }

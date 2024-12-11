@@ -6,11 +6,6 @@ import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
 import { ProductDiscount } from "../../atoms/atomsProduct/Discount/Discount";
 import { ColorList } from "../../molecules/ColorList/ColorList";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
-import { CarouselListByTypes } from "../CarouselListByTypes/CarouselListByTypes";
-import { handleAddToCart } from "../../../../utils/cartOperations";
-import { handleAddToWishList } from "../../../../utils/wishListOperations";
-import { addItem } from "../../../../redux/reducers/cartReducer";
-import { addItemToCart } from "../../../../redux/reducers/cartReducer";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -27,13 +22,13 @@ import {
   removeItemFromWishlist,
 } from "../../../../redux/reducers/wishlistReducer";
 
-const ProductList = () => {
+const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   const [data, setData] = useState([]);
 
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [activeSize, setActiveSize] = useState(0);
-  const [viewMobileFilter, setViewMobileFilter] = useState(false)
+  
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLiked, setLiked] = useState();
@@ -46,13 +41,12 @@ const ProductList = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const product = useSelector((state) => state.cart.items);
-
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     loadRecentlyViewed();
   }, []);
+
+  const storedLikes = useSelector((state) => state.wishlist.items);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,23 +73,31 @@ const ProductList = () => {
     setRecentlyViewed(data);
   };
 
+  useEffect(() => {
+    const initialLikedItems = {};
+    storedLikes.forEach((item) => {
+      initialLikedItems[item._id] = true;
+    });
+    setLikedItems(initialLikedItems);
+  }, [storedLikes]);
+
   const handleAddToWishlist = (product, index) => {
     const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
     const activeImage = product.color?.[product.activeIndex]?.img?.[0]?.img_link || "/placeholder-image.png";
     const item = { title: product.title, _id: product._id, cost: product.cost, img: activeImage, color: activeColor, category: product.category };
 
-    const isCurrentlyLiked = likedItems[product._id];
+    const isCurrentlyLiked = !!likedItems[product._id]; // Проверяем, лайкнут ли товар
 
     if (isCurrentlyLiked) {
       dispatch(removeItemFromWishlist(item));
-      setLikedItems((prev) => ({ ...prev, [product._id]: false }));
     } else {
       dispatch(addItemToWishlist(item));
-      setLikedItems((prev) => ({ ...prev, [product._id]: true }));
     }
 
-    setLiked(!isLiked); // Обновление общего состояния лайков
+    // Обновляем локальное состояние сразу
+    setLikedItems((prev) => ({ ...prev, [product._id]: !isCurrentlyLiked }));
   };
+
 
 
   const handleSetActiveIndex = (productId, index) => {
@@ -143,11 +145,14 @@ const ProductList = () => {
             <div className="name-heart">
               <ProductName name={item.title} className={""} />
               <ProductHeart
-                src={likedItems[item._id] ? HeartIcon2 : HeartIcon} // Условное переключение иконки
+                src={HeartIcon}
+                src2={HeartIcon2}
                 toggleHeart={() => handleAddToWishlist(item, i)}
                 id={item._id}
+                isLiked={likedItems[item._id]} // Передаем состояние напрямую
                 ref={(el) => (childRefs.current[i] = el)}
               />
+
 
               <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
                 <ProductButtonAddToCart
@@ -188,25 +193,35 @@ const ProductList = () => {
   const elements = useMemo(() => {
     const finallyData = filteredData ? filteredData : data;
     return renderItems(finallyData);
-  }, [data, activeIndex, isLiked, filteredData]);
+  }, [data, activeIndex, isLiked, filteredData, storedLikes]);
 
   return (
     <div className="catalog-container">
-      <div className="category-title">
-        {id}
-      </div>
-      <FilterIcon src={FilterImg} onClick={handleViewMobileFilter} />
-      <div className="catalog-content">
-        <div className="filter-block">
-          <Filter data={data} filteredData={setFilteredData} />
-        </div>
-        {viewMobileFilter && <div className="filter-block-mobile">
-          <div className="close-filter-block-mobile" onClick={() => setViewMobileFilter(false)}> &times;</div>
-          <Filter data={data} filteredData={setFilteredData} />
-        </div>}
-        {elements}
-      </div>
+  <div className="category-title">{id}</div>
+  <FilterIcon src={FilterImg} onClick={handleViewMobileFilter} />
+  <div className="catalog-content">
+    <div className="filter-block">
+      <Filter data={data} filteredData={setFilteredData} />
     </div>
+    <div
+      className={`filter-block-mobile ${viewMobileFilter ? "visible" : "hidden"}`}
+    >
+      <div
+        className="close-filter-block-mobile"
+        onClick={() => setViewMobileFilter(false)}
+      >
+        &times;
+      </div>
+      <Filter
+        data={data}
+        filteredData={setFilteredData}
+        setViewMobileFilter={setViewMobileFilter}
+      />
+    </div>
+    {elements}
+  </div>
+</div>
+
   );
 };
 

@@ -3,6 +3,12 @@
 
 }
 
+.order-form-input{
+    font-family: 'Helvetica Neue Cyr Thin';
+    border-radius: 0;
+    height: 48px;
+}
+
 .profile-tabs-container {
     display: flex;
     width: 90%;
@@ -63,6 +69,10 @@
         padding: 0;
         margin-top: 12px;
         margin-bottom: 30px;
+    }
+
+    .order-form-input{
+        height: 35px;
     }
 
     .menu-content .contact-info-block .contact-info-profile-inputs .contact-info-full-name .order-form-input:first-child {

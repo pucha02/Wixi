@@ -24,7 +24,9 @@ import PhoneImg from '../../../../assets/svg/phone.svg'
 import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
 
-export const Header = ({ notification, setNotification }) => {
+export const Header = ({ notification, setNotification, viewMobileFilter, setViewMobileFilter }) => {
+    const [overlayVisible, setOverlayVisible] = useState(false);  // Добавление состояния для оверлея
+
     const [viewCategories, setViewCategories] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenLogin, setIsModalOpenLogin] = useState(false);
@@ -61,6 +63,8 @@ export const Header = ({ notification, setNotification }) => {
 
     const handleToggleCategories = () => {
         setViewCategories(!viewCategories);
+        setOverlayVisible(true)
+        setViewMobileFilter(false)
     };
 
     const handleAccountClick = () => {
@@ -68,6 +72,10 @@ export const Header = ({ notification, setNotification }) => {
             navigate("/profile");
         } else {
             setIsModalOpenLogin(true);
+            setOverlayVisible(false)
+            setViewCategories(false)
+            setIsModalOpen(false)
+            setViewMobileFilter(false)
         }
     };
 
@@ -101,7 +109,7 @@ export const Header = ({ notification, setNotification }) => {
                         />
                         <Link to={"/wishlist"}>
                             <RightHeaderElement
-                                src={wishlistItems.length > 0 ? HeartImg2 : HeartImg}
+                                src={HeartImg}
                                 label={"Вішлист"}
                                 products={wishlistItems}
                             />
@@ -109,7 +117,7 @@ export const Header = ({ notification, setNotification }) => {
                         <RightHeaderElement
                             src={CartImg}
                             label={"Кошик"}
-                            onClick={() => setIsModalOpen(true)}
+                            onClick={() => {setIsModalOpen(true); setIsModalOpenLogin(false); setOverlayVisible(false); setViewCategories(false); setViewMobileFilter(false)}}
                             notification={notification}
                             setNotification={setNotification}
                             products={products}
@@ -135,7 +143,7 @@ export const Header = ({ notification, setNotification }) => {
                     />
                 </div>
             </div>
-            {viewCategories && <CategoryList setViewCategories={setViewCategories} />}
+            {viewCategories && <CategoryList overlayVisible={overlayVisible} setOverlayVisible={setOverlayVisible} setViewCategories={setViewCategories} />}
         </div>
     );
 };

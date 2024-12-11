@@ -59,7 +59,7 @@ const ClientLoginForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, set
         <div className="login-form-modal">
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <div className="login-form-head">ВХІД ДО ОСОБИСТОГО КАБІНЕТУ</div>
-                <form onSubmit={handleSubmitLoginUser}>
+                <form className="login-form" onSubmit={handleSubmitLoginUser}>
                     <PhoneLoginMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
                     <PasswordLoginMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
                     <div className="login-form-btns">

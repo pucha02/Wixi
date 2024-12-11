@@ -3,12 +3,12 @@ import { useEffect, useMemo, useState } from "react";
 import useGetDataCategories from "../../../../services/FetchDataCategory";
 import { Link } from "react-router-dom";
 
-import './CategoryList.css'
+import './CategoryList.css';
 
 import Filter from "../../organisms/Filter/Filter";
 
 
-const CategoryList = ({setViewCategories}) => {
+const CategoryList = ({setViewCategories, overlayVisible, setOverlayVisible}) => {
   const [categories, setCategories] = useState([]);
 
   const { getAllCategories } = useGetDataCategories();
@@ -17,7 +17,6 @@ const CategoryList = ({setViewCategories}) => {
     const fetchData = async () => {
       try {
         const result = await getAllCategories();
-
         setCategories(result);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -26,11 +25,15 @@ const CategoryList = ({setViewCategories}) => {
 
     fetchData();
   }, []);
+
   function renderItems(arr) {
     const items = arr.map((item, i) => {
       return (
         <Link key={i} state={{ title: item.title }} to={`/category/productList/${item.title}`} >
-          <li className="name-category" onClick={()=>setViewCategories(false)}>
+          <li className="name-category" onClick={() => {
+            setViewCategories(false);
+              // Показываем оверлей при клике
+          }}>
             <NameCategory name={item.title} />
           </li>
         </Link>
@@ -43,19 +46,19 @@ const CategoryList = ({setViewCategories}) => {
     return renderItems(categories);
   }, [categories]);
 
-
   return (
     <div className="category-list-block">
       <div className="category-list">
-        <h3>Категорії</h3>
+        <h3>Категорії</h3> 
+        {/* <div className="category-list-close" onClick={()=>setViewCategories(false)}>&times;</div> */}
         <div className="categories">
           {elements}
         </div>
       </div>
+      {/* Оверлей */}
+      <div className={`overlay ${overlayVisible ? 'visible' : ''}`} onClick={() => {setOverlayVisible(false); setViewCategories(false)}} />
     </div>
   )
-
-
 };
 
-export default CategoryList;
+export default CategoryList

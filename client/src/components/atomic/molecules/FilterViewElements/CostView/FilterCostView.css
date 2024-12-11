@@ -23,3 +23,10 @@
 .maxPrice::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
+
+@media (max-width:768px) {
+  .minPrice, .maxPrice{
+    width: 81px;
+    height: 30px;
+  }
+}

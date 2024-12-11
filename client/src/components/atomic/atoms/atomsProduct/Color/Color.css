@@ -69,4 +69,9 @@
     .color-list{
         margin-top: 6px;
     }
+
+    .isNotAvailability::after{
+        top: 44%;
+        width: 99%;
+    }
 }

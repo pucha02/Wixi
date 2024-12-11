@@ -30,3 +30,13 @@
     background-color: black;
     color: white;
 }
+
+@media (max-width:768px) {
+    .login-button:first-child{
+        margin-top: 60px;
+    }
+
+    .login-button{
+        margin-top: 9px;
+    }
+}

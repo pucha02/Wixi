@@ -28,3 +28,24 @@
   border: 2px solid #ffffff; /* Цвет рамки */
 
 }
+
+@media (max-width:768px) {
+
+  .filter-checkbox-x{
+    font-size: 12px;
+    font-family: "Helvetica Neue Cyr Thin";
+  }
+  .filter-head{
+    font-size: 14px;
+    margin-top: 15px;
+  }
+
+  .filter-checkbox input{
+    width: 15px;
+    height: 15px;
+  }
+
+  .filter-checkbox{
+    font-size: 14px;
+  }
+}

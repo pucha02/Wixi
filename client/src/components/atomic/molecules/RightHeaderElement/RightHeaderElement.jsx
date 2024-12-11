@@ -19,10 +19,13 @@ export const RightHeaderElement = ({ src, label, onClick, notification = false, 
 
     return (
         <div className="right-header-el" onClick={onClick} >
-            <RightHeaderImg src={src} className={className}/>
-            <RightHeaderLabel label={label} />
+            <div className="right-header-el-count-block">
+                <RightHeaderImg src={src} className={className} />
+                <RightHeaderLabel label={label} />
+                {products?.length > 0 ? <div className="right-header-el-count">{products?.length}</div> : ''}
+            </div>
             {notification && <div className="notification">{notification}</div>}
-            {products?.length > 0 ? <div className="right-header-el-count">{products?.length}</div> : ''}
+
         </div>
     );
 };

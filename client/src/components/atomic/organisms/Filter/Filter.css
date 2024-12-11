@@ -53,12 +53,20 @@
 }
 
 .price-filter-btn{
-    margin-left: 18px;
-    height: 27px;
-    width: 36px;
-    background-color: white;
-    border: 1px solid #C3C1C1;
+    margin-top: 30px;
+    height: 36px;
+    width: 100%;
+    background-color: rgb(0, 0, 0);
     cursor: pointer;
     border-radius: 4px;
-    color: #000000;
+    color: #ffffff;
+}
+
+@media (max-width:768px) {
+    .filter-checkbox input:checked::before{
+        height: 9px;
+        width: 4px;
+        border-width: 0 2.3px 2.3px 0;
+        top: 55%;
+    }
 }

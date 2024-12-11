@@ -12,11 +12,16 @@ import { ColorList } from "../../molecules/ColorList/ColorList";
 import { CarouselListByTypes } from "../../templates/CarouselListByTypes/CarouselListByTypes";
 import { addItemToCart } from "../../../../redux/reducers/cartReducer";
 import { handleAddToCart } from "../../../../utils/cartOperations";
-import { handleAddToWishList } from "../../../../utils/wishListOperations";
+import { removeItemFromWishlist } from "../../../../redux/reducers/wishlistReducer";
+import { addItemToWishlist } from "../../../../redux/reducers/wishlistReducer";
+import { useSelector } from "react-redux";
+import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
 import { addItem } from "../../../../redux/reducers/cartReducer";
+import { useRef } from "react";
 import useGetDataProduct from "../../../../services/FetchData";
 import ImageSlider from "../../templates/Slider/ImageSlider";
 import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
+import HeartIcon2 from "../../../../assets/svg/little-heart-3.svg";
 
 import "./ProductItem.css";
 
@@ -26,15 +31,17 @@ export const ProductItem = ({ notification, setNotification }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSize, setActiveSize] = useState(null);
   const [notifications, setNotifications] = useState("");
+  const [sizeError, setSizeError] = useState(false);
+
 
   const { getProduct } = useGetDataProduct();
   const dispatch = useDispatch();
   let { productName } = useParams();
 
   const token = localStorage.getItem("token");
-
+  const childRefs = useRef([]);
   const activeColor = data[0]?.color?.[activeIndex];
-
+  const storedLikes = useSelector((state) => state.wishlist.items);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,15 +56,41 @@ export const ProductItem = ({ notification, setNotification }) => {
   }, [productName]);
 
   useEffect(() => {
-    if (notifications) {
+    if (notifications || sizeError) {
 
       const timer = setTimeout(() => {
         setNotifications(false);
+        setSizeError(false)
       }, 2000);
 
       return () => clearTimeout(timer);
     }
-  }, [notifications]);
+  }, [notifications, sizeError]);
+
+  useEffect(() => {
+    const initialLikedItems = {};
+    storedLikes.forEach((item) => {
+      initialLikedItems[item._id] = true;
+    });
+    setLikedItems(initialLikedItems);
+  }, [storedLikes]);
+
+  const handleAddToWishlist = (product, index) => {
+    const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
+    const activeImage = product.color?.[product.activeIndex]?.img?.[0]?.img_link || "/placeholder-image.png";
+    const item = { title: product.title, _id: product._id, cost: product.cost, img: activeImage, color: activeColor, category: product.category };
+
+    const isCurrentlyLiked = !!likedItems[product._id]; // Проверяем, лайкнут ли товар
+
+    if (isCurrentlyLiked) {
+      dispatch(removeItemFromWishlist(item));
+    } else {
+      dispatch(addItemToWishlist(item));
+    }
+
+    // Обновляем локальное состояние сразу
+    setLikedItems((prev) => ({ ...prev, [product._id]: !isCurrentlyLiked }));
+  };
 
   function handleAddToCartWithValidation() {
     if (!activeColor) {
@@ -65,17 +98,17 @@ export const ProductItem = ({ notification, setNotification }) => {
       return;
     }
     if (activeSize === null) {
+      setSizeError(true); // Показываем сообщение об ошибке
       setNotifications("Будь ласка, оберіть розмір товару.");
-      console.log(activeSize, activeColor)
       return;
     }
-    
+
     handleAddToCart(data[0], activeColor, activeSize, dispatch, addItemToCart, addItem, token, setNotifications);
     if (activeColor && activeSize) {
       setNotification("Товар успішно доданий до кошика!");
-     
     }
   }
+
 
   function renderDataProductProperty(newData) {
     if (newData.length === 0) return null;
@@ -87,12 +120,14 @@ export const ProductItem = ({ notification, setNotification }) => {
 
         <div className="name-heart">
           <ProductName name={item.title} className={""} />
-          {/* <img
+          <ProductHeart
             src={HeartIcon}
-            alt="Heart"
-            className={`heart-icon ${isLiked ? "liked" : ""}`}
-            onClick={() => handleAddToWishList(item._id, setLikedItems)}
-          /> */}
+            src2={HeartIcon2}
+            toggleHeart={() => handleAddToWishlist(item, item._id)}
+            id={item._id}
+            isLiked={likedItems[item._id]} // Передаем состояние напрямую
+            ref={(el) => (childRefs.current[item._id] = el)}
+          />
         </div>
         <ProductDescription description={item.description} className={""} />
         <div className="cost-article">
@@ -113,11 +148,15 @@ export const ProductItem = ({ notification, setNotification }) => {
           setActiveSize={setActiveSize}
           activeSize={activeSize}
           notifications={notifications}
+          sizeError={sizeError}
         />
-        <SizeTable />
+        <div className="size-table-block">
+          <SizeTable />
+
+        </div>
+
         <ProductButtonAddToCartTxt
           handleAddToCart={handleAddToCartWithValidation}
-
           className={""}
         />
       </div>

@@ -1,7 +1,8 @@
 .cart-list {
     list-style-type: none;
-    height: 380px;
+    height: auto;
     overflow-y: auto;
+    max-height: 380px;
 }
 
 .cart-list li {
@@ -52,7 +53,7 @@
 }
 
 @media (min-width:770px) and (max-width:1350px) {
-    .cart-list .cart-item .cart-item-data .cart-product-description{
+    .cart-list .cart-item .cart-item-data .cart-product-description {
         font-size: 14px;
     }
 }

@@ -80,7 +80,7 @@ export const CartPage = ({ isModalOpen, setIsModalOpen }) => {
   return (
     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="cart-modal-block">
-        <h1 className="cart-title">Ваш кошик</h1>
+        <h1 className="cart-title">Кошик</h1>
         {/* <div className="cart-header">
           <div>КІЛЬКІСТЬ</div>
           <div>ВАРТІСТЬ</div>

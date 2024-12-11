@@ -55,7 +55,7 @@ export const WishlistItems = () => {
                   ) > 0 ? (
                     <div className="availability-text">В НАЯВНОСТІ</div>
                   ) : (
-                    <div className="availability-text">НЕМАЄ У НАЯВНОСТІ</div>
+                    <div className="availability-text none">НЕМАЄ У НАЯВНОСТІ</div>
                   )}
                 </div>
                 <div className="wishlist-btns">

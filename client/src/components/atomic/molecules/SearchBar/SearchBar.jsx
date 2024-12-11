@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import "./SearchBar.css";
 import useGetDataProduct from "../../../../services/FetchData";
 import debounce from "lodash.debounce";
@@ -10,6 +10,7 @@ const SearchBar = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(false); // Для управления фокусом
   const { getAllProductBySearch } = useGetDataProduct();
+  const searchBarRef = useRef(null); // Ссылка на контейнер поиска
 
   const fetchAndFilterProducts = useCallback(
     debounce(async (searchQuery) => {
@@ -38,24 +39,24 @@ const SearchBar = () => {
     }
   };
 
-  const handleBlur = () => {
-    if (!isFocused) {
-      setQuery(""); // Очищаем поле, если пользователь не выбирает элемент
-      setFilteredProducts([]);
+  const handleOutsideClick = (e) => {
+    // Проверяем, кликнул ли пользователь за пределами поискового компонента
+    if (searchBarRef.current && !searchBarRef.current.contains(e.target)) {
+      setQuery(""); // Очищаем поле поиска
+      setFilteredProducts([]); // Сбрасываем результаты
+      setIsFocused(false); // Сбрасываем состояние фокуса
     }
   };
 
-  const handleFocus = () => {
-    setIsFocused(true); // Активируем фокус
-  };
+  useEffect(() => {
+    // Добавляем обработчик клика
+    document.addEventListener("mousedown", handleOutsideClick);
 
-  const handleMouseDown = () => {
-    setIsFocused(true); // Отключаем немедленное очищение при выборе элемента
-  };
-
-  const handleMouseUp = () => {
-    setIsFocused(false); // Сбрасываем фокус после выбора
-  };
+    return () => {
+      // Удаляем обработчик при размонтировании
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
 
   function renderItems(arr) {
     return (
@@ -70,8 +71,7 @@ const SearchBar = () => {
                 <Link
                   key={i}
                   to={`/category/productList/${item.category}/${item.title}`}
-                  onMouseDown={handleMouseDown} // Отключаем очищение при клике
-                  onMouseUp={handleMouseUp} // Сбрасываем состояние после клика
+                  onMouseDown={(e) => e.preventDefault()} // Отключаем потерю фокуса
                 >
                   <li className="search-item">
                     <img src={imgLink} alt={item.title || "No title"} />
@@ -92,15 +92,14 @@ const SearchBar = () => {
   }
 
   return (
-    <div className="search-bar">
+    <div className="search-bar" ref={searchBarRef}>
       <input
         type="text"
         className="search-input"
         placeholder="Знайти товар..."
         value={query}
         onChange={handleInputChange}
-        onBlur={handleBlur} // Проверка потери фокуса
-        onFocus={handleFocus} // Обработка фокуса
+        onFocus={() => setIsFocused(true)} // Обработка фокуса
       />
       {isLoading && <p>Завантаження...</p>}
       {!isLoading && query && renderItems(filteredProducts)}

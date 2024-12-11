@@ -95,8 +95,12 @@ a {
 
 @media (max-width:768px) {
     .catalog-container {
-        width: 88%;
+        width: 86%;
         margin-top: 100px;
+    }
+
+    .product-item-li{
+        width: 47%;
     }
 
     .product-list {
@@ -107,15 +111,34 @@ a {
         width: 15px;
         height: 15px;
     }
-    .filter-block-mobile{
-        display: block;
+    .filter-block-mobile {
+        display: none;
         position: absolute;
         background-color: white;
         z-index: 1000;
         padding: 30px;
-        left: 0;
-        width: 80%;
+        left: 0px;
+        width: 90%;
+        height: 100%;
+        min-height: 800px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+        overflow-y: auto;
     }
+    .filter-block-mobile.visible {
+        display: block; /* Отображается при необходимости */
+      }
+      
+      .filter-block-mobile.hidden {
+        display: none; /* Скрывается */
+      }
+      
+      .close-filter-block-mobile {
+        font-size: 24px;
+        cursor: pointer;
+        text-align: right;
+        margin-bottom: 20px;
+      }
+    
     .filter-block-mobile ul {
         list-style-type: none;
     }
