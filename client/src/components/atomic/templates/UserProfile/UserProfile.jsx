@@ -90,7 +90,9 @@ function UserProfile() {
         <div className="profile-tabs">
             <div className="profile-tabs-container">
                 <div className='comp-pers-cab'>
-                    <UserProfileMenu tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+                    <UserProfileMenu tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} handleLogout={handleLogout}
+                        navigate={navigate}
+                        setUser={setUser}/>
                 </div>
                 <div className='mobile-pers-cab'>
                     <UserProfileMobileMenu
