@@ -1,0 +1,9 @@
+.slider-container-test{
+    width: 100%;
+    margin-top: 200px;
+    display: flex;
+}
+
+.img-banner-test {
+    width: 80%;
+}
