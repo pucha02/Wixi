@@ -5,56 +5,140 @@ import "./Slider-test.css"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// const MySlider = ({ images }) => {
-//   const [isZooming, setIsZooming] = React.useState(false);
+const MySlider = ({ slides }) => {
+  const [isZooming, setIsZooming] = React.useState(false);
 
-//   const settings = {
-//     dots: true,
-//     infinite: true,
-//     speed: 500,
-//     slidesToShow: 1,
-//     slidesToScroll: 1,
-//     autoplay: true,
-//     autoplaySpeed: 10000,
-//     swipe: !isZooming, // Блокируем свайп, если пользователь зумирует
-//   };
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    // autoplay: true,
+    autoplaySpeed: 10000,
+    swipe: !isZooming,
+  };
 
-//   const handleTouchStart = (e) => {
-//     if (e.touches.length === 2) {
-//       setIsZooming(true);
-//     }
-//   };
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 2) {
+      setIsZooming(true);
+    }
+  };
 
-//   const handleTouchEnd = () => {
-//     setIsZooming(false);
-//   };
+  const handleTouchEnd = () => {
+    setIsZooming(false);
+  };
 
-//   return (
-//     <div
-//       className="slider-container"
-//       onTouchStart={handleTouchStart}
-//       onTouchEnd={handleTouchEnd}
-//     >
-//       <Slider {...settings}>
-//         {images.map((image, index) => (
-//           <div className="slide-block" key={index}>
-//             <img src={image} alt={`Slide ${index + 1}`} />
-//           </div>
-//         ))}
-//       </Slider>
-//     </div>
-//   );
-// };
+  const renderSlideContent = (slide) => {
+    switch (slide.type) {
+      case "imageWithText":
+        return (
+          <div className="slide-block">
+            <div className="slide-block-comp">
+              <div className="slide-text">
+                <h2 className="slide-header">{slide.header}{slide.header2}</h2>
+                <p className="slide-txt">{slide.text}</p>
+              </div>
+              <div className="background-slide">
+                <img src={slide.image} alt={slide.alt || "Slide"} />
+              </div>
+            </div>
+            <div className="slide-block-mob">
+              <div className="slide-text">
+                <h2 className="slide-header">{slide.header}<br />{slide.header2}</h2>
+              </div>
+              <div className="background-slide">
+                <img src={slide.image} alt={slide.alt || "Slide"} />
+              </div>
+              <p className="slide-txt">{slide.text}</p>
+            </div>
+          </div>
+        );
+      case "textOnly":
+        return (
+          <div className="slide-block slide2">
+            <div className="slide-block-comp">
+              <div className="background-slide2">
+                <img src={slide.image} alt="" />
+              </div>
+              <div>
+                <h2 className="slide-header header2">{slide.header}</h2>
+                <h2 className="slide-header header2">{slide.header2}</h2>
+                <div className="slide-txt header2">{slide.text}</div>
+              </div>
+            </div>
+            <div className="slide-block-cmob">
+              <div>
+                <h2 className="slide-header header2">{slide.header}</h2>
+                <h2 className="slide-header header2">{slide.header2}</h2>
+                <div className="slide-txt header2">{slide.text}</div>
+              </div>
+              <div className="background-slide2">
+                <img src={slide.image} alt="" />
+              </div>
+            </div>
+          </div>
+        );
+      case "imageOnly":
+        return (
+          <div className="slide-block slide2">
+            <div className="slide-block-comp">
+              <div className="background-slide3">
+                <img src={slide.image} alt="" />
+              </div>
+              <div>
+                <div className="slide-header header3">{slide.header}</div>
+                <div className="slide-header header3">{slide.header2}</div>
+              </div>
+            </div>
+            <div className="slide-block-mob">
+              <div>
+                <div className="slide-header header3">{slide.header}</div>
+                <div className="slide-header header3">{slide.header2}</div>
+              </div>
+              <div className="background-slide3">
+                <img src={slide.image} alt="" />
+              </div>
+            </div>
+          </div>
+        );
+      case "custom":
+        return (
+          <div className="slide-block custom">
+            {slide.customContent}
+          </div>
+        );
+      default:
+        return <div>Unknown slide type</div>;
+    }
+  };
 
-// export default MySlider;
-import Img from '../../../../assets/svg/baners/girls-2.png'
-const MySliderTest = () => {
   return (
-    <div className="slider-container-test">
-      <img className="img-banner-test" src={Img} alt="" />
-      <span className="phrase-test">Ця фраза буде на банері</span>
+    <div
+      className="slider-container"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      <Slider {...settings}>
+        {slides.map((slide, index) => (
+          <div key={index}>{renderSlideContent(slide)}</div>
+        ))}
+      </Slider>
     </div>
   );
 };
 
-export default MySliderTest 
+export default MySlider;
+
+
+// import Img from '../../../../assets/svg/baners/girls-2.png'
+// const MySliderTest = () => {
+//   return (
+//     <div className="slider-container-test">
+//       <img className="img-banner-test" src={Img} alt="" />
+//       <span className="phrase-test">Ця фраза буде на банері</span>
+//     </div>
+//   );
+// };
+
+// export default MySliderTest 

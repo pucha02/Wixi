@@ -37,9 +37,7 @@ a {
     margin-top: 30px;
 }
 
-.category-title {
-    margin-bottom: 30px;
-}
+
 
 .catalog-container {
     width: 95%;
@@ -49,13 +47,15 @@ a {
 }
 
 .category-title {
-    font-size: 28px;
+    font-size: 21px;
+    margin-bottom: 60px;
+    margin-top: 40px;
 }
 
-.category-title {
+/* .category-title {
     display: flex;
     justify-content: space-between;
-}
+} */
 
 .recently-viewed-container {
     margin: 0 auto;

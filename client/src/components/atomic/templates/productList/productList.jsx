@@ -197,7 +197,7 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
 
   return (
     <div className="catalog-container">
-      <div className="category-title">{id}</div>
+      <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={`/category/productList/${id}`}>{id.toUpperCase()}</Link></div>
       <FilterIcon src={FilterImg} onClick={handleViewMobileFilter} />
       <div className="catalog-content">
         <div className="filter-block">

@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
 import { addItem } from "../../../../redux/reducers/cartReducer";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import useGetDataProduct from "../../../../services/FetchData";
 import ImageSlider from "../../templates/Slider/ImageSlider";
 import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
@@ -170,6 +171,8 @@ export const ProductItem = ({ notification, setNotification }) => {
   return (
     <div>
       <div className="product-page-container">
+        <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={`/category/productList/${data[0] ? data[0].category : ''}`}>{data[0] ? data[0].category : ''}</Link> / <Link to={`/category/productList/${data[0] ? data[0].category : ''}/${data[0] ? data[0].title : ''}`}>{data[0] ? data[0].title : ''.toUpperCase()}</Link></div>
+
         <div className="product-page-data-block">
           <ImageSlider images={activeColor?.img && activeColor?.img.length > 0 ? activeColor.img : []} />
           {elements}

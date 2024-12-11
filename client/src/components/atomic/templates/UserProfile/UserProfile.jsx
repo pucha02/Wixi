@@ -13,6 +13,7 @@ import UserProfImg from '../../../../assets/svg/user_profile.svg'
 import UserProfDeliveryImg from '../../../../assets/svg/user_profile_delivery.svg'
 import UserProfOrderImg from '../../../../assets/svg/user_profile_order.svg'
 import UserProfPromocodeImg from '../../../../assets/svg/user_profile_promocode.svg'
+import { Link } from 'react-router-dom';
 import UserProfLogoutImg from '../../../../assets/svg/user_profile_logout.svg'
 import './UserProfile.css'
 
@@ -88,11 +89,14 @@ function UserProfile() {
 
     return (
         <div className="profile-tabs">
+                            <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={'/profile'}>ОСОБИСТИЙ КАБІНЕТ</Link></div>
+
             <div className="profile-tabs-container">
+
                 <div className='comp-pers-cab'>
                     <UserProfileMenu tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} handleLogout={handleLogout}
                         navigate={navigate}
-                        setUser={setUser}/>
+                        setUser={setUser} />
                 </div>
                 <div className='mobile-pers-cab'>
                     <UserProfileMobileMenu
