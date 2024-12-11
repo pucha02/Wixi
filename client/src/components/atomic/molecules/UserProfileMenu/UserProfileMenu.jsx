@@ -2,7 +2,7 @@ import React from "react";
 import { UserProfileTabButton } from "../UserProfileTabButton/UserProfileTabButton";
 import './UserProfileMenu.css';
 
-const UserProfileMenu = ({ tabs, activeTab, onTabChange }) => (
+const UserProfileMenu = ({ tabs, activeTab, onTabChange, handleLogout, navigate, setUser }) => (
   <div className="tab-list">
     {tabs.map((tab) => (
       <UserProfileTabButton
@@ -13,6 +13,8 @@ const UserProfileMenu = ({ tabs, activeTab, onTabChange }) => (
         onClick={() => (tab.onClick ? tab.onClick() : onTabChange(tab.id))} // Вызываем `onClick`, если он задан
       />
     ))}
+    <UserProfileTabButton onClick={() => handleLogout(setUser, navigate)} label={"ВИЙТИ"}/>
+    
   </div>
 );
 
