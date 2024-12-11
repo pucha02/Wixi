@@ -9,6 +9,7 @@ import { CartItems } from "../../organisms/CartItems/CartItems";
 import { TotalCost } from "../../atoms/Cart/TotalCost/TotalCost";
 import { fetchCart } from "../../../../redux/reducers/cartReducer";
 import { CartButton } from "../../atoms/Cart/Button/CartButton";
+import { Link } from "react-router-dom";
 import { fetchDataUser } from "../../../../utils/userDataOperations";
 import "./RegisterOrder.css";
 
@@ -93,7 +94,10 @@ export const RegisterOrder = () => {
 
     return (
         <div className="register-order-block">
+            <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={'/register-order'}>ОФОРМЛЕННЯ ЗАМОВЛЕННЯ</Link></div>
+
             <form className="register-order-block-container" onSubmit={handleSubmit}>
+
                 <div className="register-order-form">
                     <ContactInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />
                     <DeliveryInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />

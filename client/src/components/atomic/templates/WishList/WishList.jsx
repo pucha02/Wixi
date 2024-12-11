@@ -1,5 +1,6 @@
 import { WishlistItems } from "../../organisms/Wishlist/Wishlist"
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import './WishList.css'
 
 export const WishList = () => {
@@ -9,6 +10,7 @@ export const WishList = () => {
     return (
         <div>
             <div className="wish-list-container">
+                <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={'/wishlist'}>ВІШЛИСТ</Link></div>
                 <WishlistItems />
             </div>
         </div>
