@@ -28,7 +28,7 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [activeSize, setActiveSize] = useState(0);
-  
+
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLiked, setLiked] = useState();
@@ -197,30 +197,30 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
 
   return (
     <div className="catalog-container">
-  <div className="category-title">{id}</div>
-  <FilterIcon src={FilterImg} onClick={handleViewMobileFilter} />
-  <div className="catalog-content">
-    <div className="filter-block">
-      <Filter data={data} filteredData={setFilteredData} />
-    </div>
-    <div
-      className={`filter-block-mobile ${viewMobileFilter ? "visible" : "hidden"}`}
-    >
-      <div
-        className="close-filter-block-mobile"
-        onClick={() => setViewMobileFilter(false)}
-      >
-        &times;
+      <div className="category-title">{id}</div>
+      <FilterIcon src={FilterImg} onClick={handleViewMobileFilter} />
+      <div className="catalog-content">
+        <div className="filter-block">
+          <Filter data={data} filteredData={setFilteredData} />
+        </div>
+        <div
+          className={`filter-block-mobile ${viewMobileFilter ? "visible" : "hidden"}`}
+        >
+          <div
+            className="close-filter-block-mobile"
+            onClick={() => setViewMobileFilter(false)}
+          >
+            &times;
+          </div>
+          <Filter
+            data={data}
+            filteredData={setFilteredData}
+            setViewMobileFilter={setViewMobileFilter}
+          />
+        </div>
+        {elements}
       </div>
-      <Filter
-        data={data}
-        filteredData={setFilteredData}
-        setViewMobileFilter={setViewMobileFilter}
-      />
     </div>
-    {elements}
-  </div>
-</div>
 
   );
 };
