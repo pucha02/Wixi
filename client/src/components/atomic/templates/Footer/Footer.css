@@ -68,6 +68,10 @@
 }
 
 @media (max-width: 768px) {
+
+    .footer-block{
+        margin-top: 20px;
+    }
     .bottom-footer{
         display: block;
     }

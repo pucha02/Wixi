@@ -51,7 +51,7 @@ const SearchBar = ({ setIsModalOpen = null }) => {
 
   const handleSearchRedirect = () => {
     if (filteredProducts.length) {
-      if(setIsModalOpen){
+      if (setIsModalOpen) {
         setIsModalOpen(false);
       }
       setQuery('')
@@ -122,9 +122,9 @@ const SearchBar = ({ setIsModalOpen = null }) => {
 
       {isLoading && <p>Завантаження...</p>}
       {!isLoading && query && renderItems(filteredProducts)}
-      <button className="search-button-mobile" onClick={handleSearchRedirect}>
+      {filteredProducts.length > 0 && <button className="search-button-mobile" onClick={handleSearchRedirect}>
         УСІ ЗНАЙДЕНІ ТОВАРИ
-      </button>
+      </button>}
     </div>
   );
 };
