@@ -43,5 +43,6 @@
 @media (max-width:768px) {
     .delivery-info-bottom-select{
         margin-top: 0;
+        width: 342px;
     }
 }

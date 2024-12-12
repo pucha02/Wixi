@@ -57,7 +57,26 @@
     display: none;
 }
 
+.user-profile-order-block{
+    width: 1000px;
+}
+
 @media (max-width:768px) {
+
+    .profile-tabs .category-title {
+        font-size: 14px;
+        margin-bottom: 21px;
+        margin-top: 16px;
+    }
+
+    .user-profile-order-block{
+        width:auto;
+    }
+
+    .contact-info-block .cart-button{
+        width: 342px;
+    }
+
     .mobile-pers-cab {
         display: block;
         width: 100%;
@@ -95,7 +114,7 @@
     }
 
     .menu-content .cart-button {
-        width: 100%;
+        width: 342px;
         background-color: black;
         color: white;
     }

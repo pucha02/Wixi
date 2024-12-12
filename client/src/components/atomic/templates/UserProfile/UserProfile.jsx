@@ -75,7 +75,7 @@ function UserProfile() {
                 );
 
             case "orderHistory":
-                return <div><OrdersList /></div>;
+                return <div className='user-profile-order-block'><OrdersList /></div>;
             case "promocodes":
                 return <div>Мої промокоди</div>;
             case "logout":
@@ -89,7 +89,7 @@ function UserProfile() {
 
     return (
         <div className="profile-tabs">
-                            <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={'/profile'}>ОСОБИСТИЙ КАБІНЕТ</Link></div>
+            <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={'/profile'}>ОСОБИСТИЙ КАБІНЕТ</Link></div>
 
             <div className="profile-tabs-container">
 

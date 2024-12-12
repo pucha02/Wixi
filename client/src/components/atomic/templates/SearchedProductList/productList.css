@@ -38,7 +38,6 @@ a {
 }
 
 
-
 .catalog-container {
     width: 95%;
     margin: 0 auto;
@@ -97,6 +96,12 @@ a {
     .catalog-container {
         width: 86%;
         margin-top: 100px;
+    }
+
+    .category-title{
+        font-size: 14px;
+        margin-bottom: 21px;
+        margin-top: 16px;
     }
 
     .product-item-li{

@@ -91,6 +91,13 @@
   object-fit: cover;
 }
 
+.slide-block.slide2 .slide-block-comp{
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+
 .swiper-button-prev,
 .swiper-button-next {
   color: black;
@@ -178,8 +185,13 @@
 
 @media (max-width:768px) {
 
+  .slide-block.slide2 .slide-block-comp{
+    display: none;
+  }
+
   .slide-block-mob .slide-header {
     font-size: 20px;
+    margin-top: 10px;
   }
 
   .slide-block-mob .background-slide{
@@ -216,6 +228,7 @@
     width: 86%;
     text-align: center;
     margin: 0 auto;
+    margin-bottom: 10px;
   }
 
   .slide-block-mob .slide-text {
