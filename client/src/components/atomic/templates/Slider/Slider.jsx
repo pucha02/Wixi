@@ -4,6 +4,7 @@ import "./Slider.css";
 import "./Slider-test.css"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Banner1 from '../../../../assets/svg/baners/banner1.png'
 
 const MySlider = ({ slides }) => {
   const [isZooming, setIsZooming] = React.useState(false);
@@ -31,29 +32,7 @@ const MySlider = ({ slides }) => {
 
   const renderSlideContent = (slide) => {
     switch (slide.type) {
-      case "imageWithText":
-        return (
-          <div className="slide-block">
-            <div className="slide-block-comp">
-              <div className="slide-text">
-                <h2 className="slide-header">{slide.header}{slide.header2}</h2>
-                <p className="slide-txt">{slide.text}</p>
-              </div>
-              <div className="background-slide">
-                <img src={slide.image} alt={slide.alt || "Slide"} />
-              </div>
-            </div>
-            <div className="slide-block-mob">
-              <div className="slide-text">
-                <h2 className="slide-header">{slide.header}<br />{slide.header2}</h2>
-              </div>
-              <div className="background-slide">
-                <img src={slide.image} alt={slide.alt || "Slide"} />
-              </div>
-              <p className="slide-txt">{slide.text}</p>
-            </div>
-          </div>
-        );
+     
       case "textOnly":
         return (
           <div className="slide-block slide2">
@@ -67,7 +46,7 @@ const MySlider = ({ slides }) => {
                 <div className="slide-txt header2">{slide.text}</div>
               </div>
             </div>
-            <div className="slide-block-cmob">
+            <div className="slide-block-mob">
               <div>
                 <h2 className="slide-header header2">{slide.header}</h2>
                 <h2 className="slide-header header2">{slide.header2}</h2>
@@ -102,17 +81,36 @@ const MySlider = ({ slides }) => {
             </div>
           </div>
         );
-      case "custom":
-        return (
-          <div className="slide-block custom">
-            {slide.customContent}
-          </div>
-        );
-      default:
-        return <div>Unknown slide type</div>;
-    }
-  };
 
+      default:
+        return (
+
+          <div className="slide-block">
+            <div className="slide-block-comp">
+              <div className="slide-text">
+                <h2 className="slide-header">Комплект, що підкреслює переваги кожної фігури</h2>
+                <p className="slide-txt">подвійний ефект пуш-ап, який візуально збільшує сідниці і щільний пояс, що втягує талію</p>
+              </div>
+              <div className="background-slide">
+                <img src={Banner1} alt={slide.alt || "Slide"} />
+              </div>
+            </div>
+            <div className="slide-block-mob">
+              <div className="slide-text">
+                <h2 className="slide-header">Комплект, що підкреслює<br />переваги кожної фігури</h2>
+              </div>
+              <div className="background-slide">
+                <img src={Banner1} alt={slide.alt || "Slide"} />
+              </div>
+              <p className="slide-txt">подвійний ефект пуш-ап, який візуально збільшує сідниці і щільний пояс, що втягує талію</p>
+            </div>
+          </div>
+        )
+
+
+
+    };
+  }
   return (
     <div
       className="slider-container"

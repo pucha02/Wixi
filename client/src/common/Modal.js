@@ -3,19 +3,19 @@ import "./Modal.css"; // Стили для модального окна
 
 export const Modal = ({ isOpen, onClose, children, isOpenSearch }) => {
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !isOpenSearch) {
       document.body.style.overflow = "hidden"; // Запрещаем прокрутку
-    } else if(isOpen && isOpenSearch) {
+    } else if (isOpen && isOpenSearch) {
       document.body.style.overflow = ""; // Восстанавливаем прокрутку
-    } else{
-      document.body.style.overflow = ""; 
+    } else {
+      document.body.style.overflow = "";
     }
 
     // Чистка эффекта при размонтировании
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isOpen, isOpenSearch]);
 
   if (!isOpen) return null;
 

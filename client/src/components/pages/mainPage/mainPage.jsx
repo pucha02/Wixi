@@ -47,15 +47,7 @@ export const MainPage = () => {
             header2: 'А наш одяг - це лише спосіб підкреслити її',
             image: Banner3,
         },
-        {
-            type: "custom",
-            customContent: (
-                <div className="custom-content">
-                    <h2>Ваш стиль — ваша унікальність</h2>
-                    <button className="custom-button">Купити зараз</button>
-                </div>
-            ),
-        },
+        
     ];
 
     return (

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchDataUser } from "../../../../utils/userDataOperations";
+import ArrowDown from '../../../../assets/svg/arrow.svg'
+import ArrowUp from '../../../../assets/svg/arrow2.svg'
 import "./OrdersList.css";
 
 export const OrdersList = () => {
@@ -44,10 +46,14 @@ export const OrdersList = () => {
                         <div className="order-header">
                             <div className="order-summary">
 
-                                <div className="order-info">
-                                    <img src={order.products[0].img} alt="" />
+                                <div className="order-info comp">
+                                    <div className="order-info-images">
+                                        {order.products[0]?.img && <img src={order.products[0].img} alt="" />}
+                                        {order.products[1]?.img && <img src={order.products[1].img} alt="" />}
+                                        {order.products[2]?.img && <img src={order.products[2].img} alt="" />}
+                                    </div>
                                     <div className="order-total">{order.totalCost} UAH</div>
-                                    <div>
+                                    <div className="order-info-data">
                                         ЗАМОВЛЕННЯ №: {order.order_number}, {order.date}
                                         <div
                                             className={`order-status ${order.status === "Оформлено" ? "status-delivered" : "status-canceled"
@@ -56,6 +62,27 @@ export const OrdersList = () => {
                                             {order.status}
                                         </div>
                                     </div>
+                                </div>
+
+                                <div className="order-info mob">
+
+
+                                    <div>
+                                        <div className="order-number">ЗАМОВЛЕННЯ №: {order.order_number}, {order.date}</div>
+                                        <div className="order-status-total">
+                                            <div
+                                                className={`order-status ${order.status === "Оформлено" ? "status-delivered" : "status-canceled"
+                                                    }`}
+                                            >
+                                                {order.status}
+                                            </div>
+                                            <div className="order-total">{order.totalCost} UAH</div>
+                                        </div>
+                                    </div>
+
+                                    {order.products[0]?.img && <img src={order.products[0].img} alt="" />} {/* Проверка наличия первого изображения */}
+                                    {order.products[1]?.img && <img src={order.products[1].img} alt="" />}
+                                    {order.products[2]?.img && <img src={order.products[2].img} alt="" />}
                                 </div>
 
                             </div>

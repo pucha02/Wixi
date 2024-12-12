@@ -123,7 +123,7 @@ const SearchBar = ({ setIsModalOpen = null }) => {
       {isLoading && <p>Завантаження...</p>}
       {!isLoading && query && renderItems(filteredProducts)}
       <button className="search-button-mobile" onClick={handleSearchRedirect}>
-        Пошук
+        УСІ ЗНАЙДЕНІ ТОВАРИ
       </button>
     </div>
   );
