@@ -93,7 +93,7 @@ export const Header = ({ notification, setNotification, viewMobileFilter, setVie
                             viewCategories={viewCategories}
                         />
                         <div className="search-block">
-                            <SearchLoupe setIsModalSearchOpen={setIsModalSearchOpen} src={SearchLoupeImg} />
+                            <SearchLoupe setIsModalSearchOpen={setIsModalSearchOpen} setViewCategories={setViewCategories} src={SearchLoupeImg} />
                             <SearchBar />
                         </div>
                     </div>
@@ -105,19 +105,19 @@ export const Header = ({ notification, setNotification, viewMobileFilter, setVie
                     <div className="right-elements-block">
                         <RightHeaderElement
                             src={PersonalCabinetImg}
-                            label={"Акаунт"}
+                            label={"АКАУНТ"}
                             onClick={handleAccountClick}
                         />
                         <Link to={"/wishlist"}>
                             <RightHeaderElement
                                 src={HeartImg}
-                                label={"Вішлист"}
+                                label={"ВІШЛИСТ"}
                                 products={wishlistItems}
                             />
                         </Link>
                         <RightHeaderElement
                             src={CartImg}
-                            label={"Кошик"}
+                            label={"КОШИК"}
                             onClick={() => { setIsModalOpen(true); setIsModalOpenLogin(false); setOverlayVisible(false); setViewCategories(false); setViewMobileFilter(false) }}
                             notification={notification}
                             setNotification={setNotification}

@@ -114,7 +114,7 @@ const SearchBar = ({ setIsModalOpen = null }) => {
       <input
         type="text"
         className="search-input"
-        placeholder="Знайти товар..."
+        placeholder="ПОШУК..."
         value={query}
         onChange={handleInputChange}
         onFocus={() => setIsFocused(true)} // Обработка фокуса
@@ -122,9 +122,11 @@ const SearchBar = ({ setIsModalOpen = null }) => {
 
       {isLoading && <p>Завантаження...</p>}
       {!isLoading && query && renderItems(filteredProducts)}
-      {filteredProducts.length > 0 && <button className="search-button-mobile" onClick={handleSearchRedirect}>
-        УСІ ЗНАЙДЕНІ ТОВАРИ
-      </button>}
+      {query && filteredProducts.length > 0 && (
+        <button className="search-button-mobile" onClick={handleSearchRedirect}>
+          УСІ ЗНАЙДЕНІ ТОВАРИ
+        </button>
+      )}
     </div>
   );
 };

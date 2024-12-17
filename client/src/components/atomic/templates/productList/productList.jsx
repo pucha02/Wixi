@@ -1,12 +1,11 @@
 import { ProductCost } from "../../atoms/atomsProduct/Cost/Cost";
 import { ProductName } from "../../atoms/atomsProduct/Name/Name";
 import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button/ButtonImage";
-import { ProductType } from "../../atoms/atomsProduct/Type";
 import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
 import { ProductDiscount } from "../../atoms/atomsProduct/Discount/Discount";
 import { ColorList } from "../../molecules/ColorList/ColorList";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
-
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useGetDataProduct from "../../../../services/FetchData";
@@ -22,6 +21,8 @@ import {
   removeItemFromWishlist,
 } from "../../../../redux/reducers/wishlistReducer";
 
+import NoImg from '../../../../assets/svg/no-iamge.svg'
+
 const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   const [data, setData] = useState([]);
 
@@ -33,7 +34,8 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLiked, setLiked] = useState();
   const [filteredData, setFilteredData] = useState(null);
-
+  const [isHovered, setIsHovered] = useState(false);
+  const [hoveredItemId, setHoveredItemId] = useState(null);
   const childRefs = useRef([]);
 
   let { id } = useParams();
@@ -130,70 +132,59 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   };
 
   const renderItems = (arr) => {
-    const items = arr.map((item, i) => {
+    return arr.map((item, i) => {
       const activeColor = item.color?.[item.activeIndex] || item.color?.[0];
-      const activeImage =
-        activeColor?.img?.[0]?.img_link || "/placeholder-image.png";
-
+      const firstImage = activeColor?.img?.[0]?.img_link || NoImg;
+      const secondImage = activeColor?.img?.[1]?.img_link || firstImage;
 
       return (
-        <li className="product-item-li" key={i}>
-          <div className="product-item">
-            <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
-              <ProductImage src={activeImage} className={""} />
-            </Link>
-            <div className="name-heart">
-              <ProductName name={item.title} className={""} />
-              <ProductHeart
-                src={HeartIcon}
-                src2={HeartIcon2}
-                toggleHeart={() => handleAddToWishlist(item, i)}
-                id={item._id}
-                isLiked={likedItems[item._id]} // Передаем состояние напрямую
-                ref={(el) => (childRefs.current[i] = el)}
-              />
-
-
+        <CSSTransition key={item._id} timeout={300} classNames="fade">
+          <li className="product-item-li">
+            <div
+              className="product-item"
+              
+            >
               <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
-                <ProductButtonAddToCart
-                />
+                <ProductImage setHoveredItemId={setHoveredItemId} item={item} src={hoveredItemId === item._id ? secondImage : firstImage} />
               </Link>
+              <div className="name-heart">
+                <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
+                  <ProductName name={item.title} className={""} />
+                </Link>
+                <ProductHeart
+                  src={HeartIcon}
+                  src2={HeartIcon2}
+                  toggleHeart={() => handleAddToWishlist(item, i)}
+                  id={item._id}
+                  isLiked={likedItems[item._id]}
+                />
+              </div>
+              <div className="cost-addBtn">
+                <ProductCost cost={item.cost} discount={item.discount.percentage} />
+                {item.discount.percentage > 0 ? (
+                  <ProductDiscount discount={item.discount.percentage} />
+                ) : null}
+              </div>
+              <ColorList
+                colors={item.color}
+                setActiveIndex={(index) => handleSetActiveIndex(item._id, index)}
+                activeIndex={item.activeIndex}
+                setActiveSize={setActiveSize}
+                activeSize={activeSize}
+                classname={"isDisplaySizes"}
+              />
             </div>
-            <div className="cost-addBtn">
-              <ProductCost cost={item.cost} discount={item.discount.percentage} />
-              {item.discount.percentage > 0 ? <ProductDiscount discount={item.discount.percentage} /> : null}
-
-            </div>
-            {/* <div className="cost-article">
-    {activeColor?.sizes?.reduce(
-      (total, size) => total + size.availableQuantity,
-      0
-    ) > 0 ? (
-      <div className="availability-text">В наличии</div>
-    ) : (
-      <div className="availability-text">Нет в наличии</div>
-    )}
-  </div> */}
-
-            <ColorList
-              colors={item.color}
-              setActiveIndex={(index) => handleSetActiveIndex(item._id, index)}
-              activeIndex={item.activeIndex}
-              setActiveSize={setActiveSize}
-              activeSize={activeSize}
-              classname={"isDisplaySizes"}
-            />
-          </div>
-        </li>
+          </li>
+        </CSSTransition>
       );
     });
-    return <ul className="product-list">{items}</ul>;
   };
+
 
   const elements = useMemo(() => {
     const finallyData = filteredData ? filteredData : data;
     return renderItems(finallyData);
-  }, [data, activeIndex, isLiked, filteredData, storedLikes]);
+  }, [data, activeIndex, isLiked, filteredData, storedLikes, isHovered, hoveredItemId]);
 
   return (
     <div className="catalog-container">
@@ -218,7 +209,10 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
             setViewMobileFilter={setViewMobileFilter}
           />
         </div>
-        {elements}
+
+        <TransitionGroup component="ul" className="product-list">
+          {elements}
+        </TransitionGroup>
       </div>
     </div>
 

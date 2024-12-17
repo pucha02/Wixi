@@ -1,5 +1,12 @@
 .wish-list-container{
     width: 90%;
+    min-height: 50vh;
     margin: 0 auto;
     margin-top: 150px;
+}
+
+@media (max-width:768px) {
+    .wish-list-container{
+        margin-top: 110px;
+    }
 }

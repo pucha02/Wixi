@@ -11,10 +11,9 @@ export const WishlistItems = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSize, setActiveSize] = useState(null);
 
-  // Получаем список из localStorage
   const wishListItems = useSelector((state) => state.wishlist.items);
   const dispatch = useDispatch();
-  // Функция для удаления элемента из списка
+
   const handleRemoveFromWishlist = (productId) => {
     // Обновление локального состояния и LocalStorage
     const updatedList = wishListItems.filter((product) => product._id !== productId);

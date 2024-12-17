@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { DeliveryInfo } from "../../../atomic/molecules/OrderForm/DeliveryInfo/DeliveryInfo";
 import { ComentInfo } from "../../../atomic/molecules/OrderForm/CommentInfo/CommentInfo";
@@ -38,10 +38,15 @@ export const RegisterOrder = () => {
         order_number: "test123"
     });
 
+    const [modal, setModal] = useState({
+        isOpen: false,
+        title: "",
+        message: ""
+    });
+
     const isAuthorized = !!localStorage.getItem("token");
     const cartItems = isAuthorized ? products || [] : localProducts || [];
 
-    // Загрузка корзины
     useEffect(() => {
         if (isAuthorized) {
             dispatch(fetchCart());
@@ -51,13 +56,11 @@ export const RegisterOrder = () => {
         }
     }, [dispatch, isAuthorized]);
 
-    // Загрузка данных пользователя
     useEffect(() => {
         fetchDataUser(setUser, setOrderDetails, setIsLoading);
         window.scrollTo(0, 0);
     }, []);
 
-    // Пересчет общей стоимости корзины
     useEffect(() => {
         const currentCart = isAuthorized ? products || [] : localProducts || [];
         const newTotalCost = currentCart.reduce((total, product) => total + product.cost * product.quantity, 0);
@@ -81,23 +84,39 @@ export const RegisterOrder = () => {
                 body: JSON.stringify(orderDetails),
             });
             if (response.ok) {
-                alert("Замовлення успішно оформлено!");
-                console.log(orderDetails);
+                setModal({
+                    isOpen: true,
+                    title: "Успіх!",
+                    message: "Замовлення успішно оформлено!",
+                });
             } else {
-                alert("Сталася помилка при оформленні замовлення.");
+                setModal({
+                    isOpen: true,
+                    title: "Помилка!",
+                    message: "Сталася помилка при оформленні замовлення.",
+                });
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Сталася помилка при оформленні замовлення.");
+            setModal({
+                isOpen: true,
+                title: "Помилка!",
+                message: "Сталася помилка при оформленні замовлення.",
+            });
         }
     };
 
     return (
         <div className="register-order-block">
+            <Modal
+                isOpen={modal.isOpen}
+                onClose={() => setModal({ ...modal, isOpen: false })}
+                title={modal.title}
+                message={modal.message}
+            />
             <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={'/register-order'}>ОФОРМЛЕННЯ ЗАМОВЛЕННЯ</Link></div>
 
             <form className="register-order-block-container" onSubmit={handleSubmit}>
-
                 <div className="register-order-form">
                     <ContactInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />
                     <DeliveryInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />
@@ -112,7 +131,7 @@ export const RegisterOrder = () => {
                                 <input type="checkbox" /> <div>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
                             </div>
                             <div className="checkbox-block">
-                                <input type="checkbox" /> <div>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
+                                <input type="checkbox" /> <div>МЕНІ МОЖНА НЕ ТЕЛЕФОНУВАТИ ДЛЯ ПІДТВЕРДЖЕННЯ</div>
                             </div>
                         </div>
                         <CartButton text={'Оформити замовлення'} type="submit" />
@@ -126,15 +145,35 @@ export const RegisterOrder = () => {
                     </div>
                     <div className="checkboxes-block">
                         <div className="checkbox-block">
-                            <input type="checkbox" /> <div>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
+                            <div className="filter-checkbox" style={{ marginTop: "0" }}>
+                                <input type="checkbox" /></div>
+                            <div style={{fontFamily:"Helvetica Neue Cyr Thin"}}>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
                         </div>
                         <div className="checkbox-block">
-                            <input type="checkbox" /> <div>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
+                            <div className="filter-checkbox" style={{ marginTop: "0" }}>
+                                <input type="checkbox" /></div>
+                            <div style={{fontFamily:"Helvetica Neue Cyr Thin"}}>МЕНІ МОЖНА НЕ ТЕЛЕФОНУВАТИ ДЛЯ ПІДТВЕРДЖЕННЯ</div>
                         </div>
                     </div>
                     <CartButton text={'Оформити замовлення'} type="submit" />
                 </div>
-            </form>
+            </form >
+        </div >
+    );
+};
+
+const Modal = ({ isOpen, onClose, title, message }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div style={{ textAlign: "center" }} className="modal-content">
+                <h2>{title}</h2>
+                <p style={{ marginTop: "20px" }}>{message}</p>
+                <button className="modal-close" onClick={onClose}>
+                    ✖
+                </button>
+            </div>
         </div>
     );
 };

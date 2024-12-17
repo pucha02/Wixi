@@ -1,4 +1,5 @@
 import { fetchCart } from "../redux/reducers/cartReducer";
+import NoImg from '../assets/svg/no-iamge.svg'
 export const removeFromCart = async (userId, productId) => {
     const response = await fetch('http://16.171.32.44/api/cart/remove-from-cart', {
         method: 'POST',
@@ -48,34 +49,37 @@ export const handleRemoveItem = (
 };
 
 export const handleAddToCart = (product, activeColor, activeSize, dispatch, addItemToCart, addItem, token) => {
-    
-    const hasDiscount = product.discount?.percentage > 0;
-    const discountedCost = hasDiscount
-      ? product.cost - (product.cost * product.discount.percentage) / 100
-      : product.cost;
+  const hasDiscount = product.discount?.percentage > 0;
+  const discountedCost = hasDiscount
+    ? product.cost - (product.cost * product.discount.percentage) / 100
+    : product.cost;
 
-      const item = {
-      title: product.title,
-      _id: product._id,
-      cost: discountedCost,
-      color: activeColor,
-      size: activeSize,
-      quantity: 1,
-      ...(hasDiscount && { originalCost: product.cost }),
-      ...(hasDiscount && { discount: product.discount.percentage }),
-      img: activeColor.img[0].img_link
-    };
-    
-    if (token) {
-      const userId = localStorage.getItem('userid');
-      dispatch(addItemToCart({ item, userId })).then(() => {
-          dispatch(fetchCart());
-      });
-  } else {
-      dispatch(addItem(item)); 
-  }
-  
+  console.log(NoImg)
+  const imageLink = activeColor?.img?.[0]?.img_link || NoImg;
+
+  const item = {
+    title: product.title,
+    _id: product._id,
+    cost: discountedCost,
+    color: activeColor,
+    size: activeSize,
+    quantity: 1,
+    ...(hasDiscount && { originalCost: product.cost }),
+    ...(hasDiscount && { discount: product.discount.percentage }),
+    img: imageLink,
   };
+
+  if (token) {
+    const userId = localStorage.getItem('userid');
+    dispatch(addItemToCart({ item, userId })).then(() => {
+      dispatch(fetchCart());
+    });
+  } else {
+    dispatch(addItem(item));
+    console.log(item)
+  }
+};
+
   
 
   export const handleQuantityChange = (

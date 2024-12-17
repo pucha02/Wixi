@@ -1,8 +1,52 @@
 .cart-list {
     list-style-type: none;
     height: auto;
+    /* overflow-y: auto;
+    max-height: 570px; */
+}
+
+.register-order-block .cart-list li{
+    align-items: start;
+}
+
+.register-order-block .cart-list {
+    list-style-type: none;
+    height: auto;
     overflow-y: auto;
-    max-height: 380px;
+    max-height: 420px;
+}
+
+.register-order-block .cart-item{
+    position: relative;
+}
+
+.register-order-block .cart-item-data {
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+}
+
+.register-order-block .cart-product-description {
+    font-family: "Helvetica Neue Cyr Thin";
+    font-size: 21px;
+    width: 80%;
+}
+
+.register-order-block .cart-product-description-size-color{
+    font-size: 21px;
+    font-family: "Helvetica Neue Cyr Thin";
+}
+
+.register-order-block .bucket-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.register-order-block .cart-item-cost{
+    margin-top: 15px;
+    margin-left: 20px;
+    font-size: 21px;
 }
 
 .cart-list li {
@@ -50,6 +94,7 @@
         margin-top: 30px;
         margin-left: 20px;
     }
+    
 }
 
 @media (min-width:770px) and (max-width:1350px) {

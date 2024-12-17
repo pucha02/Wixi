@@ -18,7 +18,8 @@
   border-radius: 8px;
   position: relative;
   width: 855px;
-  height: 710px;
+  max-height: 710px;
+  overflow-y: auto;
   border-radius: 0;
 }
 
@@ -39,6 +40,7 @@
     justify-content: center;
     padding: 20px;
     width: 90%;
+    max-height: 650px;
     height: auto;
   }
 }

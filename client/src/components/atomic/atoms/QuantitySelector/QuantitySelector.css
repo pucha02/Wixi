@@ -14,5 +14,6 @@
   }
   
   .minus, .plus {
+    display: flex;
     cursor: pointer;
   }

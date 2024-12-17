@@ -10,6 +10,13 @@ import './ClientLoginForm.css'
 
 
 const ClientLoginForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, setIsModalOpenReg }) => {
+
+    const [loginResultModal, setLoginResultModal] = useState({
+        isOpen: false,
+        message: '',
+    });
+
+
     const [userData, setUserData] = useState({
         number_phone: '',
         password: ''
@@ -21,7 +28,7 @@ const ClientLoginForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, set
         e.preventDefault();
 
         const errors = validateFields(userData);
-        if (errors.length > 0) {
+        if (Object.keys(errors).length > 0) {
             setValidationErrors(errors);
             return;
         }
@@ -38,22 +45,35 @@ const ClientLoginForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, set
             const data = await response.json();
 
             if (response.status === 400) {
-                alert(data.message);
+                setLoginResultModal({
+                    isOpen: true,
+                    message: data.message,
+                });
+                return;
             }
 
             if (data.token) {
-                console.log(data.id)
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('userid', data.id)
-                alert('Ви успішно увійшли до системи');
-                navigate('/profile');
+                localStorage.setItem('userid', data.id);
+                setLoginResultModal({
+                    isOpen: true,
+                    message: 'Ви успішно увійшли до системи',
+                });
+                setTimeout(() => navigate('/profile'), 1500); // Переход через 1.5 секунды
             } else {
-                console.log('Помилка входу');
+                setLoginResultModal({
+                    isOpen: true,
+                    message: 'Помилка входу. Спробуйте ще раз.',
+                });
             }
         } catch (error) {
-            console.log('Помилка входу. Перевірте дані.');
+            setLoginResultModal({
+                isOpen: true,
+                message: 'Помилка входу. Перевірте дані.',
+            });
         }
     };
+
 
     return (
         <div className="login-form-modal">
@@ -64,15 +84,33 @@ const ClientLoginForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, set
                     <PasswordLoginMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
                     <div className="login-form-btns">
                         <LoginFormSubmitButtonAtom text={"УВІЙТИ"} />
-                        <LoginFormSubmitButtonAtom text={"ЗАРЕЄСТРУВАТИСЯ"} type="button" setIsModalOpenLogin={setIsModalOpenLogin} setIsModalOpenReg={setIsModalOpenReg}/>
+                        <LoginFormSubmitButtonAtom text={"ЗАРЕЄСТРУВАТИСЯ"} type="button" setIsModalOpenLogin={setIsModalOpenLogin} setIsModalOpenReg={setIsModalOpenReg} />
                     </div>
                 </form>
                 <div className="login-form-info">
                     Здійснюючи реєстрацію або вхід з використанням cвого профілю в соціальній мережі, я тим самим даю згоду на зв'язування мого аккаунта відповідно до положень Політики конфіденційності
                 </div>
             </Modal>
+            <LoginResultModal
+                isOpen={loginResultModal.isOpen}
+                message={loginResultModal.message}
+                onClose={() => setLoginResultModal({ isOpen: false, message: '' })}
+            />
         </div>
-    )
+    );
+
 }
 
 export default ClientLoginForm;
+
+const LoginResultModal = ({ isOpen, message, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <div className="login-result-modal">
+                <p>{message}</p>
+            </div>
+        </Modal>
+    );
+};

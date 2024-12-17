@@ -16,9 +16,9 @@
 @media (max-width:768px) {
     .product-discount{
         font-size: 7px;
-        width: 21px;
-        height: 21px;
-        top: -5px;
-        left: -5px;
+        width: 26px;
+        height: 26px;
+        top: -4px;
+        left: -3px;
     }
 }

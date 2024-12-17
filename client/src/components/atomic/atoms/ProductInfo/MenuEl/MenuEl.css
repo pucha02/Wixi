@@ -6,8 +6,25 @@
     font-size: 24px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    width: max-content;
   }
   
+  .tab-menu .tab-button {
+    padding: 29px 20px;
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    width: 200px;
+    border-bottom: 2px solid #8F8D8D;
+  }
+
+  .tab-menu .tab-button.active{
+    width: 200px;
+  }
+
   .tab-button.active {
     border-bottom: 2px solid;
   }
@@ -16,5 +33,22 @@
     .tab-button{
       font-size: 15px;
       padding: 10px 20px;
+    }
+
+    .tab-menu .tab-button {
+      padding: 29px 20px;
+      background-color: #ffffff;
+      color: #000;
+      border: none;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      width: 33.3%;
+      border-bottom: 2px solid #8F8D8D;
+    }
+  
+    .tab-menu .tab-button.active{
+      width: 33.3%;
+      border-bottom: 2px solid;
     }
   }

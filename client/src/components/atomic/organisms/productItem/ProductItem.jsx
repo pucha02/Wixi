@@ -19,10 +19,12 @@ import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
 import { addItem } from "../../../../redux/reducers/cartReducer";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { SizeChartModal } from "../SizeChartModal/SizeChartModal";
 import useGetDataProduct from "../../../../services/FetchData";
 import ImageSlider from "../../templates/Slider/ImageSlider";
 import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
 import HeartIcon2 from "../../../../assets/svg/little-heart-3.svg";
+import NoImg from '../../../../assets/svg/no-iamge.svg'
 
 import "./ProductItem.css";
 
@@ -33,7 +35,7 @@ export const ProductItem = ({ notification, setNotification }) => {
   const [activeSize, setActiveSize] = useState(null);
   const [notifications, setNotifications] = useState("");
   const [sizeError, setSizeError] = useState(false);
-
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const { getProduct } = useGetDataProduct();
   const dispatch = useDispatch();
@@ -47,7 +49,11 @@ export const ProductItem = ({ notification, setNotification }) => {
     const fetchData = async () => {
       try {
         const result = await getProduct(productName);
-        setData(result);
+        const updatedData = result.map((item) => ({
+          ...item,
+          activeIndex: 0,
+        }));
+        setData(updatedData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -77,10 +83,10 @@ export const ProductItem = ({ notification, setNotification }) => {
   }, [storedLikes]);
 
   const handleAddToWishlist = (product, index) => {
-    const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
-    const activeImage = product.color?.[product.activeIndex]?.img?.[0]?.img_link || "/placeholder-image.png";
+    // const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
+    const activeImage = activeColor?.img?.[0]?.img_link || NoImg;
     const item = { title: product.title, _id: product._id, cost: product.cost, img: activeImage, color: activeColor, category: product.category };
-
+    console.log(item)
     const isCurrentlyLiked = !!likedItems[product._id]; // Проверяем, лайкнут ли товар
 
     if (isCurrentlyLiked) {
@@ -104,7 +110,7 @@ export const ProductItem = ({ notification, setNotification }) => {
       return;
     }
 
-    handleAddToCart(data[0], activeColor, activeSize, dispatch, addItemToCart, addItem, token, setNotifications);
+    handleAddToCart(data[0], activeColor, activeSize, dispatch, addItemToCart, addItem, token, setNotifications, NoImg);
     if (activeColor && activeSize) {
       setNotification("Товар успішно доданий до кошика!");
     }
@@ -115,7 +121,7 @@ export const ProductItem = ({ notification, setNotification }) => {
     if (newData.length === 0) return null;
     const item = newData[0];
     const isLiked = likedItems[item._id] || false;
-
+    console.log(item._id)
     return (
       <div className="product-item">
 
@@ -151,9 +157,9 @@ export const ProductItem = ({ notification, setNotification }) => {
           notifications={notifications}
           sizeError={sizeError}
         />
-        <div className="size-table-block">
-          <SizeTable />
-
+        <div className="size-table-block"> 
+          <SizeTable handleViewTable={() => setModalOpen(true)}/> 
+          <SizeChartModal isModalOpen={isModalOpen} setIsModalOpen={setModalOpen} />
         </div>
 
         <ProductButtonAddToCartTxt
@@ -166,7 +172,7 @@ export const ProductItem = ({ notification, setNotification }) => {
 
   const elements = useMemo(() => {
     return renderDataProductProperty(data);
-  }, [data, activeIndex, likedItems, activeSize, notifications]);
+  }, [data, activeIndex, likedItems, activeSize, notifications, isModalOpen]);
 
   return (
     <div>

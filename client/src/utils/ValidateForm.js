@@ -16,11 +16,7 @@ export const validateFields = (userData) => {
                 }
                 break;
 
-            case 'lastname':
-                if (userData[key].trim() === '') {
-                    errors[key] = "Прізвище обов'язкове для заповнення";
-                }
-                break;
+
 
             case 'email':
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

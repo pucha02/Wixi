@@ -1,6 +1,22 @@
 .tab-menu {
+    position: relative;
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    margin-top: 130px;
     border-bottom: 2px solid #8F8D8D;
+}
+
+.tab-menu-buttons{
+    position: absolute;
+    top: -84px;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width:768px) {
+    .tab-menu-buttons{
+        width: 100%;
+        top: -75px;
+    }
 }

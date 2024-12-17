@@ -16,6 +16,14 @@
     margin-top: 60px;
 }
 
+.client-reg-form-block .modal-content{
+    height: auto;
+}
+
+.client-reg-form-block .modal-content .registration-result-modal{
+    text-align: center;
+}
+
 @media (max-width:768px) {
     .reg-form-modal .modal-content {
         width: 90%;

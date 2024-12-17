@@ -46,7 +46,7 @@ export const CartItems = ({ updateTotalCost }) => {
       updateTotalCost
     );
   };
-
+  console.log(cartItems)
   useEffect(() => {
     restoreScrollPosition();
   });
@@ -112,9 +112,9 @@ export const CartItems = ({ updateTotalCost }) => {
             <ProductImage src={product.img} />
             <div className="cart-item-data">
               <div className="cart-product-description">
-                {product.title}
+                {product.title.toUpperCase()}
                 <div className="cart-product-description-size-color">
-                  РОЗМІР: {product.size}, КОЛІР: {isAuthorized ? product.color : product.color.color_name}
+                  РОЗМІР: {product.size}, КОЛІР: {isAuthorized ? product.color.toUpperCase() : product.color.color_name.toUpperCase()}
                 </div>
 
               </div>
@@ -126,7 +126,7 @@ export const CartItems = ({ updateTotalCost }) => {
                   }
                 />
               </div>
-              <div className="cart-item-cost">{product.cost} UAH</div>
+              <div className="cart-item-cost">{Math.round(product.cost)} UAH</div>
               <img
                 className="bucket-img"
                 onClick={() => handleRemoveItem(product._id, product, dispatch, removeItemCart, localProducts, (updatedProducts) => setLocalProducts(updatedProducts), removeItem, updateTotalCost)}

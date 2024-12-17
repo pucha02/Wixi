@@ -50,6 +50,31 @@
   cursor: crosshair;
 }
 
+.navigation-buttons {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.prev-button,
+.next-button {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.prev-button:hover,
+.next-button:hover {
+  background-color: #f0f0f0;
+}
+
+
+
 @media (max-width: 768px) {
   .slider-cont {
     width: 100%;
@@ -91,6 +116,6 @@
   .slider-cont .swiper-slide img {
     width: 108px;
     /* Размер миниатюр */
-    height: 126px;
+    height: auto;
   }
 }

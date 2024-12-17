@@ -2,8 +2,10 @@
     position: absolute;
     width: 150px;
     text-align: center;
-    left: 50%;  /* Центрируем уведомление */
-    transform: translateX(-50%);  /* Центрируем относительно родителя */
+    left: 50%;
+    /* Центрируем уведомление */
+    transform: translateX(-50%);
+    /* Центрируем относительно родителя */
     background-color: black;
     color: white;
     margin-top: 10px;
@@ -11,7 +13,7 @@
     border-radius: 5px;
 }
 
-.right-header-el-count-block{
+.right-header-el-count-block {
     position: relative;
 }
 
@@ -19,12 +21,14 @@
 .notification::after {
     content: '';
     position: absolute;
-    top: -10px;  /* Положение треугольника выше блока уведомления */
+    top: -10px;
+    /* Положение треугольника выше блока уведомления */
     left: 50%;
     transform: translateX(-50%);
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid black;  /* Цвет треугольника, совпадает с фоном уведомления */
+    border-bottom: 10px solid black;
+    /* Цвет треугольника, совпадает с фоном уведомления */
 }
 
 
@@ -47,39 +51,51 @@
     justify-content: center;
 }
 
-.right-header-el{
+.right-header-el {
     cursor: pointer;
 }
 
 @media (max-width: 768px) {
 
-    .right-header-el .header-label{
+    .right-header-el .header-label {
         display: none;
     }
-    .right-header-el{
+
+    .right-header-el {
         position: unset;
     }
-    .notification{
+
+    .notification {
         width: 100%;
         font-size: 12px;
         border-radius: 0;
     }
+
     .notification::after {
         content: '';
         position: absolute;
+        top: -10px;
+        /* Положение треугольника выше блока уведомления */
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 0px solid transparent;
+        border-right: 0px solid transparent;
+        border-bottom: 0px solid black;
+        /* Цвет треугольника, совпадает с фоном уведомления */
 
     }
-    .right-header-el-count{
+
+    .right-header-el-count {
         position: absolute;
-    background-color: #8F8D8D;
-    border-radius: 30px;
-    width: 10px;
-    height: 10px;
-    font-size: 9px;
-    top: -4px;
-    right: -2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        background-color: #8F8D8D;
+        border-radius: 30px;
+        width: 10px;
+        height: 10px;
+        font-size: 9px;
+        top: -4px;
+        right: -2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }

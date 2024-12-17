@@ -11,7 +11,12 @@
     
 }
 
+.price-filter-btn{
+    display: none;
+}
+
 .filter-checkbox {
+    font-family: "Helvetica Neue Cyr Thin";
     display: flex;
     align-items: center;
     font-size: 21px;
@@ -61,12 +66,26 @@
     border-radius: 4px;
     color: #ffffff;
 }
-
+.price-filter-btns {
+    margin-top: 30px;
+    height: 27px;
+    width: 37px;
+    /* width: 100%; */
+    background-color: rgb(255 255 255);
+    cursor: pointer;
+    border-radius: 4px;
+    color: #000000;
+    margin-left: 15px;
+    border: 2px solid;
+}
 @media (max-width:768px) {
     .filter-checkbox input:checked::before{
         height: 9px;
         width: 4px;
         border-width: 0 2.3px 2.3px 0;
         top: 55%;
+    }
+    .price-filter-btn{
+        display: block;
     }
 }

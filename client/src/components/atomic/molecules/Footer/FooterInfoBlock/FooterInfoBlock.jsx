@@ -12,13 +12,13 @@ export const FooterInfoBlock = ({ text, headtext, src }) => {
             </div>
             <div className="footer-info-element-bottom">
 
-                <FooterElementText text={text.aboutUs} />
-                <FooterElementText text={text.exchangeAndReturn} />
-                <FooterElementText text={text.privacyPolicy} />
-                <FooterElementText text={text.delivery} />
-                <FooterElementText text={text.payment} />
-                <FooterElementText text={text.categories} />
-                <FooterElementText text={text.promotions} />
+                <FooterElementText text={text.aboutUs.title} link={text.aboutUs.link}/>
+                <FooterElementText text={text.exchangeAndReturn.title} link={text.exchangeAndReturn.link}/>
+                <FooterElementText text={text.privacyPolicy.title} link={text.privacyPolicy.link}/>
+                <FooterElementText text={text.delivery.title}  link={text.delivery.link}/>
+                <FooterElementText text={text.payment.title} link={text.payment.link}/>
+                {/* <FooterElementText text={text.categories.title} />
+                <FooterElementText text={text.promotions.title} /> */}
             </div>
         </div>
     )

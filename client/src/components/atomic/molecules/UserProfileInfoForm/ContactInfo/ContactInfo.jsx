@@ -17,10 +17,10 @@ export const ContactInfo = ({ handleChange, userData, validationErrors }) => {
                     <OrderFormInput handleChange={handleChange} name={"email"} userData={userData.email} placeholder={"EMAIL"} />
                     {validationErrors.email && <p>{validationErrors.email}</p>}
                 </div>
-                <div className="contact-info-contacts">
+                {/* <div className="contact-info-contacts">
                     <OrderFormInput handleChange={handleChange} name={"birthday"} userData={userData.birthday} placeholder={"ДАТА НАРОДЖЕННЯ"} type="date"/>
 
-                </div>
+                </div> */}
             </div>
         </div>
     )

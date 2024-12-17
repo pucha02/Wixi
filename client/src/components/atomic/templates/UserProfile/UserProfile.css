@@ -7,6 +7,7 @@
     font-family: 'Helvetica Neue Cyr Thin';
     border-radius: 0;
     height: 48px;
+    border: 1px solid;
 }
 
 .profile-tabs .category-title{
@@ -62,6 +63,10 @@
 }
 
 @media (max-width:768px) {
+
+    .profile-tabs{
+        margin-top: 110px;
+    }
 
     .profile-tabs .category-title {
         font-size: 14px;
@@ -133,4 +138,19 @@
     .orders-container {
         padding: 0;
     }
+
+    .delivery-info-bottom-select{
+        width: 342px;
+        margin-top: 9px;
+        margin-bottom: 9px;
+    }
 }
+
+@media (min-width: 1920px) {
+    .profile-tabs-container {
+      width: 100%;
+      max-width: calc(1920px + 510px);
+      padding: 0 355px !important;
+    }
+  }
+  

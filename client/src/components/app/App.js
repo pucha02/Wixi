@@ -10,6 +10,7 @@ import { MainPage } from "../pages/mainPage/mainPage";
 import { UserProfilePage } from "../pages/userProfilePage/userProfilePage";
 import { WishListPage } from "../pages/wishListPage/wishListPage";
 import { SearchedProductPage } from "../pages/searchedProductPage/searchedProductPage";
+import { ConfPolicePage } from "../pages/confPolicePage/confPolicePage";
 
 const App = () => {
   return (
@@ -27,7 +28,12 @@ const App = () => {
           <Route path="/profile" element={<UserProfilePage />} />
           <Route path="/wishlist" element={<WishListPage />} />
           <Route path="/searchedproducts" element={<SearchedProductPage />} />
-
+          <Route path="/confpolice" element={<ConfPolicePage />} />
+          {/* <Route path="/aboutus" element={} />
+          <Route path="/exchangeandreturn" element={} /> */}
+          <Route path="/privacypolicy" element={<ConfPolicePage/>} />
+          {/* <Route path="/delivery" element={} />
+          <Route path="/payment" element={} /> */}
         </Routes>
       </Router>
       {/* <TestButtonShowCart /> */}

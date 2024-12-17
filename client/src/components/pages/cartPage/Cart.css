@@ -18,7 +18,7 @@
 }
 
 .cart-bottom-buttons{
-    margin-top: 20px;
+    margin-top: 56px;
     display: flex;
     justify-content: end;
 }
@@ -56,20 +56,24 @@
     .cart-product-description{
         font-size: 12px;
         width: 90%;
+        text-align: start;
     }
 
     .cart-item-cost{
         margin-top: 15px;
         margin-left: 20px;
+        text-align: start;
     }
 
     .cart-modal-block{
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
         
     }
     .cart-bottom-buttons{
         display: block;
+        margin-top: 36px;
     }
     .cart-bottom-buttons .cart-button{
         margin-left: 0;
