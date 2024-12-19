@@ -16,8 +16,8 @@ const MySlider = ({ slides }) => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 10000,
-    swipe: !isZooming, // Отключаем swipe во время зума
+    autoplaySpeed: 5000,
+    
   };
   const sliderRef = React.useRef(null);
   const handleTouchStart = (e) => {
@@ -26,7 +26,7 @@ const MySlider = ({ slides }) => {
     }
     e.stopPropagation(); // Предотвращаем всплытие события
   };
-  
+
   const handleTouchEnd = (e) => {
     setIsZooming(false);
     e.stopPropagation();
@@ -35,7 +35,7 @@ const MySlider = ({ slides }) => {
     if (!isZooming && sliderRef.current) {
       sliderRef.current.slickPlay(); // Включаем автоплей
     }
-  }, [isZooming]);  
+  }, [isZooming]);
 
   const renderSlideContent = (slide) => {
     switch (slide.type) {
@@ -55,7 +55,7 @@ const MySlider = ({ slides }) => {
             <div className="slide-block-mob">
               <div>
                 <h2 className="slide-header header2">{slide.header}</h2>
-                <h2 className="slide-header header2" style={{marginTop:"0"}}>{slide.header2}</h2>
+                <h2 className="slide-header header2" style={{ marginTop: "0" }}>{slide.header2}</h2>
                 <div className="slide-txt header2">{slide.text}</div>
               </div>
               <div className="background-slide2">
@@ -79,7 +79,7 @@ const MySlider = ({ slides }) => {
             <div className="slide-block-mob">
               <div>
                 <div className="slide-header header3">{slide.header}</div>
-                <div className="slide-header header3" style={{marginTop:"0"}}>{slide.header2}</div>
+                <div className="slide-header header3" style={{ marginTop: "0" }}>{slide.header2}</div>
               </div>
               <div className="background-slide3">
                 <img src={slide.image} alt="" />
@@ -87,7 +87,31 @@ const MySlider = ({ slides }) => {
             </div>
           </div>
         );
-
+      // case "withBags":
+      //   return (
+      //     <div className="slide-block slide2">
+      //       <div className="slide-block-comp">
+      //         <div className="background-slide2">
+      //           <img src={slide.image1} alt="" />
+      //         </div>
+      //         <div>
+      //           <h2 className="slide-header header2">{slide.header}</h2>
+      //           <h2 className="slide-header header2">{slide.header2}</h2>
+      //           <div className="slide-txt header2">{slide.text}</div>
+      //         </div>
+      //       </div>
+      //       <div className="slide-block-mob">
+      //         <div>
+      //           <h2 className="slide-header header2">{slide.header}</h2>
+      //           <h2 className="slide-header header2" style={{ marginTop: "0" }}>{slide.header2}</h2>
+      //           <div className="slide-txt header2">{slide.text}</div>
+      //         </div>
+      //         <div className="background-slide2">
+      //           <img src={slide.image} alt="" />
+      //         </div>
+      //       </div>
+      //     </div>
+      //   )
       default:
         return (
           <div className="slide-block">
@@ -142,3 +166,4 @@ const MySlider = ({ slides }) => {
 };
 
 export default MySlider;
+

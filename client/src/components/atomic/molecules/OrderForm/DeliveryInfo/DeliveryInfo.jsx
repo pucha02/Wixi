@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { fetchDataUser } from '../../../../../utils/userDataOperations';
 import "./DeliveryInfo.css"
 
-export const DeliveryInfo = () => {
+export const DeliveryInfo = ({orderDetails, setOrderDetails}) => {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [areas, setAreas] = useState([]);
@@ -15,17 +15,17 @@ export const DeliveryInfo = () => {
     const [selectedCity, setSelectedCity] = useState(null);
     const [selectedWarehouse, setSelectedWarehouse] = useState(null);
 
-    const [orderDetails, setOrderDetails] = useState({
-        number_section_NP: '',
-        firstname: '',
-        lastname: '',
-        coment: '',
-        email: '',
-        number_phone: '',
-        area: '',
-        city: '',
-        warehouse: '',
-    });
+    // const [orderDetails, setOrderDetails] = useState({
+    //     number_section_NP: '',
+    //     firstname: '',
+    //     lastname: '',
+    //     coment: '',
+    //     email: '',
+    //     number_phone: '',
+    //     area: '',
+    //     city: '',
+    //     warehouse: '',
+    // });
 
     useEffect(() => {
         fetchDataUser(setUser, setOrderDetails, setIsLoading);
@@ -34,7 +34,7 @@ export const DeliveryInfo = () => {
 
     useEffect(() => {
         axios
-            .post('http://16.171.32.44/api/novaposhta', {
+            .post('http://localhost:5000/api/novaposhta', {
                 modelName: 'Address',
                 calledMethod: 'getAreas',
                 methodProperties: {},
@@ -52,7 +52,7 @@ export const DeliveryInfo = () => {
     useEffect(() => {
         if (selectedArea) {
             axios
-                .post('http://16.171.32.44/api/novaposhta', {
+                .post('http://localhost:5000/api/novaposhta', {
                     modelName: 'Address',
                     calledMethod: 'getCities',
                     methodProperties: { AreaRef: selectedArea.value },
@@ -72,7 +72,7 @@ export const DeliveryInfo = () => {
     useEffect(() => {
         if (selectedCity) {
             axios
-                .post('http://16.171.32.44/api/novaposhta', {
+                .post('http://localhost:5000/api/novaposhta', {
                     modelName: 'Address',
                     calledMethod: 'getWarehouses',
                     methodProperties: { CityRef: selectedCity.value },
@@ -99,7 +99,7 @@ export const DeliveryInfo = () => {
 
                 // Загружаем города для выбранной области
                 axios
-                    .post('http://16.171.32.44/api/novaposhta', {
+                    .post('http://localhost:5000/api/novaposhta', {
                         modelName: 'Address',
                         calledMethod: 'getCities',
                         methodProperties: { AreaRef: initialArea.value },
@@ -118,7 +118,7 @@ export const DeliveryInfo = () => {
 
                             // Загружаем отделения для выбранного города
                             axios
-                                .post('http://16.171.32.44/api/novaposhta', {
+                                .post('http://localhost:5000/api/novaposhta', {
                                     modelName: 'Address',
                                     calledMethod: 'getWarehouses',
                                     methodProperties: { CityRef: initialCity.value },
@@ -146,23 +146,49 @@ export const DeliveryInfo = () => {
         <div className='delivery-info-block'>
             <div className='delivery-info-head'>ДОСТАВКА</div>
             <div className='delivery-info-selects'>
-            <Select
+                <Select
                     options={areas}
                     value={selectedArea}
-                    onChange={setSelectedArea}
+                    onChange={(area) => {
+                        setSelectedArea(area);
+                        setOrderDetails((prev) => ({
+                            ...prev,
+                            area: area ? area.label : '',
+                            city: '',
+                            warehouse: '',
+                        }));
+                        setSelectedCity(null);
+                        setSelectedWarehouse(null);
+                    }}
                     placeholder="Оберіть область"
                 />
                 <Select
                     options={cities}
                     value={selectedCity}
-                    onChange={setSelectedCity}
+                    onChange={(city) => {
+                        setSelectedCity(city);
+                        setOrderDetails((prev) => ({
+                            ...prev,
+                            city: city ? city.label : '',
+                            warehouse: '',
+                        }));
+                        setSelectedWarehouse(null);
+                    }}
                     placeholder="Оберіть місто"
                 />
+
+
                 <div className="delivery-info-bottom-select">
                     <Select
                         options={warehouses}
                         value={selectedWarehouse}
-                        onChange={setSelectedWarehouse}
+                        onChange={(warehouse) => {
+                            setSelectedWarehouse(warehouse);
+                            setOrderDetails((prev) => ({
+                                ...prev,
+                                warehouse: warehouse ? warehouse.label : '',
+                            }));
+                        }}
                         placeholder="Оберіть відділення"
                     />
                 </div>

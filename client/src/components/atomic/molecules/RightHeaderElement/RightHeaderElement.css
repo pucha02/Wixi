@@ -15,6 +15,9 @@
 
 .right-header-el-count-block {
     position: relative;
+    width: max-content;
+    display: flex;
+    margin: 0 auto;
 }
 
 /* Псевдоэлемент для треугольника */
@@ -45,7 +48,7 @@
     height: 13px;
     font-size: 9px;
     top: -6px;
-    right: 10px;
+    right: -5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,6 +56,10 @@
 
 .right-header-el {
     cursor: pointer;
+}
+
+.right-header-el .header-label{
+    margin-top: 3px;
 }
 
 @media (max-width: 768px) {

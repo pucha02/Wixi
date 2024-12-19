@@ -30,14 +30,18 @@ import "./ProductItem.css";
 
 export const ProductItem = ({ notification, setNotification }) => {
   const [data, setData] = useState([]);
+  const [similar, setSimilar] = useState([])
   const [likedItems, setLikedItems] = useState({});
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSize, setActiveSize] = useState(null);
+  const [sku, setSku] = useState(null)
+  const [variationId, setVariationId] = useState(null)
   const [notifications, setNotifications] = useState("");
   const [sizeError, setSizeError] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
   const { getProduct } = useGetDataProduct();
+  const { getAllProductByCategory } = useGetDataProduct();
   const dispatch = useDispatch();
   let { productName } = useParams();
 
@@ -45,22 +49,39 @@ export const ProductItem = ({ notification, setNotification }) => {
   const childRefs = useRef([]);
   const activeColor = data[0]?.color?.[activeIndex];
   const storedLikes = useSelector((state) => state.wishlist.items);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getProduct(productName);
+
         const updatedData = result.map((item) => ({
           ...item,
           activeIndex: 0,
         }));
         setData(updatedData);
+
+        if (result && result.length > 0) {
+          const category = result[0].category; // Сохраняем category
+          const productByCategory = await getAllProductByCategory(category);
+
+          if (productByCategory && productByCategory.length > 0) {
+            // Рандомно выбираем до 7 элементов
+            const randomProducts = getRandomItems(productByCategory, 7);
+            setSimilar(randomProducts);
+            console.log(randomProducts);
+          }
+        }
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
+
     window.scrollTo(0, 0);
     fetchData();
   }, [productName]);
+
 
   useEffect(() => {
     if (notifications || sizeError) {
@@ -81,6 +102,16 @@ export const ProductItem = ({ notification, setNotification }) => {
     });
     setLikedItems(initialLikedItems);
   }, [storedLikes]);
+
+  const getRandomItems = (array, count) => {
+    if (array.length <= count) {
+      return array; // Если элементов меньше или равно count, возвращаем весь массив
+    }
+
+    const shuffled = [...array].sort(() => 0.5 - Math.random()); // Перемешиваем массив
+    return shuffled.slice(0, count); // Возвращаем первые count элементов
+  };
+
 
   const handleAddToWishlist = (product, index) => {
     // const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
@@ -109,8 +140,8 @@ export const ProductItem = ({ notification, setNotification }) => {
       setNotifications("Будь ласка, оберіть розмір товару.");
       return;
     }
-
-    handleAddToCart(data[0], activeColor, activeSize, dispatch, addItemToCart, addItem, token, setNotifications, NoImg);
+    console.log(sku)
+    handleAddToCart(data[0], activeColor, activeSize, dispatch, addItemToCart, addItem, token, sku, variationId);
     if (activeColor && activeSize) {
       setNotification("Товар успішно доданий до кошика!");
     }
@@ -156,9 +187,11 @@ export const ProductItem = ({ notification, setNotification }) => {
           activeSize={activeSize}
           notifications={notifications}
           sizeError={sizeError}
+          setSku={setSku}
+          setVariationId={setVariationId}
         />
-        <div className="size-table-block"> 
-          <SizeTable handleViewTable={() => setModalOpen(true)}/> 
+        <div className="size-table-block">
+          <SizeTable handleViewTable={() => setModalOpen(true)} />
           <SizeChartModal isModalOpen={isModalOpen} setIsModalOpen={setModalOpen} />
         </div>
 
@@ -198,7 +231,18 @@ export const ProductItem = ({ notification, setNotification }) => {
             </>
           )}
         </div>
-
+        <div className="recently-viewed-container">
+          {similar?.length > 0 && (
+            <>
+              <h2 className="product-item-view-head">СХОЖІ ТОВАРИ:</h2>
+              <CarouselListByTypes
+                type={null}
+                getdata={similar}
+                countSlide={4}
+              />
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

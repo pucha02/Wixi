@@ -21,20 +21,20 @@ export const CartItems = ({ updateTotalCost }) => {
   const scrollPosition = useRef(0);
   const listRef = useRef(null);
 
-  const saveScrollPosition = () => {
-    if (listRef.current) {
-      scrollPosition.current = listRef.current.scrollTop;
-    }
-  };
+  // const saveScrollPosition = () => {
+  //   if (modalRef.current) {
+  //     scrollPosition.current = modalRef.current.scrollTop;
+  //   }
+  // };
 
-  const restoreScrollPosition = () => {
-    if (listRef.current) {
-      listRef.current.scrollTop = scrollPosition.current;
-    }
-  };
+  // const restoreScrollPosition = () => {
+  //   if (modalRef.current) {
+  //     modalRef.current.scrollTop = scrollPosition.current;
+  //   }
+  // };
 
   const handleQuantityChangeWrapper = (newCount, product) => {
-    saveScrollPosition();
+    // saveScrollPosition();
     handleQuantityChange(
       newCount,
       product,
@@ -47,9 +47,9 @@ export const CartItems = ({ updateTotalCost }) => {
     );
   };
   console.log(cartItems)
-  useEffect(() => {
-    restoreScrollPosition();
-  });
+  // useEffect(() => {
+  //   restoreScrollPosition();
+  // });
   useEffect(() => {
     const token = localStorage.getItem("token");
 

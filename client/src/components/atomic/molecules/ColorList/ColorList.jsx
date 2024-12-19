@@ -2,7 +2,7 @@ import { ProductColor } from "../../atoms/atomsProduct/Color/Color";
 import { ProductSize } from "../../atoms/atomsProduct/Size/ProductSize";
 import './ColorList.css';
 
-export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, activeSize, classname, sizeError }) => {
+export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, activeSize, classname, sizeError, setSku, setVariationId }) => {
   const activeColor = colors[activeIndex];
 
   return (
@@ -46,6 +46,10 @@ export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, 
                 className={size.availableQuantity === 0 ? "inactive" : ""}
                 onClick={setActiveSize}
                 isActive={activeSize === size.size_name}
+                setSku={setSku}
+                sku={size.sku}
+                variationId={size.id}
+                setVariationId={setVariationId}
               />
 
             ))}

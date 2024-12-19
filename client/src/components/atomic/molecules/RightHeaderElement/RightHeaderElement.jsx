@@ -21,9 +21,10 @@ export const RightHeaderElement = ({ src, label, onClick, notification = false, 
         <div className="right-header-el" onClick={onClick} >
             <div className="right-header-el-count-block">
                 <RightHeaderImg src={src} className={className} />
-                <RightHeaderLabel label={label} />
+
                 {products?.length > 0 ? <div className="right-header-el-count">{products?.length}</div> : ''}
             </div>
+            <RightHeaderLabel label={label} />
             {notification && <div className="notification">{notification}</div>}
 
         </div>

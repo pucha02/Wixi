@@ -107,6 +107,14 @@ font-family: 'Helvetica Neue Cyr Ultra Light';
     margin: 0;
 }
 
+@media (max-width: 768px) {
+    .recently-viewed-container .swiper-button-prev, .recently-viewed-container .swiper-button-next {
+        font-size: 1rem;
+        transform: scale(0.5);
+        margin-top: -30px;
+    }
+}
+
 @media (min-width:1155px) {
     .product-item-li{
         width: 33%;
@@ -140,8 +148,8 @@ font-family: 'Helvetica Neue Cyr Ultra Light';
     }
 
     .product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container .color-circle {
-        width: 15px;
-        height: 15px;
+        width: 25px;
+        height: 25px;
     }
     .filter-block-mobile {
         display: none;

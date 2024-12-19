@@ -122,7 +122,8 @@ export const Header = ({ notification, setNotification, viewMobileFilter, setVie
                             notification={notification}
                             setNotification={setNotification}
                             products={products}
-                            className={`cart-icon ${isBouncing && products.length > 0 ? "cart-bounce" : ""}`}
+                            className={`cart-icon ${isBouncing && (products?.length || 0) > 0 ? "cart-bounce" : ""}`}
+
                         />
                     </div>
                 </div>

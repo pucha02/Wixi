@@ -10,8 +10,12 @@ import './mainPage.css'
 import Banner1 from '../../../assets/svg/baners/banner1.png'
 import Banner2 from '../../../assets/svg/baners/banner2.png'
 import Banner3 from '../../../assets/svg/baners/banner3.png'
-
 import Banner4 from '../../../assets/svg/banner4.svg'
+
+import BannerBag1 from '../../../assets/svg/baners/banner4-1.png'
+import BannerBag2 from '../../../assets/svg/baners/banner4-2.png'
+import BannerBag3 from '../../../assets/svg/baners/banner4-3.png'
+import BannerBag4 from '../../../assets/svg/baners/banner4-4.png'
 
 export const MainPage = () => {
     const [viewMobileFilter, setViewMobileFilter] = useState(false)
@@ -47,7 +51,17 @@ export const MainPage = () => {
             header2: 'А наш одяг - це лише спосіб підкреслити її',
             image: Banner3,
         },
-        
+        {
+            type: 'withBags',
+            header: `Спортивна сумка - 
+                    ідеальне доповнення до образу`,
+            text: 'вмістка, стильна, водонепроникна',
+            image1: BannerBag1,
+            image2: BannerBag2,
+            image3: BannerBag3,
+            image4: BannerBag4
+        }
+
     ];
 
     return (
