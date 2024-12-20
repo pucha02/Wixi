@@ -5,8 +5,8 @@ import { User } from '../MongooseModels/User.js';
 const JWT_SECRET = 'your_jwt_secret_key';
 
 export const registerUser = async (req, res) => {
-    const { number_phone, firstname, lastname, email, password } = req.body;
-    if (!number_phone || !firstname || !lastname || !password) {
+    const { number_phone, firstname, password } = req.body;
+    if (!number_phone || !firstname  || !password) {
         return res.status(400).json({ message: "Заповніть всі обов'язкові поля" });
     }
 
@@ -17,7 +17,7 @@ export const registerUser = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ number_phone, firstname, lastname, email, password: hashedPassword });
+        const newUser = new User({ number_phone, firstname, password: hashedPassword });
         await newUser.save();
         res.status(201).json({ message: 'Користувач успішно зареєстрований' });
     } catch (error) {
