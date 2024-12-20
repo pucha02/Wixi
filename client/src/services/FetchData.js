@@ -3,13 +3,13 @@ import { useHttp } from "../hooks/http.hook";
 const useGetDataProduct = () => {
   const { request, clearError, process, setProcess } = useHttp();
 
-  const _urlByCategory = 'http://localhost:5000/api/products/get-products-by-category';
-  const _urlByProductTitle = 'http://localhost:5000/api/products/get-products-by-title';
-  const _urlByProductType = 'http://localhost:5000/api/products/get-products-by-type';
-  const _urlByAllProducts = 'http://localhost:5000/api/products/get-all-products'
-  const _urlAddToCart = 'http://localhost:5000/api/cart/add-to-cart'
-  const _urlRemoveFromCart = 'http://localhost:5000/api/cart/remove-from-cart'
-  const _urlPromocodeByCode = 'http://localhost:5000/api/promocode/get-promocode-by-code'
+  const _urlByCategory = 'http://16.171.32.44/api/products/get-products-by-category';
+  const _urlByProductTitle = 'http://16.171.32.44/api/products/get-products-by-title';
+  const _urlByProductType = 'http://16.171.32.44/api/products/get-products-by-type';
+  const _urlByAllProducts = 'http://16.171.32.44/api/products/get-all-products'
+  const _urlAddToCart = 'http://16.171.32.44/api/cart/add-to-cart'
+  const _urlRemoveFromCart = 'http://16.171.32.44/api/cart/remove-from-cart'
+  const _urlPromocodeByCode = 'http://16.171.32.44/api/promocode/get-promocode-by-code'
 
 
   const getAllProductByCategory = async (category) => {

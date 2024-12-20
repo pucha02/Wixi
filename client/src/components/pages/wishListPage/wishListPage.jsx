@@ -5,9 +5,11 @@ import { useState } from "react";
 
 export const WishListPage = () => {
     const [viewMobileFilter, setViewMobileFilter] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <>
-            <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter}/>
+            <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
             <WishList />
             <Footer />
         </>

@@ -10,12 +10,14 @@ import './CatalogPage.css'
 
 export const SearchedProductPage = () => {
     const [viewMobileFilter, setViewMobileFilter] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
     return (
         <>
-            <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter} />
+            <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
             <div className="main">
 
                 <div className="product-list-block">

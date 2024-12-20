@@ -19,6 +19,8 @@ import BannerBag4 from '../../../assets/svg/baners/banner4-4.png'
 
 export const MainPage = () => {
     const [viewMobileFilter, setViewMobileFilter] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     useEffect(() => {
         window.scrollTo(0, 0);
 
@@ -53,8 +55,8 @@ export const MainPage = () => {
         },
         {
             type: 'withBags',
-            header: `Спортивна сумка - 
-                    ідеальне доповнення до образу`,
+            header: 'Спортивна сумка -',
+            header2: 'ідеальне доповнення до образу',
             text: 'вмістка, стильна, водонепроникна',
             image1: BannerBag1,
             image2: BannerBag2,
@@ -66,7 +68,7 @@ export const MainPage = () => {
 
     return (
         <>
-            <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter} />
+            <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
             <MySlider slides={slidesData} />
             <HotStripDiscount content={'ЗНИЖКИ!'} />
             <CarouselListByTypes type={'sale'} />

@@ -24,11 +24,10 @@ import PhoneImg from '../../../../assets/svg/phone.svg'
 import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
 
-export const Header = ({ notification, setNotification, viewMobileFilter, setViewMobileFilter }) => {
+export const Header = ({ notification, setNotification, viewMobileFilter, setViewMobileFilter, setIsModalOpen, isModalOpen }) => {
     const [overlayVisible, setOverlayVisible] = useState(false);
 
     const [viewCategories, setViewCategories] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalSearchOpen, setIsModalSearchOpen] = useState(false);
     const [isModalOpenLogin, setIsModalOpenLogin] = useState(false);
     const [isModalOpenReg, setIsModalOpenReg] = useState(false);
@@ -111,7 +110,7 @@ export const Header = ({ notification, setNotification, viewMobileFilter, setVie
                         <Link to={"/wishlist"}>
                             <RightHeaderElement
                                 src={HeartImg}
-                                label={"ВІШЛИСТ"}
+                                label={"УЛЮБЛЕНЕ"}
                                 products={wishlistItems}
                             />
                         </Link>

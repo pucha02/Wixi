@@ -12,12 +12,14 @@ const MySlider = ({ slides }) => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 700,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    
+    // autoplay: true,
+    // autoplaySpeed: 5000,
+    pauseOnHover: false,
+    pauseOnFocus: false,
+    pauseOnDotsHover: false,
   };
   const sliderRef = React.useRef(null);
   const handleTouchStart = (e) => {
@@ -31,11 +33,11 @@ const MySlider = ({ slides }) => {
     setIsZooming(false);
     e.stopPropagation();
   };
-  React.useEffect(() => {
-    if (!isZooming && sliderRef.current) {
-      sliderRef.current.slickPlay(); // Включаем автоплей
-    }
-  }, [isZooming]);
+  // React.useEffect(() => {
+  //   if (!isZooming && sliderRef.current) {
+  //     sliderRef.current.slickPlay(); // Включаем автоплей
+  //   }
+  // }, [isZooming]);
 
   const renderSlideContent = (slide) => {
     switch (slide.type) {
@@ -56,7 +58,7 @@ const MySlider = ({ slides }) => {
               <div>
                 <h2 className="slide-header header2">{slide.header}</h2>
                 <h2 className="slide-header header2" style={{ marginTop: "0" }}>{slide.header2}</h2>
-                <div className="slide-txt header2">{slide.text}</div>
+                <div className="slide-txt header2"  style={{fontSize:"21px", fontWeight:"600"}}>{slide.text}</div>
               </div>
               <div className="background-slide2">
                 <img src={slide.image} alt="" />
@@ -87,31 +89,53 @@ const MySlider = ({ slides }) => {
             </div>
           </div>
         );
-      // case "withBags":
-      //   return (
-      //     <div className="slide-block slide2">
-      //       <div className="slide-block-comp">
-      //         <div className="background-slide2">
-      //           <img src={slide.image1} alt="" />
-      //         </div>
-      //         <div>
-      //           <h2 className="slide-header header2">{slide.header}</h2>
-      //           <h2 className="slide-header header2">{slide.header2}</h2>
-      //           <div className="slide-txt header2">{slide.text}</div>
-      //         </div>
-      //       </div>
-      //       <div className="slide-block-mob">
-      //         <div>
-      //           <h2 className="slide-header header2">{slide.header}</h2>
-      //           <h2 className="slide-header header2" style={{ marginTop: "0" }}>{slide.header2}</h2>
-      //           <div className="slide-txt header2">{slide.text}</div>
-      //         </div>
-      //         <div className="background-slide2">
-      //           <img src={slide.image} alt="" />
-      //         </div>
-      //       </div>
-      //     </div>
-      //   )
+      case "withBags":
+        return (
+          <div className="slide-block slide2" style={{ backgroundColor: "#D6D6D6" }}>
+            <div className="slide-block-comp" style={{ marginTop: "0" }}>
+
+              <div className="background-slide4 first">
+                <img src={slide.image1} alt="" />
+              </div>
+              <div className="background-slide4 second">
+                <img src={slide.image2} alt="" />
+              </div>
+              <div className="background-slide4 third">
+                <img src={slide.image3} alt="" />
+              </div>
+              <div className="slide4-left">
+                <h2 className="slide-header header4">{slide.header}</h2>
+                <h2 className="slide-header header4">{slide.header2}</h2>
+                <div className="slide-txt header2">
+                  {slide.text}
+                  <img src={slide.image4} alt="" />
+                </div>
+
+
+
+              </div>
+            </div>
+            <div className="slide-block-mob">
+              <div>
+                <h2 className="slide-header header4" style={{ marginTop: "0" }}>{slide.header}</h2>
+                <h2 className="slide-header header4" style={{ marginTop: "0" }}>{slide.header2}</h2>
+
+              </div>
+              <div className="slide4-images">
+                <div className="background-slide4 first">
+                  <img src={slide.image1} alt="" />
+                </div>
+                <div className="background-slide4 second">
+                  <img src={slide.image2} alt="" />
+                </div>
+                <div className="background-slide4 third">
+                  <img src={slide.image3} alt="" />
+                </div>
+              </div>
+              <div className="slide-txt header2" style={{fontSize:"20px", fontWeight:"900", width:"auto"} }>{slide.text}</div>
+            </div>
+          </div>
+        )
       default:
         return (
           <div className="slide-block">

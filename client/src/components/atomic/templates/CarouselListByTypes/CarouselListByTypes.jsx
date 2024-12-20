@@ -105,9 +105,15 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
       localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed));
     }
   };
-
+  const filledData = [
+    ...data,
+    ...Array(Math.max(0, countSlide - data.length)).fill({ _id: "empty", isPlaceholder: true }),
+  ];
   const renderItems = (arr) => {
     return arr.map((item, i) => {
+      if (item.isPlaceholder) {
+        return <SwiperSlide key={`placeholder-${i}`} />;
+      }
       const productStateItem = productState[item._id] || { activeIndex: 0, activeSize: 0 };
       const activeColor = item.color?.[productStateItem.activeIndex] || item.color?.[0];
       const activeImage = activeColor?.img?.[0]?.img_link || NoImg;
@@ -161,8 +167,8 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
     <div className="main-container">
       <Swiper
         slidesPerView={countSlide}
-        spaceBetween={21}
-        slidesOffsetBefore={20}
+        
+
         breakpoints={{
           320: {
             slidesPerView: 2,
@@ -171,25 +177,25 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
           },
           800: {
             slidesPerView: 3,
-            spaceBetween: 20,
-            slidesOffsetBefore: 20,
+            spaceBetween: 0,
+            slidesOffsetBefore: 0,
           },
           1444: {
             slidesPerView: countSlide,
-            spaceBetween: 21,
-            slidesOffsetBefore: 20,
+            spaceBetween: 0,
+            slidesOffsetBefore: 0,
           },
           1920: {
             slidesPerView: 4,
-            spaceBetween: 21,
-            slidesOffsetBefore: 20,
+            spaceBetween: 0,
+            slidesOffsetBefore: 0,
           },
         }}
         navigation={true}
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {renderItems(data)}
+        {renderItems(filledData)}
       </Swiper>
     </div>
   );

@@ -46,7 +46,7 @@ export const CartItems = ({ updateTotalCost }) => {
       updateTotalCost
     );
   };
-  console.log(cartItems)
+
   // useEffect(() => {
   //   restoreScrollPosition();
   // });

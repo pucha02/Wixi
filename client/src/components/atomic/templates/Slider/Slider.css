@@ -17,7 +17,16 @@
 
 }
 
-.slick-track {
+.slider-container .slide-block {
+  height: 90vh; /* Фиксированная высота для каждого слайда */
+  display: flex; /* Для вертикального выравнивания содержимого */
+  align-items: center; /* Выравнивание содержимого по вертикали */
+  justify-content: center; /* Выравнивание содержимого по горизонтали */
+  overflow: hidden; /* Скрываем содержимое, которое выходит за пределы */
+}
+
+
+.slide-block{
   background-color: #DFDFE9;
 }
 
@@ -28,8 +37,6 @@
   max-height: 100%;
   object-fit: cover;
 }
-
-
 
 .swiper {
   width: 100%;
@@ -51,7 +58,6 @@
   height: 100%;
   object-fit: cover;
 }
-
 
 .swiper {
   width: 100%;
@@ -155,12 +161,46 @@
 .slide-text {
   width: max-content;
   margin: 0 auto;
-  margin-top: 60px;
+  margin-top: 20px;
+}
+
+.slide4-left{
+  width: 50%;
+}
+
+.slide4-left img{
+  width: 70%;
+  margin-top: 30px;
+  margin-left: 42px;
+  transform: rotate(10deg);
 }
 
 .background-slide2 {
-  width: 40%;
-  margin-top: 20px;
+  width: 45%;
+
+}
+
+
+.background-slide4 img {
+  height: 95vh;
+  width: auto;
+}
+
+.slide4-images {
+  display: flex;
+  justify-content: center;
+}
+
+.background-slide4.first {
+  width: 18%;
+}
+
+.background-slide4.second {
+  width: 14%;
+}
+
+.background-slide4.third {
+  width: 21%;
 }
 
 .slide-block.slide2 {
@@ -180,13 +220,18 @@
   font-size: 50px;
 }
 
+.slide-header.header4 {
+  font-family: 'Helvetica Neue Cyr Ultra Light';
+  font-size: 42px;
+}
+
 .slide-header.header3 {
   font-family: 'Helvetica Neue Cyr Ultra Light';
   font-size: 40px;
 }
 
 .background-slide3 {
-  width: 34%;
+  width: 35%;
 }
 
 .slide-block-comp {
@@ -220,7 +265,7 @@
 
 .thumbnails .swiper-slide img {
   width: 100%;
-  height: 340px;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -244,10 +289,40 @@
   display: none;
 }
 
-@media (max-width:768px) {
-  .thumbnails .swiper-slide img{
-    object-fit: contain;
+@media (min-height: 340px) and (max-height: 840px) and (max-width:768px) {
+  .slider-container .slide-block{
+    height: 42vh;
   }
+}
+
+@media (min-height: 840px) and (max-height: 950px) and (max-width:768px) {
+  .slider-container .slide-block{
+    height: 31vh;
+  }
+}
+
+@media (max-width:768px) {
+
+  .slide-header.header4{
+    text-align: center;
+  }
+
+  .background-slide4.first,
+  .background-slide4.second,
+  .background-slide4.third {
+    width: auto;
+  }
+
+  .background-slide4 img {
+    height: 190px;
+    margin-top: 5px;
+  }
+
+  .thumbnails .swiper-slide img {
+    object-fit: contain;
+    height: auto;
+  }
+
   .swiper-button-prev {
     left: -1px;
   }
@@ -262,7 +337,7 @@
   }
 
   .slide-block-mob .background-slide {
-    width: 100%;
+    width: 65%;
   }
 
   .slide-header.header2 {
@@ -276,7 +351,7 @@
   }
 
   .background-slide2 {
-    width: 80%;
+    width: 53%;
     margin: 0 auto;
   }
 
@@ -286,7 +361,7 @@
   }
 
   .background-slide3 {
-    width: 69%;
+    width: 50%;
     margin: 0 auto;
   }
 

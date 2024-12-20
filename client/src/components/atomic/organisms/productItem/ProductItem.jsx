@@ -16,6 +16,8 @@ import { removeItemFromWishlist } from "../../../../redux/reducers/wishlistReduc
 import { addItemToWishlist } from "../../../../redux/reducers/wishlistReducer";
 import { useSelector } from "react-redux";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
+import { ProductItemModal } from "./ProductItemModal";
+import { ProductHeartButton } from "../../atoms/atomsProduct/Heart/HeartButton";
 import { addItem } from "../../../../redux/reducers/cartReducer";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
@@ -28,7 +30,7 @@ import NoImg from '../../../../assets/svg/no-iamge.svg'
 
 import "./ProductItem.css";
 
-export const ProductItem = ({ notification, setNotification }) => {
+export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
   const [data, setData] = useState([]);
   const [similar, setSimilar] = useState([])
   const [likedItems, setLikedItems] = useState({});
@@ -39,6 +41,7 @@ export const ProductItem = ({ notification, setNotification }) => {
   const [notifications, setNotifications] = useState("");
   const [sizeError, setSizeError] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false)
 
   const { getProduct } = useGetDataProduct();
   const { getAllProductByCategory } = useGetDataProduct();
@@ -54,7 +57,7 @@ export const ProductItem = ({ notification, setNotification }) => {
     const fetchData = async () => {
       try {
         const result = await getProduct(productName);
-
+        console.log(result)
         const updatedData = result.map((item) => ({
           ...item,
           activeIndex: 0,
@@ -140,8 +143,9 @@ export const ProductItem = ({ notification, setNotification }) => {
       setNotifications("Будь ласка, оберіть розмір товару.");
       return;
     }
-    console.log(sku)
+    
     handleAddToCart(data[0], activeColor, activeSize, dispatch, addItemToCart, addItem, token, sku, variationId);
+    setIsProductModalOpen(true)
     if (activeColor && activeSize) {
       setNotification("Товар успішно доданий до кошика!");
     }
@@ -158,14 +162,7 @@ export const ProductItem = ({ notification, setNotification }) => {
 
         <div className="name-heart">
           <ProductName name={item.title} className={""} />
-          <ProductHeart
-            src={HeartIcon}
-            src2={HeartIcon2}
-            toggleHeart={() => handleAddToWishlist(item, item._id)}
-            id={item._id}
-            isLiked={likedItems[item._id]} // Передаем состояние напрямую
-            ref={(el) => (childRefs.current[item._id] = el)}
-          />
+
         </div>
         <ProductDescription description={item.description} className={""} />
         <div className="cost-article">
@@ -199,6 +196,14 @@ export const ProductItem = ({ notification, setNotification }) => {
           handleAddToCart={handleAddToCartWithValidation}
           className={""}
         />
+        <ProductHeartButton
+          src={HeartIcon}
+          src2={HeartIcon2}
+          toggleHeart={() => handleAddToWishlist(item, item._id)}
+          id={item._id}
+          isLiked={likedItems[item._id]} // Передаем состояние напрямую
+          ref={(el) => (childRefs.current[item._id] = el)}
+        />
       </div>
     );
   }
@@ -210,6 +215,7 @@ export const ProductItem = ({ notification, setNotification }) => {
   return (
     <div>
       <div className="product-page-container">
+        <ProductItemModal isOpen={isProductModalOpen} onClose={() => setIsProductModalOpen(false)} setCartOpen={setCartOpen}/>
         <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={`/category/productList/${data[0] ? data[0].category : ''}`}>{data[0] ? data[0].category : ''}</Link> / <Link to={`/category/productList/${data[0] ? data[0].category : ''}/${data[0] ? data[0].title : ''}`}>{data[0] ? data[0].title : ''.toUpperCase()}</Link></div>
 
         <div className="product-page-data-block">
@@ -217,7 +223,7 @@ export const ProductItem = ({ notification, setNotification }) => {
           {elements}
         </div>
         <div className="tab-menu-block">
-          <ProductDescriptionMenu />
+          <ProductDescriptionMenu description={data[0] ? data[0].description : ''} />
         </div>
         <div className="recently-viewed-container">
           {JSON.parse(localStorage.getItem("recentlyViewed"))?.length > 0 && (

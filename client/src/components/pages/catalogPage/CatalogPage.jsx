@@ -9,13 +9,15 @@ import Filter from "../../atomic/organisms/Filter/Filter"
 import './CatalogPage.css'
 
 export const CatalogPage = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const [viewMobileFilter, setViewMobileFilter] = useState(false)
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
     return (
         <>
-            <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter} />
+            <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
             <div className="main">
 
                 <div className="product-list-block">

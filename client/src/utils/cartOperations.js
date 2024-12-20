@@ -1,8 +1,8 @@
 import { fetchCart } from "../redux/reducers/cartReducer";
 import NoImg from '../assets/svg/no-iamge.svg'
-// localhost:5000
+// 16.171.32.44
 export const removeFromCart = async (userId, productId) => {
-  const response = await fetch('http://localhost:5000/api/cart/remove-from-cart', {
+  const response = await fetch('http://16.171.32.44/api/cart/remove-from-cart', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId, productId })

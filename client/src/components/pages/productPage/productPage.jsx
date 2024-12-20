@@ -7,14 +7,22 @@ import { useState } from "react";
 export const ProductPage = () => {
     const [notification, setNotification] = useState("");
     const [viewMobileFilter, setViewMobileFilter] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-    
+
     return (
         <div>
-            <Header notification={notification} setNotification={setNotification} viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter}/>
-            <ProductItem notification={notification} setNotification={setNotification}/>
+            <Header
+                notification={notification}
+                setNotification={setNotification}
+                viewMobileFilter={viewMobileFilter}
+                setViewMobileFilter={setViewMobileFilter}
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen} />
+            <ProductItem notification={notification} setNotification={setNotification} setCartOpen={setIsModalOpen}/>
             <Footer />
 
         </div>

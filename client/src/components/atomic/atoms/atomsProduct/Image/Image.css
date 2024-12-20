@@ -1,13 +1,13 @@
 .product-image img {
     width: 100%;
-    height: 425px;
+    height: 70vh;
     object-fit: cover;
 }
 
 
 .product-image.main-page img {
     width: 100%;
-    height: 470px;
+    height: 70vh;
     object-fit: cover;
 }
 
@@ -46,7 +46,7 @@
 @media (max-width:1490px) {
     .product-image img {
         width: 100%;
-        height: 370px;
+        height: 70vh;
         object-fit: cover;
     }
 
@@ -58,7 +58,7 @@
 @media (max-width:1300px) {
     .product-image img {
         width: 250px;
-        height: 310px;
+        height: 70vh;
         object-fit: cover;
     }
 
@@ -70,7 +70,7 @@
 
 @media (min-width:1920px) {
     .product-image img{
-        height: 700px;
+        height: 70vh;
     }
 }
 

@@ -8,7 +8,7 @@
 .swiper.thumbnails {
   order: 1;
   width: 246px;
-  height: 690px;
+  height: 85vh;
   overflow: hidden;
 }
 
@@ -31,8 +31,8 @@
 
 .main-image {
   order: 2;
-  width: 495px;
-  height: 690px;
+  width: 100%;
+  height: 85vh;
   overflow: hidden;
   position: relative;
 }

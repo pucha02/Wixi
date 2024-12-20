@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./Modal.css"; // Стили для модального окна
 
-export const Modal = ({ isOpen, onClose, children, isOpenSearch }) => {
+export const Modal = ({ isOpen, onClose, children, isOpenSearch, className=null }) => {
   useEffect(() => {
     if (isOpen && !isOpenSearch) {
       document.body.style.overflow = "hidden"; // Запрещаем прокрутку
@@ -21,7 +21,7 @@ export const Modal = ({ isOpen, onClose, children, isOpenSearch }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className={`modal-content ${className}`} onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>
           ✖
         </button>

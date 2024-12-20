@@ -32,18 +32,43 @@
     margin-top: 190px;
 }
 
-.product-page-container .product-page-data-block .heart-container {
+.product-page-container .modal-overlay{
+    z-index: 1400;
+}
 
+.product-page-container .product-page-data-block .heart-container {
     display: flex;
     height: max-content;
     justify-content: start;
     align-items: center;
     cursor: pointer;
-    position: absolute;
-    top: 15px;
-    left: -100px;
+    position:relative;
+}
 
+.product-modal-btns{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 45px;
+}
 
+.product-modal-btns .cart-button{
+    border: 2px solid;
+}
+
+.product-modal-btns .cart-button.tocart{
+    border: 2px solid;
+    background-color: black;
+    color: white;
+}
+
+.product-page-container .heart-button-container {
+    margin-top: 21px;
+}
+
+.product-modal-btns .cart-button.tocart:hover{
+    border: 2px solid;
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
 }
 
 .product-page-data-block {
@@ -83,13 +108,13 @@
 .recently-viewed-container .main-container .mySwiper .swiper-wrapper .swiper-slide .product-item.main-page {
     margin: 0 auto;
     margin-top: 20px;
-    width: 100%;
+    width: 92%;
     height: max-content;
 }
 
 .recently-viewed-container .main-container .mySwiper .swiper-wrapper .swiper-slide .product-image.main-page img {
     width: 100%;
-    height: 300px;
+    height: 45vh;
 }
 
 .tab-menu-block {
@@ -122,8 +147,8 @@
 
 @media (max-width: 1443px) {
     .recently-viewed-container .main-container .mySwiper .swiper-wrapper .swiper-slide .product-image.main-page img {
-        width: 320px;
-        height: 370px;
+        width: 100%;
+        height: 45vh;
         object-fit: cover;
     }
 
@@ -138,7 +163,7 @@
 @media (max-width: 1260px) {
     .recently-viewed-container .main-container .mySwiper .swiper-wrapper .swiper-slide .product-image.main-page img {
         width: 100%;
-        height: 250px;
+        height: 45vh;
         object-fit: cover;
     }
 
@@ -152,7 +177,7 @@
 @media (min-width:1920px) and (max-width:3000px) {
 
     .recently-viewed-container .main-container .mySwiper .swiper-wrapper .swiper-slide .product-image.main-page img {
-        height: 425px;
+        height: 45vh;
     }
 
 }
@@ -160,7 +185,7 @@
 @media (max-width:1490px) {
     .product-image img {
         width: 100%;
-        height: 370px;
+        height: 70vh;
         object-fit: cover;
     }
 
@@ -172,7 +197,7 @@
 @media (max-width:1300px) {
     .product-image img {
         width: 100%;
-        height: 370px;
+        height: 70vh;
         object-fit: cover;
     }
 
