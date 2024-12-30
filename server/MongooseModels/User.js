@@ -10,8 +10,10 @@ const cartItemSchema = new mongoose.Schema({
     discount: { type: Number },
     originalCost: { type: Number },
     img: { type: String },
-    sku: {type: String},
-    id:{ type: Number }
+    sku: { type: String },
+    id: { type: Number },
+    availableQuantity: { type: Number },
+    relatedProducts: { type: Array },
 });
 
 const orderSchema = new mongoose.Schema({
@@ -27,8 +29,8 @@ const orderSchema = new mongoose.Schema({
             quantity: { type: Number },
             cost: { type: Number },
             img: { type: String },
-            sku: {type: String},
-            id:{ type: Number }
+            sku: { type: String },
+            id: { type: Number }
         }
     ],
     totalCost: { type: Number, required: true },

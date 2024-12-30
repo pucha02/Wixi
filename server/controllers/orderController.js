@@ -9,11 +9,11 @@ export const registerOrder = async (req, res) => {
     const orderDetails = req.body;
 
     try {
-        console.log("[DEBUG] Order Details received:", JSON.stringify(orderDetails, null, 2));
+        console.log("[DEBUG] Отримані дані замовлення:", JSON.stringify(orderDetails, null, 2));
 
         const user = await User.findOne({ number_phone: orderDetails.number_phone });
         if (!user) {
-            console.log("[DEBUG] User not found. Creating new user.");
+            console.log("[DEBUG] Користувач не знайдений. Створюємо нового користувача.");
         }
 
         const newOrder = {
@@ -37,41 +37,41 @@ export const registerOrder = async (req, res) => {
             number_phone: orderDetails.number_phone,
         };
 
-        console.log("[DEBUG] Constructed newOrder:", JSON.stringify(newOrder, null, 2));
+        console.log("[DEBUG] Створене нове замовлення:", JSON.stringify(newOrder, null, 2));
 
         const order = new Order(newOrder);
 
         for (const item of orderDetails.products) {
-            console.log(`[DEBUG] Checking product: ${item.title}, color: ${item.color}, size: ${item.size}`);
+            console.log(`[DEBUG] Перевірка товару: ${item.title}, колір: ${item.color}, розмір: ${item.size}`);
 
             const product = await Product.findOne({ title: item.title });
             if (!product) {
-                console.error(`[ERROR] Product with title ${item.title} not found.`);
-                return res.status(404).json({ message: `Product with title ${item.title} not found` });
+                console.error(`[ERROR] Товар з назвою ${item.title} не знайдений.`);
+                return res.status(404).json({ message: `Товар з назвою ${item.title} не знайдений` });
             }
 
             const color = product.color.find(c => c.color_name === (item.color.color_name || item.color));
             if (!color) {
-                console.error(`[ERROR] Color ${item.color} not found in product ${item.title}.`);
-                return res.status(404).json({ message: `Color ${item.color} not found in product ${item.title}` });
+                console.error(`[ERROR] Колір ${item.color} не знайдений у товарі ${item.title}.`);
+                return res.status(404).json({ message: `Колір ${item.color} не знайдений у товарі ${item.title}` });
             }
 
             const size = color.sizes.find(s => s.size_name === item.size);
             if (!size) {
-                console.error(`[ERROR] Size ${item.size} not found in color ${item.color} for product ${item.title}.`);
-                return res.status(404).json({ message: `Size ${item.size} not found in color ${item.color} for product ${item.title}` });
+                console.error(`[ERROR] Розмір ${item.size} не знайдений для кольору ${item.color} у товарі ${item.title}.`);
+                return res.status(404).json({ message: `Розмір ${item.size} не знайдений для кольору ${item.color} у товарі ${item.title}` });
             }
 
             if (size.availableQuantity < item.quantity) {
-                console.error(`[ERROR] Not enough stock for product: ${item.title}, color: ${item.color}, size: ${item.size}. Requested: ${item.quantity}, Available: ${size.availableQuantity}`);
+                console.error(`[ERROR] Недостатньо товару: ${item.title}, колір: ${item.color}, розмір: ${item.size}. Запитано: ${item.quantity}, Доступно: ${size.availableQuantity}`);
                 return res.status(400).json({
-                    message: `Not enough stock for product: ${item.title}, color: ${item.color}, size: ${item.size}`
+                    message: `Недостатньо товару: ${item.title}, колір: ${item.color}, розмір: ${item.size}`
                 });
             }
 
             size.availableQuantity -= item.quantity;
             await product.save();
-            console.log(`[DEBUG] Updated product stock for ${item.title}, color: ${item.color}, size: ${item.size}. Remaining: ${size.availableQuantity}`);
+            console.log(`[DEBUG] Оновлено залишки товару ${item.title}, колір: ${item.color}, розмір: ${item.size}. Залишилось: ${size.availableQuantity}`);
         }
 
         if (!user) {
@@ -120,7 +120,7 @@ export const registerOrder = async (req, res) => {
             salesChannelId: 1071,
         };
 
-        console.log("[DEBUG] CRM Order Data:", JSON.stringify(crmOrderData, null, 2));
+        console.log("[DEBUG] Дані замовлення для CRM:", JSON.stringify(crmOrderData, null, 2));
 
         const crmResponse = await fetch(apiUrl, {
             method: "POST",
@@ -132,24 +132,24 @@ export const registerOrder = async (req, res) => {
         });
 
         const responseText = await crmResponse.text();
-        console.log("[DEBUG] CRM Response Status:", crmResponse.status);
-        console.log("[DEBUG] CRM Response Body:", responseText);
+        console.log("[DEBUG] Статус відповіді CRM:", crmResponse.status);
+        console.log("[DEBUG] Тіло відповіді CRM:", responseText);
 
         if (!crmResponse.ok) {
-            console.error(`[ERROR] Failed to send order to CRM. Status: ${crmResponse.status}, Response: ${responseText}`);
+            console.error(`[ERROR] Не вдалося відправити замовлення у CRM. Статус: ${crmResponse.status}, Відповідь: ${responseText}`);
             return res.status(400).json({
-                message: "Failed to send order to CRM",
+                message: "Не вдалося відправити замовлення у CRM",
                 crmStatus: crmResponse.status,
                 crmResponse: responseText
             });
         }
 
         const crmResult = JSON.parse(responseText);
-        console.log('[DEBUG] Order sent to CRM successfully:', crmResult);
+        console.log('[DEBUG] Замовлення успішно відправлено у CRM:', crmResult);
 
-        return res.status(201).json({ message: 'Order placed successfully and sent to CRM', order: newOrder });
+        return res.status(201).json({ message: 'Замовлення успішно оформлено та відправлено у CRM', order: newOrder });
     } catch (error) {
-        console.error('[ERROR] Error placing order:', error);
-        return res.status(500).json({ message: 'Server error', error: error.message });
+        console.error('[ERROR] Помилка при оформленні замовлення:', error);
+        return res.status(500).json({ message: 'Помилка сервера', error: error.message });
     }
 };
