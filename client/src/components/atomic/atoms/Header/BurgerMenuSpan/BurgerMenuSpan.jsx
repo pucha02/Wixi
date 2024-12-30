@@ -1,4 +1,4 @@
-import './BurgerMenuSpan.css'
+
 
 export const BurgerMenuSpan = () => {
     return (

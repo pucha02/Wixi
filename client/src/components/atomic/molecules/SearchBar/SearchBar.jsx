@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import "./SearchBar.css";
 import useGetDataProduct from "../../../../services/FetchData";
 import debounce from "lodash.debounce";
 import { Link, useNavigate } from "react-router-dom";
@@ -54,14 +53,17 @@ const SearchBar = ({ setIsModalOpen = null }) => {
       if (setIsModalOpen) {
         setIsModalOpen(false);
       }
-      setQuery('')
-      localStorage.setItem("searchedProducts", JSON.stringify(filteredProducts)); // Опционально
-      navigate("/searchedproducts", { state: { searchResults: filteredProducts } }); // Передаём данные через state
+      setQuery("");
+      localStorage.setItem(
+        "searchedProducts",
+        JSON.stringify(filteredProducts)
+      ); // Опционально
+      navigate("/searchedproducts", {
+        state: { searchResults: filteredProducts },
+      }); // Передаём данные через state
       window.scrollTo(0, 0);
     }
   };
-
-
 
   useEffect(() => {
     // Добавляем обработчик клика
@@ -87,20 +89,26 @@ const SearchBar = ({ setIsModalOpen = null }) => {
                   key={i}
                   to={`/category/productList/${item.category}/${item.title}`}
                   onMouseDown={(e) => e.preventDefault()}
-                  {...(setIsModalOpen ? { onClick: () => setIsModalOpen(false) } : {})}
+                  {...(setIsModalOpen
+                    ? { onClick: () => setIsModalOpen(false) }
+                    : {})}
                 >
-                  <li className="search-item" onClick={()=>setQuery('')}>
+                  <li className="search-item" onClick={() => setQuery("")}>
                     <img src={imgLink} alt={item.title || "No title"} />
                     <div className="item-info">
                       <span className="item-title">{item.title || ""}</span>
-                      <span className="item-price">{item.cost ? `${item.cost} UAH` : "Ціна не вказана"}</span>
+                      <span className="item-price">
+                        {item.cost ? `${item.cost} UAH` : "Ціна не вказана"}
+                      </span>
                     </div>
                   </li>
                 </Link>
-
               );
             })}
-            <button className="search-button-comp" onClick={handleSearchRedirect}>
+            <button
+              className="search-button-comp"
+              onClick={handleSearchRedirect}
+            >
               УСІ ЗНАЙДЕНІ ТОВАРИ
             </button>
           </ul>

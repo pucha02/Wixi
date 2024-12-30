@@ -1,4 +1,4 @@
-import './FooterElementImg.css'
+
 
 export const FooterElementImg = ({src}) => {
     return(

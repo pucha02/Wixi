@@ -28,8 +28,6 @@ import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
 import HeartIcon2 from "../../../../assets/svg/little-heart-3.svg";
 import NoImg from '../../../../assets/svg/no-iamge.svg'
 
-import "./ProductItem.css";
-
 export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
   const [data, setData] = useState([]);
   const [similar, setSimilar] = useState([])

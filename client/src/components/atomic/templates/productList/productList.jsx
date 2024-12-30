@@ -30,7 +30,6 @@
 //   const [likedItems, setLikedItems] = useState({});
 //   const [activeSize, setActiveSize] = useState(0);
 
-
 //   const [activeIndex, setActiveIndex] = useState(0);
 //   const [isLiked, setLiked] = useState();
 //   const [filteredData, setFilteredData] = useState(null);
@@ -41,7 +40,6 @@
 //   const { getAllProductByCategory } = useGetDataProduct();
 //   const location = useLocation();
 //   const dispatch = useDispatch();
-
 
 //   useEffect(() => {
 //     loadRecentlyViewed();
@@ -67,7 +65,6 @@
 //     window.scrollTo(0, 0);
 //     fetchData();
 //   }, [id]); // Добавьте зависимости, чтобы предотвратить ошибки
-
 
 //   const loadRecentlyViewed = () => {
 //     const data = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
@@ -98,8 +95,6 @@
 //     // Обновляем локальное состояние сразу
 //     setLikedItems((prev) => ({ ...prev, [product._id]: !isCurrentlyLiked }));
 //   };
-
-
 
 //   const handleSetActiveIndex = (productId, index) => {
 //     setData((prevData) =>
@@ -215,7 +210,6 @@
 
 // export default ProductList;
 
-
 import { ProductCost } from "../../atoms/atomsProduct/Cost/Cost";
 import { ProductName } from "../../atoms/atomsProduct/Name/Name";
 import { ProductButtonAddToCart } from "../../atoms/atomsProduct/Button/ButtonImage";
@@ -232,14 +226,14 @@ import { FilterIcon } from "../../atoms/Filter/FilterIcon/FilterIcon";
 import FilterImg from "../../../../assets/svg/filter1.svg";
 import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
 import HeartIcon2 from "../../../../assets/svg/little-heart-3.svg";
-import "./productList.css";
+
 import Filter from "../../organisms/Filter/Filter";
 import {
   addItemToWishlist,
   removeItemFromWishlist,
 } from "../../../../redux/reducers/wishlistReducer";
 
-import NoImg from '../../../../assets/svg/no-iamge.svg'
+import NoImg from "../../../../assets/svg/no-iamge.svg";
 
 const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   const [data, setData] = useState([]);
@@ -247,7 +241,6 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [activeSize, setActiveSize] = useState(0);
-
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLiked, setLiked] = useState();
@@ -260,7 +253,6 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   const { getAllProductByCategory } = useGetDataProduct();
   const location = useLocation();
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     loadRecentlyViewed();
@@ -287,7 +279,6 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
     fetchData();
   }, [id]); // Добавьте зависимости, чтобы предотвратить ошибки
 
-
   const loadRecentlyViewed = () => {
     const data = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
     setRecentlyViewed(data);
@@ -302,9 +293,19 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   }, [storedLikes]);
 
   const handleAddToWishlist = (product, index) => {
-    const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
-    const activeImage = product.color?.[product.activeIndex]?.img?.[0]?.img_link || "/placeholder-image.png";
-    const item = { title: product.title, _id: product._id, cost: product.cost, img: activeImage, color: activeColor, category: product.category };
+    const activeColor =
+      product.color?.[product.activeIndex] || product.color?.[0];
+    const activeImage =
+      product.color?.[product.activeIndex]?.img?.[0]?.img_link ||
+      "/placeholder-image.png";
+    const item = {
+      title: product.title,
+      _id: product._id,
+      cost: product.cost,
+      img: activeImage,
+      color: activeColor,
+      category: product.category,
+    };
 
     const isCurrentlyLiked = !!likedItems[product._id]; // Проверяем, лайкнут ли товар
 
@@ -317,8 +318,6 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
     // Обновляем локальное состояние сразу
     setLikedItems((prev) => ({ ...prev, [product._id]: !isCurrentlyLiked }));
   };
-
-
 
   const handleSetActiveIndex = (productId, index) => {
     setData((prevData) =>
@@ -337,8 +336,8 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   };
 
   const handleViewMobileFilter = () => {
-    setViewMobileFilter(!viewMobileFilter)
-  }
+    setViewMobileFilter(!viewMobileFilter);
+  };
 
   const addToRecentlyViewed = (product) => {
     const recentlyViewed =
@@ -358,15 +357,22 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
       return (
         <CSSTransition key={item._id} timeout={300} classNames="fade">
           <li className="product-item-li">
-            <div
-              className="product-item"
-              
-            >
-              <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
-                <ProductImage setHoveredItemId={setHoveredItemId} item={item} src={hoveredItemId === item._id ? secondImage : firstImage} />
+            <div className="product-item">
+              <Link
+                to={`${location.pathname}/${item.title}`}
+                onClick={() => addToRecentlyViewed(item)}
+              >
+                <ProductImage
+                  setHoveredItemId={setHoveredItemId}
+                  item={item}
+                  src={hoveredItemId === item._id ? secondImage : firstImage}
+                />
               </Link>
               <div className="name-heart">
-                <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
+                <Link
+                  to={`${location.pathname}/${item.title}`}
+                  onClick={() => addToRecentlyViewed(item)}
+                >
                   <ProductName name={item.title} className={""} />
                 </Link>
                 <ProductHeart
@@ -378,14 +384,19 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
                 />
               </div>
               <div className="cost-addBtn">
-                <ProductCost cost={item.cost} discount={item.discount.percentage} />
+                <ProductCost
+                  cost={item.cost}
+                  discount={item.discount.percentage}
+                />
                 {item.discount.percentage > 0 ? (
                   <ProductDiscount discount={item.discount.percentage} />
                 ) : null}
               </div>
               <ColorList
                 colors={item.color}
-                setActiveIndex={(index) => handleSetActiveIndex(item._id, index)}
+                setActiveIndex={(index) =>
+                  handleSetActiveIndex(item._id, index)
+                }
                 activeIndex={item.activeIndex}
                 setActiveSize={setActiveSize}
                 activeSize={activeSize}
@@ -398,22 +409,34 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
     });
   };
 
-
   const elements = useMemo(() => {
     const finallyData = filteredData ? filteredData : data;
     return renderItems(finallyData);
-  }, [data, activeIndex, isLiked, filteredData, storedLikes, isHovered, hoveredItemId]);
+  }, [
+    data,
+    activeIndex,
+    isLiked,
+    filteredData,
+    storedLikes,
+    isHovered,
+    hoveredItemId,
+  ]);
 
   return (
     <div className="catalog-container">
-      <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={`/category/productList/${id}`}>{id.toUpperCase()}</Link></div>
+      <div className="category-title">
+        <Link to={"/"}>ГОЛОВНА</Link> /{" "}
+        <Link to={`/category/productList/${id}`}>{id.toUpperCase()}</Link>
+      </div>
       <FilterIcon src={FilterImg} onClick={handleViewMobileFilter} />
       <div className="catalog-content">
         <div className="filter-block">
           <Filter data={data} filteredData={setFilteredData} />
         </div>
         <div
-          className={`filter-block-mobile ${viewMobileFilter ? "visible" : "hidden"}`}
+          className={`filter-block-mobile ${
+            viewMobileFilter ? "visible" : "hidden"
+          }`}
         >
           <div
             className="close-filter-block-mobile"
@@ -433,7 +456,6 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
         </TransitionGroup>
       </div>
     </div>
-
   );
 };
 

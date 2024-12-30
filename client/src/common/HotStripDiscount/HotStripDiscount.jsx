@@ -1,37 +1,35 @@
-import React from 'react';
-import './HotStripDiscount.css';
+import React from "react";
 
-const HotStripDiscount = ({content}) => {
+const HotStripDiscount = ({ content }) => {
   return (
-   <>
-    <div class="items-wrap">
-    <div class="items marquee">
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    </div>
-    <div aria-hidden="true" class="items marquee">
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    <div class="item">{content}</div>
-    </div>
-  </div>
-  
-  </>
+    <>
+      <div class="items-wrap">
+        <div class="items marquee">
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+        </div>
+        <div aria-hidden="true" class="items marquee">
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+          <div class="item">{content}</div>
+        </div>
+      </div>
+    </>
   );
 };
 

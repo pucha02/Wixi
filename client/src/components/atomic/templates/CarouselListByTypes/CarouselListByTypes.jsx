@@ -21,9 +21,13 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
-import "./CarouselListByTypes.css";
 
-export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setActiveIndex=null }) => {
+export const CarouselListByTypes = ({
+  type = null,
+  getdata,
+  countSlide = 3,
+  setActiveIndex = null,
+}) => {
   const [data, setData] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [productState, setProductState] = useState({});
@@ -75,7 +79,9 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setA
   };
 
   const handleAddToWishlist = (product, index) => {
-    const activeColor = product.color?.[productState[product._id]?.activeIndex] || product.color?.[0];
+    const activeColor =
+      product.color?.[productState[product._id]?.activeIndex] ||
+      product.color?.[0];
     const activeImage = activeColor?.img?.[0]?.img_link || NoImg;
     const item = {
       title: product.title,
@@ -98,8 +104,8 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setA
   };
 
   const addToRecentlyViewed = (product) => {
-    if(setActiveIndex){
-      setActiveIndex(0)
+    if (setActiveIndex) {
+      setActiveIndex(0);
     }
     const recentlyViewed =
       JSON.parse(localStorage.getItem("recentlyViewed")) || [];
@@ -110,15 +116,22 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setA
   };
   const filledData = [
     ...data,
-    ...Array(Math.max(0, countSlide - data.length)).fill({ _id: "empty", isPlaceholder: true }),
+    ...Array(Math.max(0, countSlide - data.length)).fill({
+      _id: "empty",
+      isPlaceholder: true,
+    }),
   ];
   const renderItems = (arr) => {
     return arr.map((item, i) => {
       if (item.isPlaceholder) {
         return <SwiperSlide key={`placeholder-${i}`} />;
       }
-      const productStateItem = productState[item._id] || { activeIndex: 0, activeSize: 0 };
-      const activeColor = item.color?.[productStateItem.activeIndex] || item.color?.[0];
+      const productStateItem = productState[item._id] || {
+        activeIndex: 0,
+        activeSize: 0,
+      };
+      const activeColor =
+        item.color?.[productStateItem.activeIndex] || item.color?.[0];
       const activeImage = activeColor?.img?.[0]?.img_link || NoImg;
 
       return (
@@ -147,16 +160,23 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setA
               />
             </div>
             <div className="cost-addBtn">
-              <ProductCost cost={item.cost} discount={item.discount.percentage} />
+              <ProductCost
+                cost={item.cost}
+                discount={item.discount.percentage}
+              />
               {item.discount.percentage > 0 ? (
                 <ProductDiscount discount={item.discount.percentage} />
               ) : null}
             </div>
             <ColorList
               colors={item.color}
-              setActiveIndex={(index) => updateProductState(item._id, "activeIndex", index)}
+              setActiveIndex={(index) =>
+                updateProductState(item._id, "activeIndex", index)
+              }
               activeIndex={productStateItem.activeIndex}
-              setActiveSize={(size) => updateProductState(item._id, "activeSize", size)}
+              setActiveSize={(size) =>
+                updateProductState(item._id, "activeSize", size)
+              }
               activeSize={productStateItem.activeSize}
               classname={"isDisplaySizes"}
             />
@@ -170,8 +190,6 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setA
     <div className="main-container">
       <Swiper
         slidesPerView={countSlide}
-        
-
         breakpoints={{
           320: {
             slidesPerView: 2,

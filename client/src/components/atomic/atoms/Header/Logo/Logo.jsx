@@ -1,4 +1,4 @@
-import './Logo.css'
+
 
 export const Logo = ({ src }) => {
     return (

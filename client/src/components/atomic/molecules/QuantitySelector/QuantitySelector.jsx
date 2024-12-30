@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { IncreaseButton } from "../../atoms/QuantitySelector/IncreaseButton";
 import { DecreaseButton } from "../../atoms/QuantitySelector/DecreaseButton";
 import { CountDisplay } from "../../atoms/QuantitySelector/CountDisplay";
-import './QuantitySelector.css';
 
 export const ProductQuantitySelector = ({ count, setCount, maxCount }) => {
   const handleIncrease = () => {

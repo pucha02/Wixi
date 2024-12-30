@@ -1,4 +1,4 @@
-import './RightHeaderImg.css'
+
 
 export const RightHeaderImg = ({ src, onClick, className }) => {
     return (

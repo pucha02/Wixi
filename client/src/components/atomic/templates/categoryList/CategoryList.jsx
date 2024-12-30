@@ -3,9 +3,11 @@ import { useEffect, useMemo, useState } from "react";
 import useGetDataCategories from "../../../../services/FetchDataCategory";
 import { Link } from "react-router-dom";
 
-import "./CategoryList.css";
-
-const CategoryList = ({ setViewCategories, overlayVisible, setOverlayVisible }) => {
+const CategoryList = ({
+  setViewCategories,
+  overlayVisible,
+  setOverlayVisible,
+}) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false); // Состояние для анимации
@@ -57,7 +59,9 @@ const CategoryList = ({ setViewCategories, overlayVisible, setOverlayVisible }) 
 
   return (
     <div>
-      <div className={`category-list-block ${isVisible ? "visible" : "hidden"}`}>
+      <div
+        className={`category-list-block ${isVisible ? "visible" : "hidden"}`}
+      >
         <div className="category-list">
           <h3>Категорії</h3>
           {loading ? <p></p> : <div className="categories">{elements}</div>}

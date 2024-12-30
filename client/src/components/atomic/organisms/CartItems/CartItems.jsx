@@ -1,15 +1,20 @@
 import { handleRemoveItem } from "../../../../utils/cartOperations";
-import { removeItem, updateCartItemQuantity } from "../../../../redux/reducers/cartReducer";
+import {
+  removeItem,
+  updateCartItemQuantity,
+} from "../../../../redux/reducers/cartReducer";
 import React, { useEffect, useState, useRef } from "react";
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCart, removeItemCart } from "../../../../redux/reducers/cartReducer";
+import {
+  fetchCart,
+  removeItemCart,
+} from "../../../../redux/reducers/cartReducer";
 import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
 import { ProductQuantitySelector } from "../../molecules/QuantitySelector/QuantitySelector";
 import { handleQuantityChange } from "../../../../utils/cartOperations";
-import './CartItems.css';
 
-import BucketImg from '../../../../assets/svg/bucket.svg';
+import BucketImg from "../../../../assets/svg/bucket.svg";
 
 const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
@@ -25,12 +30,23 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
   );
 };
 
-export const CartItems = ({ updateTotalCost, deleteMessage, setDeleteMessage }) => {
-  const { items: products = [], loading, error } = useSelector((state) => state.cart);
+export const CartItems = ({
+  updateTotalCost,
+  deleteMessage,
+  setDeleteMessage,
+}) => {
+  const {
+    items: products = [],
+    loading,
+    error,
+  } = useSelector((state) => state.cart);
   const [localProducts, setLocalProducts] = useState([]);
   const [prevIsAuthorized, setPrevIsAuthorized] = useState(null);
   const isAuthorized = !!localStorage.getItem("token");
-  const cartItems = useMemo(() => (isAuthorized ? products : localProducts), [isAuthorized, products, localProducts]);
+  const cartItems = useMemo(
+    () => (isAuthorized ? products : localProducts),
+    [isAuthorized, products, localProducts]
+  );
   const [modalData, setModalData] = useState({ isOpen: false, product: null });
   const dispatch = useDispatch();
 
@@ -142,7 +158,10 @@ export const CartItems = ({ updateTotalCost, deleteMessage, setDeleteMessage }) 
                   {product.title.toUpperCase()}
                   <div className="cart-product-description-size-color">
                     <div className="cart-product-description-size">
-                      КОЛІР: {isAuthorized ? product.color.toUpperCase() : product.color.color_name.toUpperCase()}
+                      КОЛІР:{" "}
+                      {isAuthorized
+                        ? product.color.toUpperCase()
+                        : product.color.color_name.toUpperCase()}
                     </div>
                     <div className="cart-product-description-color">
                       РОЗМІР: {product.size}

@@ -96,15 +96,12 @@
 
 // export default ImageSlider;
 
-
-
 import React, { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/swiper-bundle.css";
-import "./ImageSlider.css";
 
-import NoImg from '../../../../assets/svg/no-iamge.svg';
+import NoImg from "../../../../assets/svg/no-iamge.svg";
 
 const ImageSlider = ({ images }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -165,7 +162,9 @@ const ImageSlider = ({ images }) => {
             <img
               src={img.img_link || NoImg}
               alt={`Thumbnail ${index}`}
-              className={`thumbnail ${selectedImage === (img.img_link || NoImg) ? "active" : ""}`}
+              className={`thumbnail ${
+                selectedImage === (img.img_link || NoImg) ? "active" : ""
+              }`}
               onClick={() => handleThumbnailClick(img, index)}
             />
           </SwiperSlide>

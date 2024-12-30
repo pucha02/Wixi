@@ -15,7 +15,7 @@ import { FilterIcon } from "../../atoms/Filter/FilterIcon/FilterIcon";
 import FilterImg from "../../../../assets/svg/filter1.svg";
 import HeartIcon from "../../../../assets/svg/little-heart-2.svg";
 import HeartIcon2 from "../../../../assets/svg/little-heart-3.svg";
-import "./productList.css";
+
 import Filter from "../../organisms/Filter/Filter";
 import {
     addItemToWishlist,

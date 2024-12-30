@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
-import './Slider.css'; // Вы можете оставить этот файл для других стилей
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import React, { useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
+
+import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 
 export default function Carousel({ activeColor }) {
   const thumbsSwiperRef = useRef(null); // Ссылка для миниатюр
@@ -44,12 +44,12 @@ export default function Carousel({ activeColor }) {
   // Стиль для изображения с возможностью масштабирования
   const imageStyle = {
     transform: `scale(${scale})`,
-    transition: 'transform 0.3s',
-    touchAction: 'none', // Отключаем стандартное поведение
-    width: '100%',
-    height: 'auto',
-    display: 'block',
-    transformOrigin: 'center center', // Точка масштабирования
+    transition: "transform 0.3s",
+    touchAction: "none", // Отключаем стандартное поведение
+    width: "100%",
+    height: "auto",
+    display: "block",
+    transformOrigin: "center center", // Точка масштабирования
   };
 
   if (!activeColor || !activeColor.img) {
@@ -60,13 +60,17 @@ export default function Carousel({ activeColor }) {
     <>
       <Swiper
         style={{
-          '--swiper-navigation-color': '#fff',
-          '--swiper-pagination-color': '#fff',
+          "--swiper-navigation-color": "#fff",
+          "--swiper-pagination-color": "#fff",
         }}
         loop={true}
         spaceBetween={10}
         navigation={true}
-        thumbs={thumbsSwiperRef.current ? { swiper: thumbsSwiperRef.current } : undefined}
+        thumbs={
+          thumbsSwiperRef.current
+            ? { swiper: thumbsSwiperRef.current }
+            : undefined
+        }
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper2"
       >

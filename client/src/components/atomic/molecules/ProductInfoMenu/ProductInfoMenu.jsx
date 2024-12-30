@@ -1,11 +1,10 @@
-import React from 'react';
-import { MenuInfoElement } from '../../atoms/ProductInfo/MenuEl/MenuEl';
-import './ProductInfoMenu.css'
+import React from "react";
+import { MenuInfoElement } from "../../atoms/ProductInfo/MenuEl/MenuEl";
 
 const ProductInfoMenu = ({ tabs, activeTab, onTabClick }) => {
   return (
-    <div className='tab-menu'>
-      <div className='tab-menu-buttons'>
+    <div className="tab-menu">
+      <div className="tab-menu-buttons">
         {tabs.map((tab, index) => (
           <MenuInfoElement
             key={index}

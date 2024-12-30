@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./Slider.css";
+
 import Banner1 from "../../../../assets/svg/baners/banner1.png";
 
 const MySlider = ({ slides }) => {
@@ -120,7 +120,6 @@ const MySlider = ({ slides }) => {
   );
 };
 
-
 const renderSlideContent = (slide) => {
   switch (slide.type) {
     case "textOnly":
@@ -139,8 +138,15 @@ const renderSlideContent = (slide) => {
           <div className="slide-block-mob">
             <div>
               <h2 className="slide-header header2">{slide.header}</h2>
-              <h2 className="slide-header header2" style={{ marginTop: "0" }}>{slide.header2}</h2>
-              <div className="slide-txt header2" style={{ fontSize: "21px", fontWeight: "600" }}>{slide.text}</div>
+              <h2 className="slide-header header2" style={{ marginTop: "0" }}>
+                {slide.header2}
+              </h2>
+              <div
+                className="slide-txt header2"
+                style={{ fontSize: "21px", fontWeight: "600" }}
+              >
+                {slide.text}
+              </div>
             </div>
             <div className="background-slide2">
               <img src={slide.image} alt="" draggable="false" />
@@ -163,7 +169,9 @@ const renderSlideContent = (slide) => {
           <div className="slide-block-mob">
             <div>
               <div className="slide-header header3">{slide.header}</div>
-              <div className="slide-header header3" style={{ marginTop: "0" }}>{slide.header2}</div>
+              <div className="slide-header header3" style={{ marginTop: "0" }}>
+                {slide.header2}
+              </div>
             </div>
             <div className="background-slide3">
               <img src={slide.image} alt="" draggable="false" />
@@ -173,9 +181,11 @@ const renderSlideContent = (slide) => {
       );
     case "withBags":
       return (
-        <div className="slide-block slide2" style={{ backgroundColor: "#D6D6D6" }}>
+        <div
+          className="slide-block slide2"
+          style={{ backgroundColor: "#D6D6D6" }}
+        >
           <div className="slide-block-comp" style={{ marginTop: "0" }}>
-
             <div className="background-slide4 first">
               <img src={slide.image1} alt="" draggable="false" />
             </div>
@@ -196,9 +206,12 @@ const renderSlideContent = (slide) => {
           </div>
           <div className="slide-block-mob">
             <div>
-              <h2 className="slide-header header4" style={{ marginTop: "0" }}>{slide.header}</h2>
-              <h2 className="slide-header header4" style={{ marginTop: "0" }}>{slide.header2}</h2>
-
+              <h2 className="slide-header header4" style={{ marginTop: "0" }}>
+                {slide.header}
+              </h2>
+              <h2 className="slide-header header4" style={{ marginTop: "0" }}>
+                {slide.header2}
+              </h2>
             </div>
             <div className="slide4-images">
               <div className="background-slide4 first">
@@ -211,10 +224,15 @@ const renderSlideContent = (slide) => {
                 <img src={slide.image3} alt="" draggable="false" />
               </div>
             </div>
-            <div className="slide-txt header2" style={{ fontSize: "20px", fontWeight: "900", width: "auto" }}>{slide.text}</div>
+            <div
+              className="slide-txt header2"
+              style={{ fontSize: "20px", fontWeight: "900", width: "auto" }}
+            >
+              {slide.text}
+            </div>
           </div>
         </div>
-      )
+      );
     default:
       return (
         <div className="slide-block">
@@ -235,7 +253,8 @@ const renderSlideContent = (slide) => {
           <div className="slide-block-mob">
             <div className="slide-text">
               <h2 className="slide-header">
-                Комплект, що підкреслює<br />
+                Комплект, що підкреслює
+                <br />
                 переваги кожної фігури
               </h2>
             </div>
@@ -243,8 +262,8 @@ const renderSlideContent = (slide) => {
               <img src={Banner1} alt={slide.alt || "Slide"} draggable="false" />
             </div>
             <p className="slide-txt">
-              подвійний ефект пуш-ап, який візуально збільшує сідниці і
-              щільний пояс, що втягує талію
+              подвійний ефект пуш-ап, який візуально збільшує сідниці і щільний
+              пояс, що втягує талію
             </p>
           </div>
         </div>

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import './Filter.css';
 import FilterCostView from "../../molecules/FilterViewElements/CostView/FilterCostView";
 import CheckBoxSizeView from "../../molecules/FilterViewElements/CheckBoxSizeView/CheckBoxSizeView";
 import CheckBoxColorView from "../../molecules/FilterViewElements/CheckBoxColorView/CheckBoxColorView";
@@ -31,7 +30,7 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
     "зелений",
     "світло-рожевий",
     "срібний",
-    'чорно-білий',
+    "чорно-білий",
     "фіолетовий",
     "чорно-сірий",
     "мятний",
@@ -39,19 +38,19 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
     "темний графіт",
     "молочний",
     "чорно-синій",
-    'чорно-зелений',
-    'чорний з сірими вставками',
-    'темно-синій',
-    'рожевий',
-    'беж',
-    'молочно-білий',
-    'ніжно-рожевий',
+    "чорно-зелений",
+    "чорний з сірими вставками",
+    "темно-синій",
+    "рожевий",
+    "беж",
+    "молочно-білий",
+    "ніжно-рожевий",
     "смарагдовий",
     "винний",
     "оливка",
     "ліловий",
     "пісочний",
-    'графіт'
+    "графіт",
   ];
 
   const [selectedFilters, setSelectedFilters] = useState({
@@ -79,7 +78,6 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
     setAvailableSizes([...sizes]);
     setAvailableColors([...colors]);
   }, [data]);
-
 
   const handleMinChange = (e) => {
     const value = Number(e.target.value);
@@ -138,16 +136,15 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
             currentFilters.Size.includes(size.size_name)
           );
 
-        let matchesPrice
+        let matchesPrice;
 
         if (item.discount.percentage === 0) {
-          matchesPrice = item.cost >= minPrice && item.cost <= maxPrice
+          matchesPrice = item.cost >= minPrice && item.cost <= maxPrice;
         } else {
-          const discountPrice = item.cost - (item.discount.percentage / 100 * item.cost)
-          matchesPrice = discountPrice >= minPrice && discountPrice <= maxPrice
-        };
-
-
+          const discountPrice =
+            item.cost - (item.discount.percentage / 100) * item.cost;
+          matchesPrice = discountPrice >= minPrice && discountPrice <= maxPrice;
+        }
 
         return matchesColor && matchesSize && matchesPrice;
       });
@@ -165,17 +162,13 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
       setViewMobileFilter(false);
     }
   };
-  
 
   return (
     <div>
       <ul>
-        <button
-      className="price-filter-btn"
-      onClick={resetFilters}
-    >
-      СБРОСИТИ ФІЛЬТРИ
-    </button>
+        <button className="price-filter-btn" onClick={resetFilters}>
+          СБРОСИТИ ФІЛЬТРИ
+        </button>
         <div className="price-filter">
           <FilterCostView
             minPrice={minPrice}
@@ -186,12 +179,11 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
             handleBlurMin={handleBlurMin}
           />
           <button
-          
             className="price-filter-btns"
             onClick={() => {
               renderDataFiltered();
               if (setViewMobileFilter) {
-                setViewMobileFilter(false)
+                setViewMobileFilter(false);
               }
             }}
           >
@@ -204,19 +196,20 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
           <li>
             <ul>
               <div className="filter-head">Розмір</div>
-              {sizeFilter.map((elem, j) => (
-                availableSizes.includes(elem) && (
-                  <li key={j}>
-                    <CheckBoxSizeView
-                      handleCheckboxChange={handleCheckboxChange}
-                      renderDataFiltered={renderDataFiltered}
-                      filterName="Size"
-                      filterValue={elem}
-                      isChecked={selectedFilters.Size.includes(elem)}
-                    />
-                  </li>
-                )
-              ))}
+              {sizeFilter.map(
+                (elem, j) =>
+                  availableSizes.includes(elem) && (
+                    <li key={j}>
+                      <CheckBoxSizeView
+                        handleCheckboxChange={handleCheckboxChange}
+                        renderDataFiltered={renderDataFiltered}
+                        filterName="Size"
+                        filterValue={elem}
+                        isChecked={selectedFilters.Size.includes(elem)}
+                      />
+                    </li>
+                  )
+              )}
             </ul>
           </li>
         )}
@@ -225,32 +218,34 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
         {availableColors.length > 0 && (
           <ul>
             <div className="filter-head">Колір</div>
-            {colorFilter.map((elem, i) => (
-              availableColors.includes(elem) && (
-                <li key={i}>
-                  <CheckBoxColorView
-                    handleCheckboxChange={handleCheckboxChange}
-                    filterName="Color"
-                    filterValue={elem}
-                    isChecked={selectedFilters.Color.includes(elem)}
-                  />
-                </li>
-              )
-            ))}
+            {colorFilter.map(
+              (elem, i) =>
+                availableColors.includes(elem) && (
+                  <li key={i}>
+                    <CheckBoxColorView
+                      handleCheckboxChange={handleCheckboxChange}
+                      filterName="Color"
+                      filterValue={elem}
+                      isChecked={selectedFilters.Color.includes(elem)}
+                    />
+                  </li>
+                )
+            )}
           </ul>
-
         )}
-        {selectedFilters.Size.length > 0 || selectedFilters.Color.length > 0 ? <button
-          className="price-filter-btn"
-          onClick={() => {
-            renderDataFiltered();
-            if (setViewMobileFilter) {
-              setViewMobileFilter(false)
-            }
-          }}
-        >
-          ПОКАЗАТИ ОБРАНІ ТОВАРИ
-        </button> : null}
+        {selectedFilters.Size.length > 0 || selectedFilters.Color.length > 0 ? (
+          <button
+            className="price-filter-btn"
+            onClick={() => {
+              renderDataFiltered();
+              if (setViewMobileFilter) {
+                setViewMobileFilter(false);
+              }
+            }}
+          >
+            ПОКАЗАТИ ОБРАНІ ТОВАРИ
+          </button>
+        ) : null}
       </ul>
     </div>
   );

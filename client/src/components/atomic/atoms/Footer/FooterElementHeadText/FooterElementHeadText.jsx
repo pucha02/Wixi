@@ -1,4 +1,4 @@
-import './FooterElementHeadText.css'
+
 
 export const FooterElementHeadText = ({ headtext }) => {
     return (

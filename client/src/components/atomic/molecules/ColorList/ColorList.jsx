@@ -1,12 +1,23 @@
 import { ProductColor } from "../../atoms/atomsProduct/Color/Color";
 import { ProductSize } from "../../atoms/atomsProduct/Size/ProductSize";
-import './ColorList.css';
 
-export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, activeSize, classname, sizeError, setSku, setVariationId, setAvailableQuantity }) => {
+export const ColorList = ({
+  colors,
+  setActiveIndex,
+  activeIndex,
+  setActiveSize,
+  activeSize,
+  classname,
+  sizeError,
+  setSku,
+  setVariationId,
+  setAvailableQuantity,
+}) => {
   // Суммируем общее количество доступных товаров
   const totalAvailable = colors.reduce(
     (total, color) =>
-      total + color.sizes.reduce((sum, size) => sum + size.availableQuantity, 0),
+      total +
+      color.sizes.reduce((sum, size) => sum + size.availableQuantity, 0),
     0
   );
 
@@ -14,7 +25,6 @@ export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, 
 
   return (
     <div className={`color-list`}>
-
       {totalAvailable > 0 ? (
         <>
           <div className={`${classname} color-header`}>КОЛІР</div>
@@ -34,7 +44,7 @@ export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, 
                   colorname={color}
                   index={index}
                   isActive={isActive && isAvailable}
-                  setActiveIndex={isAvailable ? setActiveIndex : () => { }}
+                  setActiveIndex={isAvailable ? setActiveIndex : () => {}}
                   className={!isAvailable ? "inactive" : ""}
                   setActiveSize={setActiveSize}
                   isAvailable={isAvailable}
@@ -74,7 +84,10 @@ export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, 
           )}
         </>
       ) : (
-        <div className="no-stock" style={{ color: "red", fontWeight: "bold", textAlign: "left" }}>
+        <div
+          className="no-stock"
+          style={{ color: "red", fontWeight: "bold", textAlign: "left" }}
+        >
           Немає у наявності
         </div>
       )}

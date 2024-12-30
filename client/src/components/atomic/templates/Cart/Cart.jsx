@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../../../../redux/reducers/cartReducer";
 import { CarouselListByTypes } from "../../../atomic/templates/CarouselListByTypes/CarouselListByTypes";
@@ -10,13 +10,12 @@ import { CartButton } from "../../../atomic/atoms/Cart/Button/CartButton";
 import { CartItems } from "../../../atomic/organisms/CartItems/CartItems";
 import { PromoModal } from "../../../atomic/organisms/PromoModal/PromoModal";
 import { checkPromo } from "../../../../utils/checkPromocodeUsage";
-import './Cart.css';
 
 export const Cart = () => {
   const { items: products } = useSelector((state) => state.cart);
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [deleteMessage, setDeleteMessage] = useState('');
+  const [deleteMessage, setDeleteMessage] = useState("");
   const [localProducts, setLocalProducts] = useState([]);
   const [promoModalOpen, setPromoModalOpen] = useState(false);
   const [promoUsed, setPromoUsed] = useState(false);
@@ -30,7 +29,6 @@ export const Cart = () => {
   const dispatch = useDispatch();
   const isAuthorized = !!localStorage.getItem("token");
   const cartItems = isAuthorized ? products || [] : localProducts || [];
-
 
   useEffect(() => {
     if (!isAuthorized) {
@@ -70,14 +68,15 @@ export const Cart = () => {
     }, 0);
 
     setRawTotalCost(rawTotal); // Сохраняем исходную стоимость
-    const discountedTotal = discount > 0 ? rawTotal * (1 - discount / 100) : rawTotal;
+    const discountedTotal =
+      discount > 0 ? rawTotal * (1 - discount / 100) : rawTotal;
 
     setTotalCost(discountedTotal);
     localStorage.setItem("totalCost", JSON.stringify(discountedTotal));
   }, [cartItems, discount]);
 
   useEffect(() => {
-    checkPromo(setPromoUsed, setPromoModalOpen)
+    checkPromo(setPromoUsed, setPromoModalOpen);
   }, []);
 
   const saveDiscount = (discountValue) => {
@@ -91,7 +90,8 @@ export const Cart = () => {
     }, 0);
 
     setRawTotalCost(rawTotal); // Обновляем исходную стоимость
-    const discountedTotal = discount > 0 ? rawTotal * (1 - discount / 100) : rawTotal;
+    const discountedTotal =
+      discount > 0 ? rawTotal * (1 - discount / 100) : rawTotal;
 
     setTotalCost(discountedTotal);
     localStorage.setItem("totalCost", JSON.stringify(discountedTotal));
@@ -106,32 +106,43 @@ export const Cart = () => {
   const handleSubmit = async (promoCodeTitle) => {
     try {
       const deviceId = await getDeviceId();
-      const response = await fetch('http://localhost:5000/api/promocode/check-promo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deviceId, promoCodeTitle: promoCodeTitle }),
-      });
+      const response = await fetch(
+        "http://localhost:5001/api/promocode/check-promo",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ deviceId, promoCodeTitle: promoCodeTitle }),
+        }
+      );
 
       const data = await response.json();
       if (data.isUsed) {
-        alert(data.message || 'Ви вже використали цей промокод.');
+        alert(data.message || "Ви вже використали цей промокод.");
       } else if (data.discountPercentage) {
         saveDiscount(data.discountPercentage);
-        alert(`Промокод застосовано! Ви отримали знижку ${data.discountPercentage}%`);
+        alert(
+          `Промокод застосовано! Ви отримали знижку ${data.discountPercentage}%`
+        );
       } else {
-        alert(data.message || 'Промокод недійсний.');
+        alert(data.message || "Промокод недійсний.");
       }
     } catch (error) {
-      console.error('Ошибка при применении промокода:', error);
-      alert('Помилка при застосуванні промокоду. Спробуйте пізніше.');
+      console.error("Ошибка при применении промокода:", error);
+      alert("Помилка при застосуванні промокоду. Спробуйте пізніше.");
     }
   };
   return (
     <div className="cart-page">
       <div className="wish-list-container">
-        <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={'/cart'}>КОШИК</Link></div>
+        <div className="category-title">
+          <Link to={"/"}>ГОЛОВНА</Link> / <Link to={"/cart"}>КОШИК</Link>
+        </div>
         {deleteMessage && <div className="delete-message">{deleteMessage}</div>}
-        <CartItems updateTotalCost={updateTotalCost} deleteMessage={deleteMessage} setDeleteMessage={setDeleteMessage} />
+        <CartItems
+          updateTotalCost={updateTotalCost}
+          deleteMessage={deleteMessage}
+          setDeleteMessage={setDeleteMessage}
+        />
         {cartItems.length > 0 && (
           <>
             <div className="promocode-form-block">
@@ -153,21 +164,26 @@ export const Cart = () => {
               const seenRelatedProducts = new Set();
               const uniqueRelatedProducts = item.relatedProducts
                 ? item.relatedProducts.filter((product) => {
-                  const productId = product.id || product._id;
-                  if (seenRelatedProducts.has(productId)) {
-                    return false;
-                  }
-                  seenRelatedProducts.add(productId);
-                  return true;
-                })
+                    const productId = product.id || product._id;
+                    if (seenRelatedProducts.has(productId)) {
+                      return false;
+                    }
+                    seenRelatedProducts.add(productId);
+                    return true;
+                  })
                 : [];
               if (uniqueRelatedProducts.length === 0) {
                 return null;
               }
 
               return (
-                <div className="recently-viewed-container" key={item.id || item._id}>
-                  <h2 className="product-item-view-head">РЕКОМЕНДУЄМО ПРИДБАТИ:</h2>
+                <div
+                  className="recently-viewed-container"
+                  key={item.id || item._id}
+                >
+                  <h2 className="product-item-view-head">
+                    РЕКОМЕНДУЄМО ПРИДБАТИ:
+                  </h2>
                   <CarouselListByTypes
                     type={null}
                     getdata={uniqueRelatedProducts}
@@ -180,8 +196,10 @@ export const Cart = () => {
           </>
         )}
       </div>
-      <PromoModal promoModalOpen={promoModalOpen} setPromoModalOpen={setPromoModalOpen} />
+      <PromoModal
+        promoModalOpen={promoModalOpen}
+        setPromoModalOpen={setPromoModalOpen}
+      />
     </div>
-
   );
 };

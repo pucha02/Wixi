@@ -1,18 +1,19 @@
-import { WishlistItems } from "../../organisms/Wishlist/Wishlist"
+import { WishlistItems } from "../../organisms/Wishlist/Wishlist";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import './WishList.css'
 
 export const WishList = () => {
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-    return (
-        <div>
-            <div className="wish-list-container">
-                <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={'/wishlist'}>УЛЮБЛЕНЕ</Link></div>
-                <WishlistItems />
-            </div>
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  return (
+    <div>
+      <div className="wish-list-container">
+        <div className="category-title">
+          <Link to={"/"}>ГОЛОВНА</Link> / <Link to={"/wishlist"}>УЛЮБЛЕНЕ</Link>
         </div>
-    )
-}
+        <WishlistItems />
+      </div>
+    </div>
+  );
+};
