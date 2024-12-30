@@ -86,7 +86,7 @@
     order: 1;
     /* Главная картинка идет после миниатюр */
     width: 100%;
-    height: 385px;
+    height: 500px;
   }
 
   .swiper.thumbnails {
@@ -117,5 +117,13 @@
     width: 108px;
     /* Размер миниатюр */
     height: auto;
+  }
+}
+
+@media (max-width: 390px) {
+  .main-image {
+    order: 1;
+    width: 100%;
+    height: 385px;
   }
 }

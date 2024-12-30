@@ -23,7 +23,7 @@ import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
 import "./CarouselListByTypes.css";
 
-export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) => {
+export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setActiveIndex=null }) => {
   const [data, setData] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [productState, setProductState] = useState({});
@@ -98,6 +98,9 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
   };
 
   const addToRecentlyViewed = (product) => {
+    if(setActiveIndex){
+      setActiveIndex(0)
+    }
     const recentlyViewed =
       JSON.parse(localStorage.getItem("recentlyViewed")) || [];
     if (!recentlyViewed.some((item) => item._id === product._id)) {

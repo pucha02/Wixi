@@ -156,9 +156,26 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
     filteredData(filteredItems);
   };
 
+  const resetFilters = () => {
+    setSelectedFilters({ Size: [], Color: [] });
+    setMinPrice(100);
+    setMaxPrice(3000);
+    filteredData(data); // Отображаем все данные без фильтров
+    if (setViewMobileFilter) {
+      setViewMobileFilter(false);
+    }
+  };
+  
+
   return (
     <div>
       <ul>
+        <button
+      className="price-filter-btn"
+      onClick={resetFilters}
+    >
+      СБРОСИТИ ФІЛЬТРИ
+    </button>
         <div className="price-filter">
           <FilterCostView
             minPrice={minPrice}

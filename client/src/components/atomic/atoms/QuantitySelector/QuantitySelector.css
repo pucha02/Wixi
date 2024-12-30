@@ -1,19 +1,42 @@
  .count-product {
-     font-size: 16px;
-     border: none;
-     width: 30px;
-     padding: 0;
-     font: inherit;
-     text-align: center;
-     outline: none;
+   font-size: 16px;
+   border: none;
+   width: 30px;
+   padding: 0;
+   font: inherit;
+   text-align: center;
+   outline: none;
+   height: 45px;
  }
 
  .minus.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-  }
-  
-  .minus, .plus {
-    display: flex;
-    cursor: pointer;
-  }
+   opacity: 0.5;
+   pointer-events: none;
+ }
+
+ .minus,
+ .plus {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+   height: 45px;
+   width: 45px;
+   border: 1px solid;
+ }
+
+ .minus svg,
+ .plus svg {
+   width: 45px;
+   height: 45px;
+ }
+
+ @media (max-width:768px) {
+
+   .minus,
+   .plus,
+   .count-product {
+     width: 30px;
+     height: 30px;
+   }
+ }

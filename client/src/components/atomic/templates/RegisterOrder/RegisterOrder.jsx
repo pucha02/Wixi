@@ -86,25 +86,28 @@ export const RegisterOrder = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://16.171.32.44/api/orders/register-order", {
+            const response = await fetch("http://localhost:5000/api/orders/register-order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(orderDetails),
             });
-            if (response.ok) {
-                // Удаляем промокод из localStorage
-                localStorage.removeItem("discount");
     
+            const result = await response.json();
+    
+            if (response.ok) {
+                // Успішне оформлення замовлення
+                localStorage.removeItem("discount");
                 setModal({
                     isOpen: true,
                     title: "Успіх!",
                     message: "Замовлення успішно оформлено!",
                 });
             } else {
+                // Помилка при оформленні замовлення
                 setModal({
                     isOpen: true,
                     title: "Помилка!",
-                    message: "Сталася помилка при оформленні замовлення.",
+                    message: result.message || "Сталася помилка під час оформлення замовлення.",
                 });
             }
         } catch (error) {
@@ -112,10 +115,11 @@ export const RegisterOrder = () => {
             setModal({
                 isOpen: true,
                 title: "Помилка!",
-                message: "Сталася помилка при оформленні замовлення.",
+                message: "Сталася помилка під час оформлення замовлення.",
             });
         }
     };
+    
     
 
     return (

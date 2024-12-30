@@ -38,6 +38,7 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
   const [activeSize, setActiveSize] = useState(null);
   const [sku, setSku] = useState(null)
   const [variationId, setVariationId] = useState(null)
+  const [availableQuantity, setAvailableQuantity] = useState(null)
   const [notifications, setNotifications] = useState("");
   const [sizeError, setSizeError] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -143,30 +144,32 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
       setNotifications("Будь ласка, оберіть розмір товару.");
       return;
     }
-    
-    handleAddToCart(data[0], activeColor, activeSize, dispatch, addItemToCart, addItem, token, sku, variationId);
+
+    handleAddToCart(data[0], activeColor, activeSize, dispatch, addItemToCart, addItem, token, sku, variationId, availableQuantity);
     setIsProductModalOpen(true)
     if (activeColor && activeSize) {
       setNotification("Товар успішно доданий до кошика!");
     }
   }
 
-
   function renderDataProductProperty(newData) {
     if (newData.length === 0) return null;
     const item = newData[0];
     const isLiked = likedItems[item._id] || false;
-    console.log(item._id)
+    const isAvailable = item.color?.some((color) =>
+      color.sizes?.some((size) => size.availableQuantity > 0)
+    );
+  
+    console.log(item._id);
+  
     return (
       <div className="product-item">
-
         <div className="name-heart">
           <ProductName name={item.title} className={""} />
-
         </div>
         <ProductDescription description={item.description} className={""} />
         <div className="cost-article">
-          {activeColor?.sizes?.reduce((total, size) => total + size.availableQuantity, 0) > 0 ? (
+          {isAvailable ? (
             <div className="availability-text">В наличии</div>
           ) : (
             <div className="availability-text">Нет в наличии</div>
@@ -186,27 +189,29 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
           sizeError={sizeError}
           setSku={setSku}
           setVariationId={setVariationId}
+          setAvailableQuantity={setAvailableQuantity}
         />
         <div className="size-table-block">
           <SizeTable handleViewTable={() => setModalOpen(true)} />
           <SizeChartModal isModalOpen={isModalOpen} setIsModalOpen={setModalOpen} />
         </div>
-
         <ProductButtonAddToCartTxt
-          handleAddToCart={handleAddToCartWithValidation}
-          className={""}
+          handleAddToCart={isAvailable ? handleAddToCartWithValidation : null} // Метод не вызывается, если товара нет в наличии
+          className={isAvailable ? "" : "disabled"} // Добавляем класс "disabled", если товар недоступен
+          disabled={!isAvailable} // Делаем кнопку неактивной
         />
         <ProductHeartButton
           src={HeartIcon}
           src2={HeartIcon2}
           toggleHeart={() => handleAddToWishlist(item, item._id)}
           id={item._id}
-          isLiked={likedItems[item._id]} // Передаем состояние напрямую
+          isLiked={isLiked} // Передаем состояние напрямую
           ref={(el) => (childRefs.current[item._id] = el)}
         />
       </div>
     );
   }
+  
 
   const elements = useMemo(() => {
     return renderDataProductProperty(data);
@@ -215,7 +220,7 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
   return (
     <div>
       <div className="product-page-container">
-        <ProductItemModal isOpen={isProductModalOpen} onClose={() => setIsProductModalOpen(false)} setCartOpen={setCartOpen}/>
+        <ProductItemModal isOpen={isProductModalOpen} onClose={() => setIsProductModalOpen(false)} setCartOpen={setCartOpen} />
         <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={`/category/productList/${data[0] ? data[0].category : ''}`}>{data[0] ? data[0].category : ''}</Link> / <Link to={`/category/productList/${data[0] ? data[0].category : ''}/${data[0] ? data[0].title : ''}`}>{data[0] ? data[0].title : ''.toUpperCase()}</Link></div>
 
         <div className="product-page-data-block">
@@ -233,6 +238,7 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
                 type={null}
                 getdata={JSON.parse(localStorage.getItem("recentlyViewed"))}
                 countSlide={4}
+                setActiveIndex={setActiveIndex}
               />
             </>
           )}
@@ -240,11 +246,14 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
         <div className="recently-viewed-container">
           {similar?.length > 0 && (
             <>
-              <h2 className="product-item-view-head">СХОЖІ ТОВАРИ:</h2>
+              <h2 className="product-item-view-head">ВАМ ТАКОЖ
+                МОЖУТЬ
+                СПОДОБАТИСЬ:</h2>
               <CarouselListByTypes
                 type={null}
                 getdata={similar}
                 countSlide={4}
+                setActiveIndex={setActiveIndex}
               />
             </>
           )}

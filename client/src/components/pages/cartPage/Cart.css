@@ -48,6 +48,10 @@
     margin-top: 45px;
 }
 
+.cart-page .recently-viewed-container{
+    margin-top: 60px;
+}
+
 .cart-title {
     margin-bottom: 30px;
 }
@@ -63,6 +67,12 @@
 
 .cart-item-cost {
     font-size: 18px;
+    width: 10%;
+    text-align: center;
+}
+
+.register-order-block .cart-item-cost{
+    width: auto;
 }
 
 .cart-bottom-buttons {
@@ -94,6 +104,13 @@
     border: 2px solid;
 }
 
+.delete-message{
+    font-family: "Helvetica Neue Cyr Thin";
+    margin-bottom: 15px;
+    color: red;
+    font-size: 21px;
+}
+
 @media (max-width:768px) {
 
 
@@ -111,6 +128,7 @@
         margin-top: 15px;
         margin-left: 20px;
         text-align: start;
+        width: auto;
     }
 
     .cart-modal-block {

@@ -61,18 +61,18 @@ const SearchedProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
             setFilteredData(null); // Сброс фильтрованных данных
             window.scrollTo(0, 0); // Прокрутка к началу страницы
         };
-    
+
         updateDataFromStorage();
-    
+
         // Опционально: подписка на изменения localStorage через событие
         const handleStorageChange = () => updateDataFromStorage();
         window.addEventListener("storage", handleStorageChange);
-    
+
         return () => {
             window.removeEventListener("storage", handleStorageChange);
         };
     }, [location.pathname]); // Отслеживаем изменения пути (например, новые результаты поиска)
-    
+
     useEffect(() => {
         const products = location.state?.searchResults || JSON.parse(localStorage.getItem("searchedProducts")) || [];
         const updatedData = products.map((item) => ({
@@ -83,7 +83,7 @@ const SearchedProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
         setFilteredData(null);
         window.scrollTo(0, 0); // Скроллим к началу страницы
     }, [location.state]); // Зависимость от состояния
-    
+
 
 
     const loadRecentlyViewed = () => {
@@ -161,7 +161,9 @@ const SearchedProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
                             <ProductImage src={activeImage} className={""} />
                         </Link>
                         <div className="name-heart">
-                            <ProductName name={item.title} className={""} />
+                            <Link to={`/category/productList/${item.category}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
+                                <ProductName name={item.title} className={""} />
+                            </Link>
                             <ProductHeart
                                 src={HeartIcon}
                                 src2={HeartIcon2}
@@ -172,10 +174,10 @@ const SearchedProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
                             />
 
 
-                            <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
+                            {/* <Link to={`${location.pathname}/${item.title}`} onClick={() => addToRecentlyViewed(item)}>
                                 <ProductButtonAddToCart
                                 />
-                            </Link>
+                            </Link> */}
                         </div>
                         <div className="cost-addBtn">
                             <ProductCost cost={item.cost} discount={item.discount.percentage} />

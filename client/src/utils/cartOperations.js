@@ -1,8 +1,8 @@
 import { fetchCart } from "../redux/reducers/cartReducer";
 import NoImg from '../assets/svg/no-iamge.svg'
-// 16.171.32.44
+// localhost:5000
 export const removeFromCart = async (userId, productId) => {
-  const response = await fetch('http://16.171.32.44/api/cart/remove-from-cart', {
+  const response = await fetch('http://localhost:5000/api/cart/remove-from-cart', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId, productId })
@@ -49,7 +49,7 @@ export const handleRemoveItem = (
   }
 };
 
-export const handleAddToCart = (product, activeColor, activeSize, dispatch, addItemToCart, addItem, token, sku, id) => {
+export const handleAddToCart = (product, activeColor, activeSize, dispatch, addItemToCart, addItem, token, sku, id, availableQuantity) => {
   const hasDiscount = product.discount?.percentage > 0;
   const discountedCost = hasDiscount
     ? product.cost - (product.cost * product.discount.percentage) / 100
@@ -65,6 +65,8 @@ export const handleAddToCart = (product, activeColor, activeSize, dispatch, addI
     size: activeSize,
     sku: sku,
     id: id,
+    relatedProducts: product.relatedProducts,
+    availableQuantity: availableQuantity,
     quantity: 1,
     ...(hasDiscount && { originalCost: product.cost }),
     ...(hasDiscount && { discount: product.discount.percentage }),
@@ -81,8 +83,6 @@ export const handleAddToCart = (product, activeColor, activeSize, dispatch, addI
     console.log(item)
   }
 };
-
-
 
 export const handleQuantityChange = (
   newCount,
@@ -106,9 +106,7 @@ export const handleQuantityChange = (
         quantity: newCount,
         userId,
       })
-    ).then(() => {
-      dispatch(fetchCart()); // Перезагружаем корзину после обновления
-    });
+    )
   } else {
     const updatedProducts = localProducts.map((item) =>
       item._id === _id &&

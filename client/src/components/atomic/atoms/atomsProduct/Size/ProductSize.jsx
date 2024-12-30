@@ -1,10 +1,11 @@
 import './ProductSize.css';
 
-export const ProductSize = ({ size, available, className, onClick, isActive, setSku, sku, variationId, setVariationId }) => {
+export const ProductSize = ({ size, available, className, onClick, isActive, setSku, sku, variationId, setVariationId, setAvailableQuantity, availableQuantity }) => {
   const handleSetSku = () =>{
     setSku(sku)
     setVariationId(variationId)
-    console.log(sku)
+    setAvailableQuantity(availableQuantity)
+    console.log(availableQuantity)
   }
     return (
       <div

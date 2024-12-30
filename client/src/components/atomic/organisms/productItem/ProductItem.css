@@ -339,3 +339,11 @@
         font-size: 13px
     }
 }
+
+@media (min-width: 2420px) {
+    .product-page-container {
+      width: 100%;
+      max-width: calc(1920px + 510px);
+      padding: 0 355px !important;
+    }
+  }

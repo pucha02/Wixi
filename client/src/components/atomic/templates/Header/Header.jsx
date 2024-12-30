@@ -114,20 +114,22 @@ export const Header = ({ notification, setNotification, viewMobileFilter, setVie
                                 products={wishlistItems}
                             />
                         </Link>
-                        <RightHeaderElement
-                            src={CartImg}
-                            label={"КОШИК"}
-                            onClick={() => { setIsModalOpen(true); setIsModalOpenLogin(false); setOverlayVisible(false); setViewCategories(false); setViewMobileFilter(false) }}
-                            notification={notification}
-                            setNotification={setNotification}
-                            products={products}
-                            className={`cart-icon ${isBouncing && (products?.length || 0) > 0 ? "cart-bounce" : ""}`}
+                        <Link to={'/cart'}>
+                            <RightHeaderElement
+                                src={CartImg}
+                                label={"КОШИК"}
+                                onClick={() => { setIsModalOpen(true); setIsModalOpenLogin(false); setOverlayVisible(false); setViewCategories(false); setViewMobileFilter(false) }}
+                                notification={notification}
+                                setNotification={setNotification}
+                                products={products}
+                                className={`cart-icon ${isBouncing && (products?.length || 0) > 0 ? "cart-bounce" : ""}`}
 
-                        />
+                            />
+                        </Link>
                     </div>
                 </div>
 
-                <CartPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+                {/* <CartPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} /> */}
                 <div className="mobile-search">
                     <MobileSearchModal isModalOpen={isModalSearchOpen} setIsModalOpen={setIsModalSearchOpen} isOpenSearch={isModalSearchOpen} />
                 </div>

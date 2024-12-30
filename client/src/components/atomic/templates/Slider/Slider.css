@@ -3,12 +3,44 @@
 }
 
 .slider-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  user-select: none
+}
+
+.slider-wrapper {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+}
+
+.slider-wrapper.transition {
+  transition: transform 0.3s ease-in-out;
+}
+
+.slide {
+  flex: 0 0 100%;
+  width: 100%;
+}
+
+.slide-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+
+.slider-container {
   width: 100%;
   margin: 0;
   padding: 0;
   padding-bottom: 10px;
   overflow: hidden;
-  margin-top: 123px;
+  margin-top: 157px;
 }
 
 .slide-block {
@@ -18,7 +50,6 @@
 }
 
 .slider-container .slide-block {
-  height: 90vh; /* Фиксированная высота для каждого слайда */
   display: flex; /* Для вертикального выравнивания содержимого */
   align-items: center; /* Выравнивание содержимого по вертикали */
   justify-content: center; /* Выравнивание содержимого по горизонтали */
@@ -114,12 +145,12 @@
 }
 
 .swiper-button-prev {
-  left: 20px;
+  left: 10px;
   /* Смещаем стрелку влево за пределы слайдера */
 }
 
 .swiper-button-next {
-  right: -1px;
+  right: 10px;
   /* Смещаем стрелку вправо за пределы слайдера */
 }
 
@@ -181,10 +212,10 @@
 }
 
 
-.background-slide4 img {
+/* .background-slide4 img {
   height: 95vh;
   width: auto;
-}
+} */
 
 .slide4-images {
   display: flex;
@@ -238,10 +269,9 @@
   display: block;
 }
 
-.slick-slider {
-  pointer-events: auto;
-  /* Отключает обработку событий слайдером */
-}
+/* .slick-slider {
+  pointer-events: none;
+} */
 
 .slider-container.zooming {
   touch-action: none;
@@ -273,16 +303,6 @@
   width: 100%;
   height: auto;
   object-fit: contain;
-}
-
-.slick-slider.zoom-enabled {
-  pointer-events: auto;
-  /* Включает обработку событий при отсутствии зума */
-}
-
-.slider-container {
-  touch-action: pan-y pinch-zoom;
-  /* Разрешает пинч-зум */
 }
 
 .slide-block-mob {
@@ -397,19 +417,20 @@
     font-size: 1rem;
     /* Уменьшаем размер стрелок */
     transform: scale(0.5);
-    margin-top: -40px;
+    margin-top: -60px;
   }
 
   .swiper-button-next {
     font-size: 1rem;
     /* Уменьшаем размер стрелок */
     transform: scale(0.5);
-    margin-top: -40px;
+    margin-top: -60px;
+    right: 0px;
   }
 }
 
 @media (min-width:1755px) {
   .background-slide3 {
-    width: 40%;
+    width: 42%;
   }
 }
