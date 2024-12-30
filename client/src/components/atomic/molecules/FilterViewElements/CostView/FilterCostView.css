@@ -1,17 +1,19 @@
-.minPrice, .maxPrice{
-    width: 60px;
-    height: 27px;
-    text-align: center;
-    border: 1px solid #C3C1C1;
-    border-radius: 4px;
+.minPrice,
+.maxPrice {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 60px;
+  height: 27px;
+  text-align: center;
+  border: 1px solid #C3C1C1;
+  border-radius: 4px;
 }
 
-.minPrice{
-    margin-right: 6px;
+.minPrice {
+  margin-right: 6px;
 }
 
-.maxPrice{
-    margin-left: 6px;
+.maxPrice {
+  margin-left: 6px;
 }
 
 .minPrice::-webkit-inner-spin-button,
@@ -25,7 +27,9 @@
 }
 
 @media (max-width:768px) {
-  .minPrice, .maxPrice{
+
+  .minPrice,
+  .maxPrice {
     width: 81px;
     height: 30px;
   }

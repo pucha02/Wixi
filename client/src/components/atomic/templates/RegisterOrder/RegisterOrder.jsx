@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { DeliveryInfo } from "../../../atomic/molecules/OrderForm/DeliveryInfo/DeliveryInfo";
 import { ComentInfo } from "../../../atomic/molecules/OrderForm/CommentInfo/CommentInfo";
@@ -20,6 +20,9 @@ export const RegisterOrder = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [validationErrors, setValidationErrors] = useState({});
     const [localProducts, setLocalProducts] = useState([]);
+    const [discount, setDiscount] = useState(
+        JSON.parse(localStorage.getItem("discount")) || 0
+    ); // Загружаем скидку из localStorage
     const [totalCost, setTotalCost] = useState(0);
 
     const [orderDetails, setOrderDetails] = useState({
@@ -28,20 +31,25 @@ export const RegisterOrder = () => {
         lastname: "",
         coment: "",
         products: [],
-        email: '',
+        email: "",
         totalCost: 0,
-        number_phone: '',
-        area: '',
-        city: '',
-        warehouse: '',
+        number_phone: "",
+        area: "",
+        city: "",
+        warehouse: "",
         status: "Оформлено",
-        order_number: "test123"
+        order_number: "test123",
+    });
+
+    const [modal, setModal] = useState({
+        isOpen: false,
+        title: "",
+        message: "",
     });
 
     const isAuthorized = !!localStorage.getItem("token");
     const cartItems = isAuthorized ? products || [] : localProducts || [];
 
-    // Загрузка корзины
     useEffect(() => {
         if (isAuthorized) {
             dispatch(fetchCart());
@@ -51,71 +59,127 @@ export const RegisterOrder = () => {
         }
     }, [dispatch, isAuthorized]);
 
-    // Загрузка данных пользователя
     useEffect(() => {
         fetchDataUser(setUser, setOrderDetails, setIsLoading);
         window.scrollTo(0, 0);
     }, []);
 
-    // Пересчет общей стоимости корзины
     useEffect(() => {
         const currentCart = isAuthorized ? products || [] : localProducts || [];
-        const newTotalCost = currentCart.reduce((total, product) => total + product.cost * product.quantity, 0);
+        const rawTotal = currentCart.reduce(
+            (total, product) => total + product.cost * product.quantity,
+            0
+        );
+
+        const discountedTotal = discount > 0 ? rawTotal * (1 - discount / 100) : rawTotal;
 
         setOrderDetails((prevDetails) => ({
             ...prevDetails,
             products: currentCart,
-            totalCost: newTotalCost,
+            totalCost: discountedTotal,
         }));
 
-        setTotalCost(newTotalCost);
-        localStorage.setItem("totalCost", JSON.stringify(newTotalCost));
-    }, [products, localProducts, isAuthorized]);
+        setTotalCost(discountedTotal);
+        localStorage.setItem("totalCost", JSON.stringify(discountedTotal));
+    }, [products, localProducts, isAuthorized, discount]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://16.171.32.44/api/orders/register-order", {
+            const response = await fetch("http://localhost:5000/api/orders/register-order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(orderDetails),
             });
+    
+            const result = await response.json();
+    
             if (response.ok) {
-                alert("Замовлення успішно оформлено!");
-                console.log(orderDetails);
+                // Успішне оформлення замовлення
+                localStorage.removeItem("discount");
+                setModal({
+                    isOpen: true,
+                    title: "Успіх!",
+                    message: "Замовлення успішно оформлено!",
+                });
             } else {
-                alert("Сталася помилка при оформленні замовлення.");
+                // Помилка при оформленні замовлення
+                setModal({
+                    isOpen: true,
+                    title: "Помилка!",
+                    message: result.message || "Сталася помилка під час оформлення замовлення.",
+                });
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Сталася помилка при оформленні замовлення.");
+            setModal({
+                isOpen: true,
+                title: "Помилка!",
+                message: "Сталася помилка під час оформлення замовлення.",
+            });
         }
     };
+    
+    
 
     return (
         <div className="register-order-block">
-            <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={'/register-order'}>ОФОРМЛЕННЯ ЗАМОВЛЕННЯ</Link></div>
+            <Modal
+                isOpen={modal.isOpen}
+                onClose={() => setModal({ ...modal, isOpen: false })}
+                title={modal.title}
+                message={modal.message}
+            />
+            <div className="category-title">
+                <Link to={"/"}>ГОЛОВНА</Link> / <Link to={"/register-order"}>ОФОРМЛЕННЯ ЗАМОВЛЕННЯ</Link>
+            </div>
 
             <form className="register-order-block-container" onSubmit={handleSubmit}>
-
                 <div className="register-order-form">
-                    <ContactInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />
-                    <DeliveryInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />
-                    <PaymentInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />
-                    <ComentInfo userData={orderDetails} validationErrors={validationErrors} handleChange={(e) => handleChangeInput(e, setOrderDetails, orderDetails)} />
+                    <ContactInfo
+                        userData={orderDetails}
+                        validationErrors={validationErrors}
+                        handleChange={(e) =>
+                            handleChangeInput(e, setOrderDetails, orderDetails)
+                        }
+                    />
+                    <DeliveryInfo
+                        orderDetails={orderDetails}
+                        setOrderDetails={setOrderDetails}
+                        validationErrors={validationErrors}
+                        handleChange={(e) =>
+                            handleChangeInput(e, setOrderDetails, orderDetails)
+                        }
+                    />
+                    <PaymentInfo
+                        userData={orderDetails}
+                        validationErrors={validationErrors}
+                        handleChange={(e) =>
+                            handleChangeInput(e, setOrderDetails, orderDetails)
+                        }
+                    />
+                    <ComentInfo
+                        userData={orderDetails}
+                        validationErrors={validationErrors}
+                        handleChange={(e) =>
+                            handleChangeInput(e, setOrderDetails, orderDetails)
+                        }
+                    />
                     <div className="mobile-create-order">
                         <div>
                             <TotalCost totalPrice={totalCost} />
                         </div>
                         <div className="checkboxes-block">
                             <div className="checkbox-block">
-                                <input type="checkbox" /> <div>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
+                                <input type="checkbox" />{" "}
+                                <div>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
                             </div>
                             <div className="checkbox-block">
-                                <input type="checkbox" /> <div>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
+                                <input type="checkbox" />{" "}
+                                <div>МЕНІ МОЖНА НЕ ТЕЛЕФОНУВАТИ ДЛЯ ПІДТВЕРДЖЕННЯ</div>
                             </div>
                         </div>
-                        <CartButton text={'Оформити замовлення'} type="submit" />
+                        <CartButton text={"Оформити замовлення"} type="submit" />
                     </div>
                 </div>
                 <div className="register-order-products-block">
@@ -126,15 +190,41 @@ export const RegisterOrder = () => {
                     </div>
                     <div className="checkboxes-block">
                         <div className="checkbox-block">
-                            <input type="checkbox" /> <div>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
+                            <div className="filter-checkbox" style={{ marginTop: "0" }}>
+                                <input type="checkbox" />
+                            </div>
+                            <div style={{ fontFamily: "Helvetica Neue Cyr Thin" }}>
+                                Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ
+                            </div>
                         </div>
                         <div className="checkbox-block">
-                            <input type="checkbox" /> <div>Я ПРИЙМАЮ ПОЛІТИКУ КОНФІДЕНЦІЙНОСТІ</div>
+                            <div className="filter-checkbox" style={{ marginTop: "0" }}>
+                                <input type="checkbox" />
+                            </div>
+                            <div style={{ fontFamily: "Helvetica Neue Cyr Thin" }}>
+                                МЕНІ МОЖНА НЕ ТЕЛЕФОНУВАТИ ДЛЯ ПІДТВЕРДЖЕННЯ
+                            </div>
                         </div>
                     </div>
-                    <CartButton text={'Оформити замовлення'} type="submit" />
+                    <CartButton text={"Оформити замовлення"} type="submit" />
                 </div>
             </form>
+        </div>
+    );
+};
+
+const Modal = ({ isOpen, onClose, title, message }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div style={{ textAlign: "center" }} className="modal-content">
+                <h2>{title}</h2>
+                <p style={{ marginTop: "20px" }}>{message}</p>
+                <button className="modal-close" onClick={onClose}>
+                    ✖
+                </button>
+            </div>
         </div>
     );
 };

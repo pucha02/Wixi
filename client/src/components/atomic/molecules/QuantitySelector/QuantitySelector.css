@@ -1,10 +1,7 @@
 .product-quantity-selector-container{
     display: flex;
     justify-content: space-between;
-    border: 1px solid black;
-    padding: 8px;
-
-    height: 40px;
+    height: 45px;
 }
 
 .product-quantity-selector-elements{
@@ -16,9 +13,10 @@
 
 @media (max-width: 768px) {
     .product-quantity-selector-container{
-        padding: 8px;
+        padding: 3px;
         width: 100px;
         margin-left: 20px;
         margin-top: 10px;
+        height: auto;
     }
 }

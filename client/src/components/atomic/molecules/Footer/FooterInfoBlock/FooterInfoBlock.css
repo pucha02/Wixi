@@ -20,4 +20,9 @@
 
 .footer-info-element-bottom .footer-element-text{
     margin-top: 15px;
+    color: white;
+}
+
+.footer-info-element-bottom .footer-element-text a{
+    color: white;
 }

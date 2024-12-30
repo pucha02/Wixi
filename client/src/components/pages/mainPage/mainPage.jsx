@@ -1,6 +1,7 @@
 import { Header } from "../../atomic/templates/Header/Header";
 import MySlider from "../../atomic/templates/Slider/Slider";
-import MySliderTest from "../../atomic/templates/Slider/Slider";
+import { checkPromo } from "../../../utils/checkPromocodeUsage";
+import { PromoModal } from "../../atomic/organisms/PromoModal/PromoModal";
 import HotStripDiscount from "../../../common/HotStripDiscount/HotStripDiscount";
 import { CarouselListByTypes } from "../../atomic/templates/CarouselListByTypes/CarouselListByTypes";
 import { Footer } from "../../atomic/templates/Footer/Footer";
@@ -10,14 +11,22 @@ import './mainPage.css'
 import Banner1 from '../../../assets/svg/baners/banner1.png'
 import Banner2 from '../../../assets/svg/baners/banner2.png'
 import Banner3 from '../../../assets/svg/baners/banner3.png'
-
 import Banner4 from '../../../assets/svg/banner4.svg'
+
+import BannerBag1 from '../../../assets/svg/baners/banner4-1.png'
+import BannerBag2 from '../../../assets/svg/baners/banner4-2.png'
+import BannerBag3 from '../../../assets/svg/baners/banner4-3.png'
+import BannerBag4 from '../../../assets/svg/baners/banner4-4.png'
 
 export const MainPage = () => {
     const [viewMobileFilter, setViewMobileFilter] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [promoUsed, setPromoUsed] = useState(false);
+    const [promoModalOpen, setPromoModalOpen] = useState(false);
+
     useEffect(() => {
         window.scrollTo(0, 0);
-
+        checkPromo(setPromoUsed, setPromoModalOpen)
     }, []);
     const images = [
         Banner1,
@@ -47,12 +56,22 @@ export const MainPage = () => {
             header2: 'А наш одяг - це лише спосіб підкреслити її',
             image: Banner3,
         },
-        
+        {
+            type: 'withBags',
+            header: 'Спортивна сумка -',
+            header2: 'ідеальне доповнення до образу',
+            text: 'вмістка, стильна, водонепроникна',
+            image1: BannerBag1,
+            image2: BannerBag2,
+            image3: BannerBag3,
+            image4: BannerBag4
+        }
+
     ];
 
     return (
         <>
-            <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter} />
+            <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
             <MySlider slides={slidesData} />
             <HotStripDiscount content={'ЗНИЖКИ!'} />
             <CarouselListByTypes type={'sale'} />
@@ -61,6 +80,7 @@ export const MainPage = () => {
             <HotStripDiscount content={'ТОП ПРОДАЖІВ!'} />
             <CarouselListByTypes type={'top'} />
             <Footer />
+            <PromoModal promoModalOpen={promoModalOpen} setPromoModalOpen={setPromoModalOpen} />
         </>
     )
 }

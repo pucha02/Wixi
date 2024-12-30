@@ -1,4 +1,6 @@
 .size-table-btn{
     font-size: 21px;
     margin-top: 21px;
+    width: max-content;
+    cursor: pointer;
 }

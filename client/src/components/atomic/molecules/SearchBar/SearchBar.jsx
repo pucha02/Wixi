@@ -86,9 +86,10 @@ const SearchBar = ({ setIsModalOpen = null }) => {
                 <Link
                   key={i}
                   to={`/category/productList/${item.category}/${item.title}`}
-                  onMouseDown={(e) => e.preventDefault()} // Отключаем потерю фокуса
+                  onMouseDown={(e) => e.preventDefault()}
+                  {...(setIsModalOpen ? { onClick: () => setIsModalOpen(false) } : {})}
                 >
-                  <li className="search-item">
+                  <li className="search-item" onClick={()=>setQuery('')}>
                     <img src={imgLink} alt={item.title || "No title"} />
                     <div className="item-info">
                       <span className="item-title">{item.title || ""}</span>
@@ -96,6 +97,7 @@ const SearchBar = ({ setIsModalOpen = null }) => {
                     </div>
                   </li>
                 </Link>
+
               );
             })}
             <button className="search-button-comp" onClick={handleSearchRedirect}>
@@ -114,7 +116,7 @@ const SearchBar = ({ setIsModalOpen = null }) => {
       <input
         type="text"
         className="search-input"
-        placeholder="Знайти товар..."
+        placeholder="ПОШУК..."
         value={query}
         onChange={handleInputChange}
         onFocus={() => setIsFocused(true)} // Обработка фокуса
@@ -122,9 +124,11 @@ const SearchBar = ({ setIsModalOpen = null }) => {
 
       {isLoading && <p>Завантаження...</p>}
       {!isLoading && query && renderItems(filteredProducts)}
-      {filteredProducts.length > 0 && <button className="search-button-mobile" onClick={handleSearchRedirect}>
-        УСІ ЗНАЙДЕНІ ТОВАРИ
-      </button>}
+      {query && filteredProducts.length > 0 && (
+        <button className="search-button-mobile" onClick={handleSearchRedirect}>
+          УСІ ЗНАЙДЕНІ ТОВАРИ
+        </button>
+      )}
     </div>
   );
 };

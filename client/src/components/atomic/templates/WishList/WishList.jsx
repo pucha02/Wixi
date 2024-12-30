@@ -10,7 +10,7 @@ export const WishList = () => {
     return (
         <div>
             <div className="wish-list-container">
-                <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={'/wishlist'}>ВІШЛИСТ</Link></div>
+                <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={'/wishlist'}>УЛЮБЛЕНЕ</Link></div>
                 <WishlistItems />
             </div>
         </div>

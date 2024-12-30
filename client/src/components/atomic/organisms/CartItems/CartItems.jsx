@@ -11,30 +11,30 @@ import './CartItems.css';
 
 import BucketImg from '../../../../assets/svg/bucket.svg';
 
-export const CartItems = ({ updateTotalCost }) => {
+const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay-conf" onClick={onClose}>
+      <div className="modal-content-conf">
+        <p>ДІЙСНО БАЖАЄТЕ ВИДАЛИТИ ТОВАР?</p>
+        <button onClick={onConfirm}>ТАК</button>
+        <button onClick={onClose}>НІ</button>
+      </div>
+    </div>
+  );
+};
+
+export const CartItems = ({ updateTotalCost, deleteMessage, setDeleteMessage }) => {
   const { items: products = [], loading, error } = useSelector((state) => state.cart);
   const [localProducts, setLocalProducts] = useState([]);
   const [prevIsAuthorized, setPrevIsAuthorized] = useState(null);
   const isAuthorized = !!localStorage.getItem("token");
   const cartItems = useMemo(() => (isAuthorized ? products : localProducts), [isAuthorized, products, localProducts]);
+  const [modalData, setModalData] = useState({ isOpen: false, product: null });
   const dispatch = useDispatch();
-  const scrollPosition = useRef(0);
-  const listRef = useRef(null);
-
-  const saveScrollPosition = () => {
-    if (listRef.current) {
-      scrollPosition.current = listRef.current.scrollTop;
-    }
-  };
-
-  const restoreScrollPosition = () => {
-    if (listRef.current) {
-      listRef.current.scrollTop = scrollPosition.current;
-    }
-  };
 
   const handleQuantityChangeWrapper = (newCount, product) => {
-    saveScrollPosition();
     handleQuantityChange(
       newCount,
       product,
@@ -47,14 +47,36 @@ export const CartItems = ({ updateTotalCost }) => {
     );
   };
 
-  useEffect(() => {
-    restoreScrollPosition();
-  });
+  const openModal = (product) => {
+    setModalData({ isOpen: true, product });
+  };
+
+  const closeModal = () => {
+    setModalData({ isOpen: false, product: null });
+  };
+
+  const confirmDeletion = () => {
+    if (modalData.product) {
+      handleRemoveItem(
+        modalData.product._id,
+        modalData.product,
+        dispatch,
+        removeItemCart,
+        localProducts,
+        (updatedProducts) => setLocalProducts(updatedProducts),
+        removeItem,
+        updateTotalCost
+      );
+      setDeleteMessage("ТОВАР УСПІШНО ВИДАЛЕНО"); // Установить сообщение
+      setTimeout(() => setDeleteMessage(""), 3000);
+    }
+    closeModal();
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      // Сохраняем гостевую корзину при входе
       const guestCart = localStorage.getItem("cart");
       if (guestCart) {
         localStorage.setItem("guestCart", guestCart);
@@ -72,7 +94,6 @@ export const CartItems = ({ updateTotalCost }) => {
 
   useEffect(() => {
     if (!isAuthorized && prevIsAuthorized) {
-      // Восстанавливаем гостевую корзину при выходе
       const guestCart = localStorage.getItem("guestCart");
       if (guestCart) {
         localStorage.setItem("cart", guestCart);
@@ -99,44 +120,58 @@ export const CartItems = ({ updateTotalCost }) => {
   }, [cartItems, updateTotalCost]);
 
   return (
-    <ul className="cart-list" ref={listRef}>
-      {loading && isAuthorized ? (
-        <div>Завантаження кошика...</div>
-      ) : error && isAuthorized ? (
-        <div>Сталася помилка: {error}</div>
-      ) : cartItems.length === 0 ? (
-        <div>Ваш кошик порожній.</div>
-      ) : (
-        cartItems.map((product) => (
-          <li className="cart-item" key={product._id || product.id}>
-            <ProductImage src={product.img} />
-            <div className="cart-item-data">
-              <div className="cart-product-description">
-                {product.title}
-                <div className="cart-product-description-size-color">
-                  РОЗМІР: {product.size}, КОЛІР: {isAuthorized ? product.color : product.color.color_name}
+    <>
+      <ConfirmationModal
+        isOpen={modalData.isOpen}
+        onClose={closeModal}
+        onConfirm={confirmDeletion}
+      />
+      <ul className="cart-list">
+        {loading && isAuthorized ? (
+          <div>Завантаження кошика...</div>
+        ) : error && isAuthorized ? (
+          <div>Сталася помилка: {error}</div>
+        ) : cartItems.length === 0 ? (
+          <div>Ваш кошик порожній.</div>
+        ) : (
+          cartItems.map((product) => (
+            <li className="cart-item" key={product._id || product.id}>
+              <ProductImage src={product.img} />
+              <div className="cart-item-data">
+                <div className="cart-product-description">
+                  {product.title.toUpperCase()}
+                  <div className="cart-product-description-size-color">
+                    <div className="cart-product-description-size">
+                      КОЛІР: {isAuthorized ? product.color.toUpperCase() : product.color.color_name.toUpperCase()}
+                    </div>
+                    <div className="cart-product-description-color">
+                      РОЗМІР: {product.size}
+                    </div>
+                  </div>
                 </div>
-
-              </div>
-              <div className="cart-item-quantity-cost">
-                <ProductQuantitySelector
-                  count={product.quantity}
-                  setCount={(newCount) =>
-                    handleQuantityChangeWrapper(newCount, product, isAuthorized, localProducts, setLocalProducts, dispatch, updateCartItemQuantity, updateTotalCost)
-                  }
+                <div className="cart-item-quantity-cost">
+                  <ProductQuantitySelector
+                    count={product.quantity}
+                    maxCount={product.availableQuantity}
+                    setCount={(newCount) =>
+                      handleQuantityChangeWrapper(newCount, product)
+                    }
+                  />
+                </div>
+                <div className="cart-item-cost">
+                  {Math.round(product.cost * product.quantity)} UAH
+                </div>
+                <img
+                  className="bucket-img"
+                  onClick={() => openModal(product)}
+                  src={BucketImg}
+                  alt=""
                 />
               </div>
-              <div className="cart-item-cost">{product.cost} UAH</div>
-              <img
-                className="bucket-img"
-                onClick={() => handleRemoveItem(product._id, product, dispatch, removeItemCart, localProducts, (updatedProducts) => setLocalProducts(updatedProducts), removeItem, updateTotalCost)}
-                src={BucketImg}
-                alt=""
-              />
-            </div>
-          </li>
-        ))
-      )}
-    </ul>
+            </li>
+          ))
+        )}
+      </ul>
+    </>
   );
 };

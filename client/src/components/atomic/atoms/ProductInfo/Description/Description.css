@@ -1,7 +1,10 @@
 .tab-content {
     padding: 20px 0 20px 0;
-    
-    text-align: center;
-    
+    text-align: start;
     margin: 0 auto;
+  }
+
+  .tab-content p{
+    font-family: 'Helvetica Neue Cyr Thin';
+
   }

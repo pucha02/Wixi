@@ -5,8 +5,7 @@ import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
 import { ProductDiscount } from "../../atoms/atomsProduct/Discount/Discount";
 import { ColorList } from "../../molecules/ColorList/ColorList";
 import { ProductHeart } from "../../atoms/atomsProduct/Heart/Heart";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import useGetDataProduct from "../../../../services/FetchData";
 import { Link } from "react-router-dom";
@@ -16,22 +15,18 @@ import {
   addItemToWishlist,
   removeItemFromWishlist,
 } from "../../../../redux/reducers/wishlistReducer";
-
+import NoImg from "../../../../assets/svg/no-iamge.svg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
-
 import "./CarouselListByTypes.css";
 
-export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) => {
-
+export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setActiveIndex=null }) => {
   const [data, setData] = useState([]);
-  const [isLiked, setLiked] = useState();
   const [likedItems, setLikedItems] = useState({});
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [activeSize, setActiveSize] = useState(0);
+  const [productState, setProductState] = useState({});
   const { getProductByType } = useGetDataProduct();
   const dispatch = useDispatch();
   const childRefs = useRef([]);
@@ -41,11 +36,7 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
     const fetchData = async () => {
       try {
         const result = await getProductByType(type);
-        const updatedData = result.map((item) => ({
-          ...item,
-          activeIndex: 0,
-        }));
-        setData(updatedData);
+        setData(result);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -58,7 +49,15 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
     }
   }, [type, getdata]);
 
-  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (data.length) {
+      const initialState = {};
+      data.forEach((item) => {
+        initialState[item._id] = { activeIndex: 0, activeSize: 0 };
+      });
+      setProductState(initialState);
+    }
+  }, [data]);
 
   useEffect(() => {
     const initialLikedItems = {};
@@ -68,12 +67,26 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
     setLikedItems(initialLikedItems);
   }, [storedLikes]);
 
-  const handleAddToWishlist = (product, index) => {
-    const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
-    const activeImage = product.color?.[product.activeIndex]?.img?.[0]?.img_link || "/placeholder-image.png";
-    const item = { title: product.title, _id: product._id, cost: product.cost, img: activeImage, color: activeColor, category: product.category };
+  const updateProductState = (id, field, value) => {
+    setProductState((prevState) => ({
+      ...prevState,
+      [id]: { ...prevState[id], [field]: value },
+    }));
+  };
 
-    const isCurrentlyLiked = !!likedItems[product._id]; // Проверяем, лайкнут ли товар
+  const handleAddToWishlist = (product, index) => {
+    const activeColor = product.color?.[productState[product._id]?.activeIndex] || product.color?.[0];
+    const activeImage = activeColor?.img?.[0]?.img_link || NoImg;
+    const item = {
+      title: product.title,
+      _id: product._id,
+      cost: product.cost,
+      img: activeImage,
+      color: activeColor,
+      category: product.category,
+    };
+
+    const isCurrentlyLiked = !!likedItems[product._id];
 
     if (isCurrentlyLiked) {
       dispatch(removeItemFromWishlist(item));
@@ -81,34 +94,57 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
       dispatch(addItemToWishlist(item));
     }
 
-    // Обновляем локальное состояние сразу
     setLikedItems((prev) => ({ ...prev, [product._id]: !isCurrentlyLiked }));
   };
 
+  const addToRecentlyViewed = (product) => {
+    if(setActiveIndex){
+      setActiveIndex(0)
+    }
+    const recentlyViewed =
+      JSON.parse(localStorage.getItem("recentlyViewed")) || [];
+    if (!recentlyViewed.some((item) => item._id === product._id)) {
+      recentlyViewed.push(product);
+      localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed));
+    }
+  };
+  const filledData = [
+    ...data,
+    ...Array(Math.max(0, countSlide - data.length)).fill({ _id: "empty", isPlaceholder: true }),
+  ];
   const renderItems = (arr) => {
     return arr.map((item, i) => {
-      const activeColor = item.color?.[item.activeIndex] || item.color?.[0];
-      const activeImage = activeColor?.img?.[0]?.img_link || "/placeholder-image.png";
+      if (item.isPlaceholder) {
+        return <SwiperSlide key={`placeholder-${i}`} />;
+      }
+      const productStateItem = productState[item._id] || { activeIndex: 0, activeSize: 0 };
+      const activeColor = item.color?.[productStateItem.activeIndex] || item.color?.[0];
+      const activeImage = activeColor?.img?.[0]?.img_link || NoImg;
 
       return (
         <SwiperSlide key={item._id}>
           <div className="product-item main-page">
-            <Link to={`/category/productList/${item.category}/${item.title}`}>
+            <Link
+              to={`/category/productList/${item.category}/${item.title}`}
+              onClick={() => addToRecentlyViewed(item)}
+            >
               <ProductImage src={activeImage} className={"main-page"} />
             </Link>
             <div className="name-heart">
-              <ProductName name={item.title} />
+              <Link
+                to={`/category/productList/${item.category}/${item.title}`}
+                onClick={() => addToRecentlyViewed(item)}
+              >
+                <ProductName name={item.title} />
+              </Link>
               <ProductHeart
                 src={HeartIcon}
                 src2={HeartIcon2}
                 toggleHeart={() => handleAddToWishlist(item, i)}
                 id={item._id}
-                isLiked={likedItems[item._id]} // Передаем состояние напрямую
+                isLiked={likedItems[item._id]}
                 ref={(el) => (childRefs.current[i] = el)}
               />
-              {/* <ProductButtonAddToCart
-                handleAddToCart={() => handleAddToCart(item, activeColor, dispatch, addItemToCart, addItem, token
-              /> */}
             </div>
             <div className="cost-addBtn">
               <ProductCost cost={item.cost} discount={item.discount.percentage} />
@@ -118,13 +154,12 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
             </div>
             <ColorList
               colors={item.color}
-              setActiveIndex={(index) => setActiveIndex(index)}
-              activeIndex={activeIndex}
-              setActiveSize={setActiveSize}
-              activeSize={activeSize}
+              setActiveIndex={(index) => updateProductState(item._id, "activeIndex", index)}
+              activeIndex={productStateItem.activeIndex}
+              setActiveSize={(size) => updateProductState(item._id, "activeSize", size)}
+              activeSize={productStateItem.activeSize}
               classname={"isDisplaySizes"}
             />
-
           </div>
         </SwiperSlide>
       );
@@ -135,28 +170,36 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3 }) =>
     <div className="main-container">
       <Swiper
         slidesPerView={countSlide}
-        spaceBetween={0}
+        
+
         breakpoints={{
           320: {
-            slidesPerView: 2, // 2 slides for mobile devices
-            spaceBetween: 10, // Adjust the space between slides if necessary
+            slidesPerView: 2,
+            spaceBetween: 10,
+            slidesOffsetBefore: 0,
           },
-          1000: {
+          800: {
             slidesPerView: 3,
-            spaceBetween: 20,
+            spaceBetween: 0,
+            slidesOffsetBefore: 0,
           },
-          1324: {
+          1444: {
             slidesPerView: countSlide,
-            spaceBetween: 30,
+            spaceBetween: 0,
+            slidesOffsetBefore: 0,
+          },
+          1920: {
+            slidesPerView: 4,
+            spaceBetween: 0,
+            slidesOffsetBefore: 0,
           },
         }}
         navigation={true}
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {renderItems(data)}
+        {renderItems(filledData)}
       </Swiper>
-
     </div>
   );
 };

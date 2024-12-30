@@ -1,0 +1,44 @@
+
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.size-chart {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.size-chart th, .size-chart td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.size-chart th {
+    background-color: #000;
+    color: #fff;
+}
+
+.modal-close-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-close-button:hover {
+    background-color: #0056b3;
+}
+
+
+@media (max-width:768px) {
+    .product-page-data-block .size-table-block .modal-content{
+        padding: 10px;
+    }
+}

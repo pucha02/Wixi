@@ -1,4 +1,5 @@
 import PromoCode from '../MongooseModels/PromoCode.js';
+import UsedPromoCode from '../MongooseModels/CheckedPromoCode.js';
 
 export const getAllPromoCodes = async (req, res) => {
     try {
@@ -9,9 +10,10 @@ export const getAllPromoCodes = async (req, res) => {
     }
 };
 
-export const getPromoCodeById = async (req, res) => {
+export const getPromoCodeByCode = async (req, res) => {
+    const { code } = req.query;
     try {
-        const promoCode = await PromoCode.findById(req.params.id);
+        const promoCode = await PromoCode.findOne({ "code": code });
         if (!promoCode) {
             return res.status(404).json({ message: 'Промокод не найден' });
         }
@@ -20,6 +22,7 @@ export const getPromoCodeById = async (req, res) => {
         res.status(500).json({ message: 'Ошибка при получении промокода', error });
     }
 };
+
 
 export const createPromoCode = async (req, res) => {
     try {
@@ -54,3 +57,59 @@ export const deletePromoCode = async (req, res) => {
         res.status(500).json({ message: 'Ошибка при удалении промокода', error });
     }
 };
+
+export const checkPromoCode = async (req, res) => {
+    const { deviceId, promoCodeTitle } = req.body;
+    console.log(req.body)
+    // if (!deviceId || !promoCodeTitle) {
+    //   return res.status(400).json({ message: 'deviceId и promoCodeTitle обязательны' });
+    // }
+  
+    try {
+      // Проверяем, был ли уже использован этот промокод
+      const existing = await UsedPromoCode.findOne({ deviceId, promoCode: promoCodeTitle });
+      if (existing) {
+        return res.json({ isUsed: true, message: 'Ви вже використали цей промокод' });
+      }
+      console.log(existing)
+      // Проверяем действительность промокода (эмулируем логику)
+      const promoCode = await PromoCode.findOne({ "code": promoCodeTitle }); // Замени на свою логику
+      if (!promoCode) {
+        return res.status(404).json({ message: 'Промокод недійсний' });
+      }
+  
+      // Сохраняем применение промокода
+      const newEntry = new UsedPromoCode({ deviceId, promoCode: promoCodeTitle });
+      await newEntry.save();
+  
+      return res.json({ isUsed: false, discountPercentage: promoCode.discountPercentage });
+    } catch (error) {
+      console.error('Ошибка при обработке промокода:', error);
+      res.status(500).json({ message: 'Внутрішня помилка сервера' });
+    }
+  };
+
+
+  export const checkLastPromoCode = async (req, res) => {
+    const { deviceId, promoCodeTitle } = req.body;
+    console.log(req.body)
+  
+    try {
+      // Проверяем, был ли уже использован этот промокод
+      const existing = await UsedPromoCode.findOne({ deviceId, promoCode: promoCodeTitle });
+      if (existing) {
+        return res.json({ isUsed: true, message: 'Ви вже використали цей промокод' });
+      }
+      console.log(existing)
+      const promoCode = await PromoCode.findOne({ "code": promoCodeTitle }); // Замени на свою логику
+      if (!promoCode) {
+        return res.status(404).json({ message: 'Промокод недійсний' });
+      }
+
+  
+      return res.json({ isUsed: false, discountPercentage: promoCode.discountPercentage });
+    } catch (error) {
+      console.error('Ошибка при обработке промокода:', error);
+      res.status(500).json({ message: 'Внутрішня помилка сервера' });
+    }
+  };

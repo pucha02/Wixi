@@ -7,6 +7,7 @@ import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import cartRoutes from './routes/cartRoutes.js'
+import promocodeRoutes from './routes/promocodeRoutes.js'
 
 
 const API_KEY = '7c46eed5f071c18c84bfe93a11db0f0d';
@@ -21,6 +22,8 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/categories', categoryRoutes)
 app.use('/api/cart', cartRoutes);
+app.use('/api/promocode', promocodeRoutes);
+
 
 app.post('/api/novaposhta', async (req, res) => {
     const { modelName, calledMethod, methodProperties } = req.body;

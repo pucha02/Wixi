@@ -1,7 +1,5 @@
-import { EmailInput } from "../../atoms/Footer/EmailInput/EmailInput"
 import { FooterContactElement } from "../../molecules/Footer/FooterContactElement/FooterContactElement"
-import { FooterElementHeadText } from "../../atoms/Footer/FooterElementHeadText/FooterElementHeadText"
-import { FooterElementImg } from "../../atoms/Footer/FooterElementImg/FooterElementImg"
+import { Link } from "react-router-dom"
 import { FooterInfoBlock } from "../../molecules/Footer/FooterInfoBlock/FooterInfoBlock"
 import { FooterLogo } from "../../atoms/Footer/FooterLogo/FooterLogo"
 import { SocialNetworkLogo } from "../../atoms/Footer/SocialNetworkLogo/SocialNetworkLogo"
@@ -19,13 +17,13 @@ import './Footer.css'
 
 export const Footer = () => {
     const text = {
-        aboutUs: "Про нас",
-        exchangeAndReturn: "Обмін та повернення",
-        privacyPolicy: "Політика конфіденційності",
-        delivery: "Доставка",
-        payment: "Оплата",
-        categories: "Категорії",
-        promotions: "Акції",
+        aboutUs: { title: "Про нас", link: "/aboutus" },
+        exchangeAndReturn: { title: "Обмін та повернення", link: "/exchangeandreturn" },
+        privacyPolicy: { title: "Політика конфіденційності", link: "/privacypolicy" },
+        delivery: { title: "Доставка", link: "/delivery" },
+        payment: { title: "Оплата", link: "/payment" },
+        // categories: { title: "Категорії", link: "" },
+        // promotions: { title: "Акції", link: "" },
     };
 
     return (
@@ -55,7 +53,9 @@ export const Footer = () => {
                         <FooterContactElement headtext={'Наша адреса'} text={"Україна, м. Місто, вул. Вулиця, 10"} src={FooterAdress} />
                         <FooterContactElement headtext={'Графік роботи'} text={"Працюємо щодня з 9 до 21"} src={FooterClock} />
                     </div>
-                    <div className="bottom-footer-col"><FooterInfoBlock headtext={'Інформація'} src={FooterInfo} text={text} /></div>
+                    <div className="bottom-footer-col">
+                        <FooterInfoBlock headtext={'Інформація'} src={FooterInfo} text={text} />
+                    </div>
                 </div>
             </div>
         </div>

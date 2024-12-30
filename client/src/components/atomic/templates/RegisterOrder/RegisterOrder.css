@@ -1,5 +1,5 @@
 .register-order-block {
-    margin-top: 150px;
+    margin-top: 186px;
 
 }
 
@@ -118,13 +118,19 @@
         color: white;
     }
 
-    .checkbox-block {
+    .checkbox-block{
+        height: 30px;
         font-size: 12px;
         margin-top: 21px;
     }
 
+    .checkbox-block div{
+        font-family: 'Helvetica Neue Cyr Thin';
+    }
+
     .mobile-create-order .total-price-block {
         font-size: 20px;
+
     }
     .register-order-form{
         width: 100%;

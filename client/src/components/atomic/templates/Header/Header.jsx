@@ -24,11 +24,10 @@ import PhoneImg from '../../../../assets/svg/phone.svg'
 import SearchLoupeImg from '../../../../assets/svg/loupe.svg'
 
 
-export const Header = ({ notification, setNotification, viewMobileFilter, setViewMobileFilter }) => {
+export const Header = ({ notification, setNotification, viewMobileFilter, setViewMobileFilter, setIsModalOpen, isModalOpen }) => {
     const [overlayVisible, setOverlayVisible] = useState(false);
 
     const [viewCategories, setViewCategories] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalSearchOpen, setIsModalSearchOpen] = useState(false);
     const [isModalOpenLogin, setIsModalOpenLogin] = useState(false);
     const [isModalOpenReg, setIsModalOpenReg] = useState(false);
@@ -93,7 +92,7 @@ export const Header = ({ notification, setNotification, viewMobileFilter, setVie
                             viewCategories={viewCategories}
                         />
                         <div className="search-block">
-                            <SearchLoupe setIsModalSearchOpen={setIsModalSearchOpen} src={SearchLoupeImg} />
+                            <SearchLoupe setIsModalSearchOpen={setIsModalSearchOpen} setViewCategories={setViewCategories} src={SearchLoupeImg} />
                             <SearchBar />
                         </div>
                     </div>
@@ -105,29 +104,32 @@ export const Header = ({ notification, setNotification, viewMobileFilter, setVie
                     <div className="right-elements-block">
                         <RightHeaderElement
                             src={PersonalCabinetImg}
-                            label={"Акаунт"}
+                            label={"АКАУНТ"}
                             onClick={handleAccountClick}
                         />
                         <Link to={"/wishlist"}>
                             <RightHeaderElement
                                 src={HeartImg}
-                                label={"Вішлист"}
+                                label={"УЛЮБЛЕНЕ"}
                                 products={wishlistItems}
                             />
                         </Link>
-                        <RightHeaderElement
-                            src={CartImg}
-                            label={"Кошик"}
-                            onClick={() => { setIsModalOpen(true); setIsModalOpenLogin(false); setOverlayVisible(false); setViewCategories(false); setViewMobileFilter(false) }}
-                            notification={notification}
-                            setNotification={setNotification}
-                            products={products}
-                            className={`cart-icon ${isBouncing && products.length > 0 ? "cart-bounce" : ""}`}
-                        />
+                        <Link to={'/cart'}>
+                            <RightHeaderElement
+                                src={CartImg}
+                                label={"КОШИК"}
+                                onClick={() => { setIsModalOpen(true); setIsModalOpenLogin(false); setOverlayVisible(false); setViewCategories(false); setViewMobileFilter(false) }}
+                                notification={notification}
+                                setNotification={setNotification}
+                                products={products}
+                                className={`cart-icon ${isBouncing && (products?.length || 0) > 0 ? "cart-bounce" : ""}`}
+
+                            />
+                        </Link>
                     </div>
                 </div>
 
-                <CartPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+                {/* <CartPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} /> */}
                 <div className="mobile-search">
                     <MobileSearchModal isModalOpen={isModalSearchOpen} setIsModalOpen={setIsModalSearchOpen} isOpenSearch={isModalSearchOpen} />
                 </div>

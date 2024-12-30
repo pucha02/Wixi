@@ -1,77 +1,150 @@
+/* .cart-modal-block{
+    max-height: 710px;
+    overflow-y: auto;
+} */
+.promo-modal {
+    text-align: center;    
+}
 
+.promo-modal-head {
+    font-family: "Helvetica Neue Cyr Medium";
+    font-size: 36px;
+}
+
+.promo-modal-sub-head {
+    font-family: "Helvetica Neue Cyr Medium";
+    font-size: 30px;
+    margin-top: 15px;
+}
+
+.promo-modal-promocode {
+    margin-top: 15px;
+    font-family: "Helvetica Neue Cyr Thin";
+    font-size: 30px;
+}
+
+.promo-modal-promocode-name {
+    margin: 0 auto;
+    margin-top: 30px;
+    width: max-content;
+    padding: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: black;
+    border-radius: 5px;
+
+}
+
+.promo-modal-promocode-name p {
+    font-family: "Helvetica Neue Cyr Ultra Light";
+    color: #ffff;
+    font-weight: 200;
+    font-size: 30px;
+}
+
+.promo-modal-bottom p {
+    font-family: "Helvetica Neue Cyr Thin";
+    font-size: 18px;
+    margin-top: 45px;
+}
+
+.cart-page .recently-viewed-container{
+    margin-top: 60px;
+}
 
 .cart-title {
     margin-bottom: 30px;
 }
 
-.cart-header{
+.cart-header {
     display: flex;
     justify-content: space-between;
 }
 
-.cart-product-description{
+.cart-product-description {
     font-size: 18px;
 }
 
-.cart-item-cost{
+.cart-item-cost {
     font-size: 18px;
+    width: 10%;
+    text-align: center;
 }
 
-.cart-bottom-buttons{
-    margin-top: 20px;
+.register-order-block .cart-item-cost{
+    width: auto;
+}
+
+.cart-bottom-buttons {
+    margin-top: 56px;
     display: flex;
     justify-content: end;
 }
 
-.cart-bottom-buttons a .cart-button{
+.cart-bottom-buttons a .cart-button {
     background-color: rgb(0, 0, 0);
     color: rgb(255, 255, 255);
     margin-left: 30px;
 }
 
-.promocode-form-block .cart-button{
+.promocode-form-block .cart-button {
     background-color: rgb(0, 0, 0);
     color: rgb(255, 255, 255);
 }
 
-.cart-bottom-buttons a .cart-button:hover{
+.cart-bottom-buttons a .cart-button:hover {
     background-color: white;
     color: black;
     border: 2px solid;
 }
 
-.promocode-form-block .cart-button:hover{
+.promocode-form-block .cart-button:hover {
     background-color: white;
     color: black;
     border: 2px solid;
+}
+
+.delete-message{
+    font-family: "Helvetica Neue Cyr Thin";
+    margin-bottom: 15px;
+    color: red;
+    font-size: 21px;
 }
 
 @media (max-width:768px) {
 
 
-    .cart-title{
+    .cart-title {
         font-size: 15px;
     }
 
-    .cart-product-description{
+    .cart-product-description {
         font-size: 12px;
         width: 90%;
+        text-align: start;
     }
 
-    .cart-item-cost{
+    .cart-item-cost {
         margin-top: 15px;
         margin-left: 20px;
+        text-align: start;
+        width: auto;
     }
 
-    .cart-modal-block{
+    .cart-modal-block {
         display: flex;
         flex-direction: column;
-        
+        overflow-y: auto;
+        margin-top: 20px;
+        padding: 10px;
     }
-    .cart-bottom-buttons{
+
+    .cart-bottom-buttons {
         display: block;
+        margin-top: 36px;
     }
-    .cart-bottom-buttons .cart-button{
+
+    .cart-bottom-buttons .cart-button {
         margin-left: 0;
         width: 100%;
         font-size: 15px;
@@ -79,7 +152,8 @@
         border: 2px solid;
         height: 45px;
     }
-    .cart-bottom-buttons a .cart-button{
+
+    .cart-bottom-buttons a .cart-button {
         margin-left: 0;
         width: 100%;
         margin-top: 9px;

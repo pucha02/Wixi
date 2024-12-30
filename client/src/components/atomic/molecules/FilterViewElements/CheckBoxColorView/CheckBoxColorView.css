@@ -1,4 +1,5 @@
 .filter-checkbox-x {
+  font-family: "Helvetica Neue Cyr Thin";
   display: flex;
   align-items: center;
   margin: 8px 0;
@@ -18,6 +19,7 @@
   display: inline-block;
   position: relative;
   transition: all 0.3s ease;
+  border: 0.2px solid;
 }
 
 .filter-checkbox-x input:checked + .color-indicator {
@@ -41,8 +43,8 @@
   }
 
   .filter-checkbox input{
-    width: 15px;
-    height: 15px;
+    width: 27px;
+    height: 27px;
   }
 
   .filter-checkbox{

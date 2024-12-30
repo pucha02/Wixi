@@ -33,7 +33,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 90px;
+    height: 124px;
     background-color: white;
 }
 
@@ -41,19 +41,21 @@
     display: flex;
     justify-content: space-between;
     width: 20%;
+    font-size: 15px;
 }
 
 .left-elements-block {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 25%;
+    width: 20%;
 }
 
 .search-block {
     display: flex;
     justify-content: space-between;
-    width: 65%;
+    width: 100%;
+    margin-left: 41px;
 }
 
 @keyframes cart-bounce {
@@ -87,10 +89,13 @@
     }
     .mobile-search .search-bar{
         display: block;
+        width: 95%;
+        margin: 0 auto;
+        margin-top: 30px;
     }
     .mobile-search{
         display: block;
-        
+       
     }
     .header-bottom {
         width: 95%;
@@ -115,4 +120,10 @@
     /* .header{
         position: unset;
     } */
+}
+
+@media (max-width:1250px) {
+    .right-elements-block{
+        font-size: 12px;
+    }
 }

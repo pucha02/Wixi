@@ -9,7 +9,9 @@ const cartItemSchema = new mongoose.Schema({
     cost: { type: Number },
     discount: { type: Number },
     originalCost: { type: Number },
-    img: { type: String }
+    img: { type: String },
+    sku: {type: String},
+    id:{ type: Number }
 });
 
 const orderSchema = new mongoose.Schema({
@@ -24,7 +26,9 @@ const orderSchema = new mongoose.Schema({
             size: { type: String },
             quantity: { type: Number },
             cost: { type: Number },
-            img: { type: String }
+            img: { type: String },
+            sku: {type: String},
+            id:{ type: Number }
         }
     ],
     totalCost: { type: Number, required: true },
@@ -36,7 +40,7 @@ const orderSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
     number_phone: { type: String, required: true, unique: true },
     firstname: { type: String, required: true },
-    lastname: { type: String, required: true },
+    lastname: { type: String },
     email: { type: String },
     password: { type: String, required: true },
     cart: [cartItemSchema],

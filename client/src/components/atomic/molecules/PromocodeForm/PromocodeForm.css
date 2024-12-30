@@ -1,9 +1,12 @@
 .promocode-form{
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 42px;
     font-size: 21px;
+    width: max-content;
+    
 }
 
 @media (max-width:768px) {
@@ -16,5 +19,8 @@
         height: 30px;
         padding: 6px;
         margin-left: 10px;
+    }
+    .promocode-form{
+        margin-top: 30px;
     }
 }

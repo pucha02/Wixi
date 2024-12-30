@@ -8,7 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1700;
   border-radius: 0;
 }
 
@@ -18,8 +18,14 @@
   border-radius: 8px;
   position: relative;
   width: 855px;
-  height: 710px;
+  max-height: 710px;
+  overflow-y: auto;
   border-radius: 0;
+}
+
+.modal-content.border{
+  border: 3px solid;
+  border-radius: 4px;
 }
 
 .modal-close {
@@ -37,8 +43,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 20px;
+    padding: 10px;
     width: 90%;
+    max-height: 650px;
     height: auto;
   }
 }

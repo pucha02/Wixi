@@ -1,78 +1,79 @@
-.tab-list{
-    display: flex;
-    flex-direction: column;
-    width: 20%;
+.tab-list {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
 }
 
 .mobile-menu {
-    width: 100%;
-    background-color: #fff;
-  }
-  
-  .menu-item {
-  }
-  
-  .menu-header {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    cursor: pointer;
-    justify-content: space-between;
-  }
-  
-  .menu-header.expanded {
-    background-color: #f9f9f9;
-  }
-  
-  .menu-content {
-    display: none;
-    padding: 10px 15px;
-    background-color: #f9f9f9;
-    font-size: 14px;
-  }
-  
-  .menu-item .menu-content {
-    display: block; /* Открытие при активной секции */
-  }
-  
-  .tab-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    width: 15%;
-  }
-  
-  .tab-button.active {
-    color: #000;
-    font-weight: bold;
-  }
-  
-  .tab-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-  }
-  
-  .tab-label {
-    font-size: 16px;
-    text-align: left;
-    flex: 1;
-  }
-  
-  
+  width: 100%;
+  background-color: #fff;
+}
 
-  @media (min-width: 1920px) {
-    .profile-tabs-container {
-        max-width: calc(1920px + 510px);
-        padding: 0 355px !important;
-    }
+.menu-item {}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+  justify-content: space-between;
+}
+
+.menu-header.expanded {
+  background-color: #f9f9f9;
+}
+
+.menu-content {
+  display: none;
+  padding: 10px 15px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+}
+
+.menu-item .menu-content {
+  display: block;
+  /* Открытие при активной секции */
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 15%;
+}
+
+.tab-button.active {
+  color: #000;
+  font-weight: bold;
+}
+
+.tab-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.tab-label {
+  font-size: 16px;
+  text-align: left;
+  flex: 1;
+}
+
+
+
+@media (min-width: 1920px) {
+  .profile-tabs-container {
+    width: 100%;
+    max-width: calc(1920px + 510px);
+    padding: 0 355px !important;
+  }
 }
 
 @media (max-width:768px) {
-  .tab-button{
+  .tab-button {
     width: 100%;
   }
 }

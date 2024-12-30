@@ -12,6 +12,12 @@ import { Modal } from "../../../../common/Modal";
 import './ClientRegistrationForm.css'
 
 const ClientRegistrationForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, setIsModalOpenReg }) => {
+
+    const [registrationResultModal, setRegistrationResultModal] = useState({
+        isOpen: false,
+        message: '',
+    });
+    
     const [userData, setUserData] = useState({
         number_phone: '',
         firstname: '',
@@ -24,47 +30,52 @@ const ClientRegistrationForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLog
     const handleSubmitRegistrationUser = async (e) => {
         e.preventDefault();
         const errors = validateFields(userData);
-
+    
         setValidationErrors(errors);
-
+    
         if (Object.keys(errors).length > 0) {
             console.log('Ошибки валидации, регистрация отменена', errors);
             return;
         }
-
+    
         try {
-            const response = await fetch('http://16.171.32.44/api/auth/register-user', {
+            const response = await fetch('http://localhost:5000/api/auth/register-user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(userData),
             });
-
+    
             if (response.status === 400) {
-                alert('Користувач з таким номером телефону вже існує');
-            }
-
-            else if (response.status === 201) {
-                alert('Реєстрація пройшла успішно');
+                setRegistrationResultModal({
+                    isOpen: true,
+                    message: 'Користувач з таким номером телефону вже існує',
+                });
+            } else if (response.status === 201) {
+                setRegistrationResultModal({
+                    isOpen: true,
+                    message: 'Реєстрація пройшла успішно',
+                });
             } else {
                 throw new Error('Помилка під час реєстрації');
             }
-            
         } catch (error) {
-            console.log('Помилка під час реєстрації');
+            setRegistrationResultModal({
+                isOpen: true,
+                message: 'Помилка під час реєстрації',
+            });
         }
     };
+    
 
     return (
         <div className="reg-form-modal">
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <div className="login-form-head">ВХІД ДО ОСОБИСТОГО КАБІНЕТУ</div>
                 <form onSubmit={handleSubmitRegistrationUser}>
-                    {/* <EmailRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} /> */}
                     <PhoneRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
                     <FirstNameRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
-                    {/* <LastNameRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} /> */}
                     <PasswordRegistrationMolecule userData={userData} handleChange={(e) => handleChangeInput(e, setUserData, userData)} validationErrors={validationErrors} />
                     <div className="login-form-btns">
                         <RegistrationFormSubmitButtonAtom text={"ЗАРЕЄСТРУВАТИСЯ"} />
@@ -74,9 +85,28 @@ const ClientRegistrationForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLog
                 <div className="login-form-info">
                     Здійснюючи реєстрацію або вхід з використанням cвого профілю в соціальній мережі, я тим самим даю згоду на зв'язування мого аккаунта відповідно до положень Політики конфіденційності
                 </div>
-            </Modal >
+            </Modal>
+            <RegistrationResultModal
+                isOpen={registrationResultModal.isOpen}
+                message={registrationResultModal.message}
+                onClose={() => setRegistrationResultModal({ isOpen: false, message: '' })}
+            />
         </div>
-    )
+    );
+    
 }
 
 export default ClientRegistrationForm;
+
+
+const RegistrationResultModal = ({ isOpen, message, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <div className="registration-result-modal">
+                <p>{message}</p>
+            </div>
+        </Modal>
+    );
+};

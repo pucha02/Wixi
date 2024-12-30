@@ -1,8 +1,101 @@
+.modal-overlay-conf {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1700;
+  }
+  
+  .modal-content-conf {
+    background: #000;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+    width: 700px;
+  }
+  
+  .modal-content-conf button {
+    margin: 5px;
+    width: 80px;
+    height: 50px;
+    font-size: 18px;
+    margin-top: 11px;
+    border: none;
+    cursor: pointer;
+    background-color: #000;
+    border: 2px solid #fff;
+    color: #fff;
+  }
+  
+  .modal-content-conf p{
+    font-size: 21px;
+  }
+  
+  .modal-content-conf button:last-child{
+    margin-left: 60px
+  }
+
+  .modal-content-conf button:hover{
+    background-color: #fff;
+    color: #000000;
+  }
+
 .cart-list {
     list-style-type: none;
     height: auto;
+    /* overflow-y: auto;
+    max-height: 570px; */
+}
+
+.register-order-block .cart-list li {
+    align-items: start;
+    height: 200px;
+}
+
+.register-order-block .cart-list {
+    list-style-type: none;
+    height: auto;
     overflow-y: auto;
-    max-height: 380px;
+    max-height: 435px;
+}
+
+.register-order-block .cart-item {
+    position: relative;
+}
+
+.register-order-block .cart-item-data {
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+}
+
+.register-order-block .cart-product-description {
+    font-family: "Helvetica Neue Cyr Thin";
+    font-size: 21px;
+    width: 80%;
+}
+
+.register-order-block .cart-product-description-size-color {
+    font-size: 21px;
+    font-family: "Helvetica Neue Cyr Thin";
+}
+
+.register-order-block .bucket-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.register-order-block .cart-item-cost {
+    margin-top: 15px;
+    margin-left: 20px;
+    font-size: 21px;
 }
 
 .cart-list li {
@@ -10,6 +103,7 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 30px;
+    height: 35vh;
 }
 
 .cart-list li:first-child {
@@ -21,25 +115,56 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    height: 100%;
 }
 
 .cart-product-description {
     width: 45%;
     margin-left: 20px;
+    height: 100%;
 }
 
 .cart-list .cart-item .product-image img {
-    width: 120px;
-    height: 170px;
+    width: 195px;
+    height: 35vh;
 }
 
 .bucket-img {
     cursor: pointer;
 }
 
+.cart-product-description-size {
+    margin-top: 17px;
+    font-family: 'Helvetica Neue Cyr Thin';
+}
+
+.cart-product-description-color {
+    margin-top: 24px;
+    font-family: 'Helvetica Neue Cyr Thin';
+
+}
+
+
 @media (max-width:768px) {
+
+    .cart-product-description-size,
+    .cart-product-description-color {
+        margin-top: 3px;
+    }
+
+    .cart-product-description {
+        height: auto;
+    }
+
+    .cart-list .cart-item .product-image img {
+        width: 120px;
+        height: 170px;
+        object-fit: cover;
+    }
+
     .cart-item-data {
         display: block;
+        height: 100%;
     }
 
     .cart-product-description {
@@ -47,9 +172,14 @@
     }
 
     .bucket-img {
-        margin-top: 30px;
+        margin-top: 10px;
         margin-left: 20px;
     }
+
+    .cart-list li {
+        height: 170px;
+    }
+
 }
 
 @media (min-width:770px) and (max-width:1350px) {

@@ -7,34 +7,51 @@ import CheckBoxColorView from "../../molecules/FilterViewElements/CheckBoxColorV
 function Filter({ data, filteredData, setViewMobileFilter }) {
   const sizeFilter = ["XS", "S", "M", "L", "XL"];
   const colorFilter = [
-    "Чорний",
-      "Сірий",
-      "Голубий",
-      "Світло-сірий",
-      "Чорно-сірий",
-      "Чорно-білий",
-      "Графітовий",
-      "Білий",
-      "смарагд",
-      "бордо",
-      "голубий",
-      "оранжевий",
-      "м'ятний",
-      "персик",
-      "Xакі",
-      "електрик",
-      "яскраво-рожевий",
-      "графітовий",
-      "синій",
-      "червоний",
-      "Малиновий",
-      "коричневий",
-      "блакитний",
-      "смарагдово-синій",
-      "темно-сірий",
-      "зелений",
-      "світло-рожевий",
-      "срібний"
+    "чорний",
+    "сірий",
+    "світло-сірий",
+    "білий",
+    "смарагд",
+    "бордо",
+    "голубий",
+    "оранжевий",
+    "м'ятний",
+    "персик",
+    "хакі",
+    "електрик",
+    "яскраво-рожевий",
+    "графітовий",
+    "синій",
+    "червоний",
+    "малиновий",
+    "коричневий",
+    "блакитний",
+    "смарагдово-синій",
+    "темно-сірий",
+    "зелений",
+    "світло-рожевий",
+    "срібний",
+    'чорно-білий',
+    "фіолетовий",
+    "чорно-сірий",
+    "мятний",
+    "кавовий",
+    "темний графіт",
+    "молочний",
+    "чорно-синій",
+    'чорно-зелений',
+    'чорний з сірими вставками',
+    'темно-синій',
+    'рожевий',
+    'беж',
+    'молочно-білий',
+    'ніжно-рожевий',
+    "смарагдовий",
+    "винний",
+    "оливка",
+    "ліловий",
+    "пісочний",
+    'графіт'
   ];
 
   const [selectedFilters, setSelectedFilters] = useState({
@@ -58,11 +75,11 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
         });
       });
     });
-    
+
     setAvailableSizes([...sizes]);
     setAvailableColors([...colors]);
   }, [data]);
-  
+
 
   const handleMinChange = (e) => {
     const value = Number(e.target.value);
@@ -85,7 +102,7 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
 
   const handleBlurMax = () => {
     if (maxPrice < minPrice) {
-      setMaxPrice(minPrice+1);
+      setMaxPrice(minPrice + 1);
     }
     if (maxPrice > 3000) {
       setMaxPrice(3000);
@@ -122,15 +139,15 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
           );
 
         let matchesPrice
-        
-          if (item.discount.percentage === 0) {
-             matchesPrice = item.cost >= minPrice && item.cost <= maxPrice
-          } else {
-            const discountPrice = item.cost - (item.discount.percentage / 100 * item.cost)
-            matchesPrice = discountPrice >= minPrice && discountPrice <= maxPrice
-          };
-          
-        
+
+        if (item.discount.percentage === 0) {
+          matchesPrice = item.cost >= minPrice && item.cost <= maxPrice
+        } else {
+          const discountPrice = item.cost - (item.discount.percentage / 100 * item.cost)
+          matchesPrice = discountPrice >= minPrice && discountPrice <= maxPrice
+        };
+
+
 
         return matchesColor && matchesSize && matchesPrice;
       });
@@ -139,9 +156,26 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
     filteredData(filteredItems);
   };
 
+  const resetFilters = () => {
+    setSelectedFilters({ Size: [], Color: [] });
+    setMinPrice(100);
+    setMaxPrice(3000);
+    filteredData(data); // Отображаем все данные без фильтров
+    if (setViewMobileFilter) {
+      setViewMobileFilter(false);
+    }
+  };
+  
+
   return (
     <div>
       <ul>
+        <button
+      className="price-filter-btn"
+      onClick={resetFilters}
+    >
+      СБРОСИТИ ФІЛЬТРИ
+    </button>
         <div className="price-filter">
           <FilterCostView
             minPrice={minPrice}
@@ -151,7 +185,18 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
             handleBlurMax={handleBlurMax}
             handleBlurMin={handleBlurMin}
           />
+          <button
           
+            className="price-filter-btns"
+            onClick={() => {
+              renderDataFiltered();
+              if (setViewMobileFilter) {
+                setViewMobileFilter(false)
+              }
+            }}
+          >
+            ОК
+          </button>
         </div>
 
         {/* Фильтр размеров */}
@@ -193,19 +238,19 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
               )
             ))}
           </ul>
-          
+
         )}
-        <button
+        {selectedFilters.Size.length > 0 || selectedFilters.Color.length > 0 ? <button
           className="price-filter-btn"
-            onClick={() => {
-              renderDataFiltered();
-              if(setViewMobileFilter){
-                setViewMobileFilter(false)
-              }
-            }}
-          >
-            ПОКАЗАТИ ОБРАНІ ТОВАРИ
-          </button>
+          onClick={() => {
+            renderDataFiltered();
+            if (setViewMobileFilter) {
+              setViewMobileFilter(false)
+            }
+          }}
+        >
+          ПОКАЗАТИ ОБРАНІ ТОВАРИ
+        </button> : null}
       </ul>
     </div>
   );

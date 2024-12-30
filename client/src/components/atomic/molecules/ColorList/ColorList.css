@@ -11,6 +11,16 @@
 
 }
 
+.list-sizes{
+    display: flex;
+}
+
+.list-sizes .size-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .inactive {
     opacity: 0.5;
     /* Делает элемент полупрозрачным */

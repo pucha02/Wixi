@@ -3,7 +3,7 @@ import { User } from "../MongooseModels/User.js";
 import { ObjectId } from "mongodb";
 
 export const addToCart = async (req, res) => {
-    const { userId, _id, title, cost, quantity, color, discount, originalCost, size, img } = req.body;  // Извлекаем данные из запроса
+    const { userId, _id, title, cost, quantity, color, discount, originalCost, size, img, sku, id } = req.body;  // Извлекаем данные из запроса
     console.log("Received request to add to cart:", { userId, _id, title, cost, quantity, color, discount, originalCost, size, img });
 
     try {
@@ -19,8 +19,8 @@ export const addToCart = async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        console.log(quantity)
-        const existingProduct = user.cart.find(item => item._id.toString() === _id && item.size.toString() === size && item.color.toString() === color.color_name );
+        console.log(sku)
+        const existingProduct = user.cart.find(item => item._id.toString() === _id && item.size.toString() === size && item.color.toString() === color.color_name);
         console.log("Existing product in cart:", existingProduct);
 
         if (existingProduct) {
@@ -36,12 +36,12 @@ export const addToCart = async (req, res) => {
                 console.log("Failed to update product quantity. Check query conditions.");
             }
         }
-         else {
-            console.log("Adding new product to cart:", { _id, title, cost, quantity, color: color.color_name, discount, originalCost, size, img });
+        else {
+            console.log("Adding new product to cart:", { _id, title, cost, quantity, color: color.color_name, discount, originalCost, size, img, sku, id });
             // Добавление нового товара в корзину
             await User.updateOne(
                 { _id: userId },
-                { $push: { cart: { _id, title, cost, quantity, color: color.color_name, discount, originalCost, size, img } } }
+                { $push: { cart: { _id, title, cost, quantity, color: color.color_name, discount, originalCost, size, img, sku, id } } }
             );
             console.log("New product added to cart");
         }
@@ -79,14 +79,14 @@ export const removeFromCart = async (req, res) => {
         // Удаление конкретной вариации товара
         const result = await User.updateOne(
             { _id: userId },
-            { 
-                $pull: { 
-                    cart: { 
-                        _id: new ObjectId(productId), 
-                        color: item.color, 
+            {
+                $pull: {
+                    cart: {
+                        _id: new ObjectId(productId),
+                        color: item.color,
                         size: item.size // Обязательно учитывать и цвет, и размер
-                    } 
-                } 
+                    }
+                }
             }
         );
 
@@ -142,8 +142,8 @@ export const updateCartQuantity = async (req, res) => {
         }
 
         const result = await User.updateOne(
-            { 
-                _id: userId, 
+            {
+                _id: userId,
                 cart: {
                     $elemMatch: {
                         _id: new ObjectId(productId),
@@ -164,7 +164,7 @@ export const updateCartQuantity = async (req, res) => {
                 }
             }
         });
-                
+
 
         console.log("Update result:", result);
 

@@ -4,7 +4,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
   const token = localStorage.getItem("token");
 
-  const response = await fetch("http://16.171.32.44/api/auth/get-information-for-user-cart", {
+  const response = await fetch("http://localhost:5000/api/auth/get-information-for-user-cart", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -23,22 +23,22 @@ export const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
 
 export const updateCartItemQuantity = createAsyncThunk(
   "cart/updateCartItemQuantity",
-  async ({ productId, color, size, quantity, userId }, { getState }) => {
-
+  async ({ productId, color, size, quantity, userId }) => {
     try {
-      const response = await fetch(`http://16.171.32.44/api/cart/update-cart`, {
+      const response = await fetch(`http://localhost:5000/api/cart/update-cart`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, productId, color, size, quantity }),
       });
 
       const data = await response.json();
+      console.log("Response from server:", data.updatedProduct); // Логируем ответ сервера
 
       if (!response.ok) {
         throw new Error(data.error || "Ошибка обновления количества товара");
       }
 
-      return data.cart; // Возвращаем обновленную корзину
+      return data.updatedProduct; // Убедитесь, что сервер возвращает обновленный товар
     } catch (error) {
       console.error("Ошибка при обновлении количества товара:", error);
       throw error;
@@ -46,11 +46,13 @@ export const updateCartItemQuantity = createAsyncThunk(
   }
 );
 
+
+
 // Добавление элемента в корзину
 export const addItemToCart = createAsyncThunk(
   "cart/addItemToCart",
   async ({ item, userId }) => {
-    const response = await fetch("http://16.171.32.44/api/cart/add-to-cart", {
+    const response = await fetch("http://localhost:5000/api/cart/add-to-cart", {
       method: "POST",
       body: JSON.stringify({ ...item, userId }),
       headers: { "Content-Type": "application/json" },
@@ -69,7 +71,7 @@ export const removeItemCart = createAsyncThunk(
   async ({ userId, productId, item }) => {
     console.log("Удаляемый товар:", { userId, productId, item });
 
-    const response = await fetch('http://16.171.32.44/api/cart/remove-from-cart', {
+    const response = await fetch('http://localhost:5000/api/cart/remove-from-cart', {
       method: 'POST',
       body: JSON.stringify({ userId, productId, item }),
       headers: { 'Content-Type': 'application/json' },
@@ -87,41 +89,42 @@ export const removeItemCart = createAsyncThunk(
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: JSON.parse(localStorage.getItem('cart')) || [],
+    items: JSON.parse(localStorage.getItem("cart")) || [],
     loading: false,
     error: null,
   },
   reducers: {
-
     addItem: (state, action) => {
-      const { _id, color, size } = action.payload;
+      const { _id, color, size, sku } = action.payload;
       const isAuthorized = !!localStorage.getItem("token");
-  
+
       if (!_id || !color?.color_name || !size) {
-          console.error('Некорректные данные товара:', action.payload);
-          return;
+        console.error("Некорректные данные товара:", action.payload);
+        return;
       }
-  
-      const existingItem = state.items.find((item) =>
+
+      const existingItem = state.items.find(
+        (item) =>
+          item &&
           item._id === _id &&
           item.color.color_name === color.color_name &&
           item.size === size
       );
-  
+
       if (existingItem) {
-          existingItem.quantity += 1;
+        existingItem.quantity += 1;
       } else {
-          state.items.push({ ...action.payload, quantity: 1 });
+        state.items.push({ ...action.payload, quantity: 1 });
       }
-  
+
       if (!isAuthorized) {
-          try {
-              localStorage.setItem('cart', JSON.stringify(state.items));
-          } catch (error) {
-              console.error('Ошибка при сохранении данных в localStorage:', error);
-          }
+        try {
+          localStorage.setItem("cart", JSON.stringify(state.items));
+        } catch (error) {
+          console.error("Ошибка при сохранении данных в localStorage:", error);
+        }
       }
-  },
+    },
 
     removeItem: (state, action) => {
       const { _id, color, size } = action.payload;
@@ -131,15 +134,13 @@ const cartSlice = createSlice({
         return;
       }
 
-      // Фильтруем элементы, удаляя только тот, который совпадает по всем трём условиям
       state.items = state.items.filter(
         (item) =>
-          item._id !== _id && // Либо другой _id
-          item.color !== color.color_name &&
-          item.size !== size // Либо другой размер
+          !(item._id === _id &&
+            item.color.color_name === color.color_name &&
+            item.size === size)
       );
 
-      // Сохраняем обновленную корзину в localStorage
       try {
         localStorage.setItem("cart", JSON.stringify(state.items));
       } catch (error) {
@@ -147,10 +148,9 @@ const cartSlice = createSlice({
       }
     },
 
-
     clearCart: (state) => {
       state.items = [];
-      localStorage.setItem('cart', JSON.stringify(state.items));
+      localStorage.setItem("cart", JSON.stringify(state.items));
     },
   },
   extraReducers: (builder) => {
@@ -161,7 +161,7 @@ const cartSlice = createSlice({
       })
       .addCase(fetchCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload; // Обновляем данные корзины
+        state.items = action.payload;
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.loading = false;
@@ -175,25 +175,27 @@ const cartSlice = createSlice({
         state.loading = false;
         const newItem = action.payload;
 
-        // Найти существующий элемент в корзине с учетом цвета и размера
-        const existingItem = state.items.find((item) =>
-          item._id === newItem._id &&
-          item.color.color_name === newItem.color.color_name &&
-          item.size === newItem.size
+        if (!newItem || !newItem._id) {
+          console.error("Некорректные данные товара при добавлении:", newItem);
+          return;
+        }
+
+        const existingItem = state.items.find(
+          (item) =>
+            item &&
+            item._id === newItem._id &&
+            item.color.color_name === newItem.color.color_name &&
+            item.size === newItem.size
         );
 
         if (existingItem) {
-          // Если такой элемент уже есть, увеличиваем его количество
-          existingItem.quantity += newItem.quantity || 1; // Используем количество из API или +1
+          existingItem.quantity += newItem.quantity || 1;
         } else {
-          // Если товара нет, добавляем его в корзину
           state.items.push({ ...newItem, quantity: newItem.quantity || 1 });
         }
 
-        // Сохраняем обновлённую корзину в localStorage
-        localStorage.setItem('cart', JSON.stringify(state.items));
+        localStorage.setItem("cart", JSON.stringify(state.items));
       })
-
       .addCase(addItemToCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
@@ -210,12 +212,34 @@ const cartSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-    builder.addCase(updateCartItemQuantity.fulfilled, (state, action) => {
-      state.items = action.payload;
-    });
-  },
+      .addCase(updateCartItemQuantity.fulfilled, (state, action) => {
+        const updatedProduct = action.payload;
 
+        if (!updatedProduct || !updatedProduct._id) {
+          console.error("Некорректные данные обновленного товара:", updatedProduct);
+          return;
+        }
+
+        const existingItemIndex = state.items.findIndex(
+          (item) =>
+            item &&
+            item._id === updatedProduct._id &&
+            item.color.color_name === updatedProduct.color.color_name &&
+            item.size === updatedProduct.size
+        );
+
+        if (existingItemIndex !== -1) {
+          state.items[existingItemIndex] = {
+            ...state.items[existingItemIndex],
+            ...updatedProduct,
+          };
+        } else {
+          console.warn("Обновленный товар не найден в корзине, пропуск обновления.");
+        }
+      });
+  },
 });
+
 
 export const { addItem, removeItem, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

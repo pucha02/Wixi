@@ -1,6 +1,7 @@
 import Product from '../MongooseModels/Product.js';
 import Category from '../MongooseModels/Category.js';
 
+// Получение продуктов по категории
 export const getProductsByCategory = async (req, res) => {
     const { category } = req.query;
     try {
@@ -9,43 +10,62 @@ export const getProductsByCategory = async (req, res) => {
         if (!foundCategory) {
             return res.status(404).json({ message: 'Категорія не знайдена' });
         }
-        const products = await Product.find({ 'category': foundCategory.title });
 
+        const products = await Product.find({ category: foundCategory.title }).populate('relatedProducts');
         res.json(products);
     } catch (error) {
         res.status(500).json({ message: 'Помилка отримання даних', error });
     }
 };
 
+// Получение всех продуктов с поиском по названию
 export const getAllProducts = async (req, res) => {
     try {
-        const { search } = req.query;
+        const { search = '' } = req.query;
 
-        const query = { title: { $regex: `(^|\\s)${search}`, $options: 'i' } }
+        // Поиск по названию с помощью регулярного выражения
+        const query = search ? { title: { $regex: `(^|\\s)${search}`, $options: 'i' } } : {};
 
-        const products = await Product.find(query);
+        const products = await Product.find(query).populate('relatedProducts');
         res.json(products);
     } catch (error) {
         res.status(500).json({ message: 'Помилка отримання даних', error });
     }
 };
 
+// Получение продуктов по названию
 export const getProductByName = async (req, res) => {
     const { title } = req.query;
     try {
-        const product = await Product.find({ 'title': title });
+        if (!title) {
+            return res.status(400).json({ message: 'Назва продукту є обовʼязковою' });
+        }
 
-        res.json(product);
+        const products = await Product.find({ title }).populate('relatedProducts');
+        if (products.length === 0) {
+            return res.status(404).json({ message: 'Продукт не знайдено' });
+        }
+
+        res.json(products);
     } catch (error) {
         res.status(500).json({ message: 'Помилка отримання даних', error });
     }
 };
 
+// Получение продуктов по типу
 export const getProductByType = async (req, res) => {
     const { type } = req.query;
     try {
-        const product = await Product.find({ 'type': type });
-        res.json(product);
+        if (!type) {
+            return res.status(400).json({ message: 'Тип продукту є обовʼязковим' });
+        }
+
+        const products = await Product.find({ type }).populate('relatedProducts');
+        if (products.length === 0) {
+            return res.status(404).json({ message: 'Продукти не знайдено' });
+        }
+
+        res.json(products);
     } catch (error) {
         res.status(500).json({ message: 'Помилка отримання даних', error });
     }
