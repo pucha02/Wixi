@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { fetchDataUser } from "../../../../utils/userDataOperations";
-import ArrowDown from '../../../../assets/svg/arrow.svg'
-import ArrowUp from '../../../../assets/svg/arrow2.svg'
 import "./OrdersList.css";
 
 export const OrdersList = () => {

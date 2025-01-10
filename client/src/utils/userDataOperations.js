@@ -7,7 +7,7 @@ export const fetchDataUser = async (setUser, setOrderDetails, setIsLoading) => {
 
     try {
         const response = await fetch(
-            "http://localhost:5000/api/auth/get-information-for-user-account",
+            "http://16.171.32.44/api/auth/get-information-for-user-account",
             {
                 method: "GET",
                 headers: {
@@ -50,7 +50,7 @@ export const fetchDataUser = async (setUser, setOrderDetails, setIsLoading) => {
 export const handleLogout = async (setUser, navigate) => {
     try {
         const response = await fetch(
-            "http://localhost:5000/api/auth/logout-user",
+            "http://16.171.32.44/api/auth/logout-user",
             {
                 method: "POST",
                 headers: {
@@ -64,8 +64,8 @@ export const handleLogout = async (setUser, navigate) => {
             setUser(null);
             localStorage.removeItem("token");
             localStorage.removeItem("cart");
-            alert('Ви вийшли з акаунту!')
             navigate('/');
+            window.location.reload(); // Перезагрузка страницы
         } else {
             console.error("Logout failed:", response.statusText);
         }
@@ -73,6 +73,7 @@ export const handleLogout = async (setUser, navigate) => {
         console.error("Error logging out:", error);
     }
 };
+
 
 export const handleSave = async (e, setUser, orderDetails) => {
     e.preventDefault();
@@ -84,7 +85,7 @@ export const handleSave = async (e, setUser, orderDetails) => {
     }
 
     try {
-        const response = await fetch("http://localhost:5000/api/auth/update-user-information", {
+        const response = await fetch("http://16.171.32.44/api/auth/update-user-information", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -119,7 +120,7 @@ export const handleSaveDelivery = async (e, selectedArea, selectedCity, selected
 
     try {
         const response = await fetch(
-            'http://localhost:5000/api/auth/update-delivery-information',
+            'http://16.171.32.44/api/auth/update-delivery-information',
             {
                 method: 'PUT',
                 headers: {

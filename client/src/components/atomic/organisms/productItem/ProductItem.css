@@ -185,7 +185,7 @@
 @media (max-width:1490px) {
     .product-image img {
         width: 100%;
-        height: 70vh;
+        height: 60vh;
         object-fit: cover;
     }
 
@@ -197,7 +197,7 @@
 @media (max-width:1300px) {
     .product-image img {
         width: 100%;
-        height: 70vh;
+        height: 60vh;
         object-fit: cover;
     }
 

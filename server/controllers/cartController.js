@@ -3,7 +3,7 @@ import { User } from "../MongooseModels/User.js";
 import { ObjectId } from "mongodb";
 
 export const addToCart = async (req, res) => {
-    const { userId, _id, title, cost, quantity, color, discount, originalCost, size, img, sku, id } = req.body;  // Извлекаем данные из запроса
+    const { userId, _id, title, cost, quantity, color, discount, originalCost, size, img, sku, id, availableQuantity, relatedProducts } = req.body;  // Извлекаем данные из запроса
     console.log("Received request to add to cart:", { userId, _id, title, cost, quantity, color, discount, originalCost, size, img });
 
     try {
@@ -37,11 +37,11 @@ export const addToCart = async (req, res) => {
             }
         }
         else {
-            console.log("Adding new product to cart:", { _id, title, cost, quantity, color: color.color_name, discount, originalCost, size, img, sku, id });
+            console.log("Adding new product to cart:", { _id, title, cost, quantity, color: color.color_name, discount, originalCost, size, img, sku, id, availableQuantity });
             // Добавление нового товара в корзину
             await User.updateOne(
                 { _id: userId },
-                { $push: { cart: { _id, title, cost, quantity, color: color.color_name, discount, originalCost, size, img, sku, id } } }
+                { $push: { cart: { _id, title, cost, quantity, color: color.color_name, discount, originalCost, size, img, sku, id, availableQuantity, relatedProducts } } }
             );
             console.log("New product added to cart");
         }
@@ -154,6 +154,7 @@ export const updateCartQuantity = async (req, res) => {
             },
             { $set: { 'cart.$.quantity': quantity } }
         );
+
         console.log("Using $elemMatch filter for update:", {
             _id: userId,
             cart: {
@@ -165,7 +166,6 @@ export const updateCartQuantity = async (req, res) => {
             }
         });
 
-
         console.log("Update result:", result);
 
         if (result.modifiedCount === 0) {
@@ -173,12 +173,27 @@ export const updateCartQuantity = async (req, res) => {
             return res.status(404).json({ error: 'Product variation not found in cart' });
         }
 
+        // Получение обновленного товара из базы данных
         const updatedUser = await User.findById(userId).select('cart');
-        console.log("User's updated cart:", updatedUser?.cart);
+        const updatedProduct = updatedUser?.cart.find(item =>
+            item._id.equals(new ObjectId(productId)) &&
+            item.color === color &&
+            item.size === size
+        );
+
+        console.log("Updated product:", updatedProduct);
+
+        if (!updatedProduct) {
+            console.warn("Failed to retrieve updated product after update.");
+            return res.status(500).json({ error: 'Failed to retrieve updated product' });
+        }
 
         console.log("Product quantity updated successfully");
 
-        res.status(200).json({ message: 'Product quantity updated successfully' });
+        res.status(200).json({
+            message: 'Product quantity updated successfully',
+            updatedProduct
+        });
     } catch (error) {
         console.error("Error occurred while updating product quantity:", error);
         res.status(500).json({ error: 'Failed to update product quantity' });

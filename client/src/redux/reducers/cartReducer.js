@@ -4,7 +4,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
   const token = localStorage.getItem("token");
 
-  const response = await fetch("http://localhost:5000/api/auth/get-information-for-user-cart", {
+  const response = await fetch("http://16.171.32.44/api/auth/get-information-for-user-cart", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -25,7 +25,7 @@ export const updateCartItemQuantity = createAsyncThunk(
   "cart/updateCartItemQuantity",
   async ({ productId, color, size, quantity, userId }) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/cart/update-cart`, {
+      const response = await fetch(`http://16.171.32.44/api/cart/update-cart`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, productId, color, size, quantity }),
@@ -52,7 +52,7 @@ export const updateCartItemQuantity = createAsyncThunk(
 export const addItemToCart = createAsyncThunk(
   "cart/addItemToCart",
   async ({ item, userId }) => {
-    const response = await fetch("http://localhost:5000/api/cart/add-to-cart", {
+    const response = await fetch("http://16.171.32.44/api/cart/add-to-cart", {
       method: "POST",
       body: JSON.stringify({ ...item, userId }),
       headers: { "Content-Type": "application/json" },
@@ -71,7 +71,7 @@ export const removeItemCart = createAsyncThunk(
   async ({ userId, productId, item }) => {
     console.log("Удаляемый товар:", { userId, productId, item });
 
-    const response = await fetch('http://localhost:5000/api/cart/remove-from-cart', {
+    const response = await fetch('http://16.171.32.44/api/cart/remove-from-cart', {
       method: 'POST',
       body: JSON.stringify({ userId, productId, item }),
       headers: { 'Content-Type': 'application/json' },
