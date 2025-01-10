@@ -24,6 +24,8 @@ const ClientLoginForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, set
 
     const [validationErrors, setValidationErrors] = useState({});
     const navigate = useNavigate();
+
+
     const handleSubmitLoginUser = async (e) => {
         e.preventDefault();
 
@@ -34,7 +36,7 @@ const ClientLoginForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, set
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/auth/login-user', {
+            const response = await fetch('http://16.171.32.44/api/auth/login-user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -59,7 +61,7 @@ const ClientLoginForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLogin, set
                     isOpen: true,
                     message: 'Ви успішно увійшли до системи',
                 });
-                setTimeout(() => navigate('/profile'), 1500); // Переход через 1.5 секунды
+                setTimeout(() => navigate('/profile'), 1500);
             } else {
                 setLoginResultModal({
                     isOpen: true,

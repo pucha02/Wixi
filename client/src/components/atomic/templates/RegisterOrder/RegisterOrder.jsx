@@ -9,6 +9,7 @@ import { CartItems } from "../../organisms/CartItems/CartItems";
 import { TotalCost } from "../../atoms/Cart/TotalCost/TotalCost";
 import { fetchCart } from "../../../../redux/reducers/cartReducer";
 import { CartButton } from "../../atoms/Cart/Button/CartButton";
+import { validateFields } from "../../../../utils/ValidateForm";
 import { Link } from "react-router-dom";
 import { fetchDataUser } from "../../../../utils/userDataOperations";
 import "./RegisterOrder.css";
@@ -20,6 +21,7 @@ export const RegisterOrder = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [validationErrors, setValidationErrors] = useState({});
     const [localProducts, setLocalProducts] = useState([]);
+    const [deleteMessage, setDeleteMessage] = useState('');
     const [discount, setDiscount] = useState(
         JSON.parse(localStorage.getItem("discount")) || 0
     ); // Загружаем скидку из localStorage
@@ -38,7 +40,7 @@ export const RegisterOrder = () => {
         city: "",
         warehouse: "",
         status: "Оформлено",
-        order_number: "test123",
+        order_number: "ssssdaaada11s1sss",
     });
 
     const [modal, setModal] = useState({
@@ -83,10 +85,48 @@ export const RegisterOrder = () => {
         localStorage.setItem("totalCost", JSON.stringify(discountedTotal));
     }, [products, localProducts, isAuthorized, discount]);
 
+    const handleLiqPayPayment = async (totalCost, orderNumber) => {
+        try {
+            const response = await fetch("http://16.171.32.44/api/payments/liqpay", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ totalCost, orderNumber }),
+            });
+    
+            const result = await response.json();
+            if (!response.ok) {
+                console.error("Помилка оплати LiqPay:", result.message);
+                return false;
+            }
+    
+            window.location.href = result.paymentLink; // Перенаправить пользователя на страницу оплаты
+            return true;
+        } catch (error) {
+            console.error("Помилка при створенні платежу LiqPay:", error);
+            return false;
+        }
+    };
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+    
+        const errors = validateFields(orderDetails);
+        setValidationErrors(errors);
+        if (Object.keys(errors).length > 0) return;
+    
+        const paymentConfirmed = await handleLiqPayPayment(orderDetails.totalCost, orderDetails.order_number);
+        if (!paymentConfirmed) {
+            setModal({
+                isOpen: true,
+                title: "Помилка!",
+                message: "Оплата не вдалася. Спробуйте ще раз.",
+            });
+            return;
+        }
+    
+        // После успешной оплаты продолжить отправку данных заказа
         try {
-            const response = await fetch("http://localhost:5000/api/orders/register-order", {
+            const response = await fetch("http://16.171.32.44/api/orders/register-order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(orderDetails),
@@ -95,15 +135,13 @@ export const RegisterOrder = () => {
             const result = await response.json();
     
             if (response.ok) {
-                // Успішне оформлення замовлення
-                localStorage.removeItem("discount");
                 setModal({
                     isOpen: true,
                     title: "Успіх!",
                     message: "Замовлення успішно оформлено!",
                 });
+                localStorage.removeItem("discount");
             } else {
-                // Помилка при оформленні замовлення
                 setModal({
                     isOpen: true,
                     title: "Помилка!",
@@ -119,7 +157,6 @@ export const RegisterOrder = () => {
             });
         }
     };
-    
     
 
     return (
@@ -184,7 +221,7 @@ export const RegisterOrder = () => {
                 </div>
                 <div className="register-order-products-block">
                     <div className="register-order-products-head">ВАШЕ ЗАМОВЛЕННЯ</div>
-                    <CartItems updateTotalCost={setTotalCost} />
+                    <CartItems updateTotalCost={setTotalCost} deleteMessage={deleteMessage} setDeleteMessage={setDeleteMessage} />
                     <div>
                         <TotalCost totalPrice={totalCost} />
                     </div>

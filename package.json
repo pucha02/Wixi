@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-pinch-zoom": "^0.1.4",
+    "react-transition-group": "^4.4.5"
+  }
+}

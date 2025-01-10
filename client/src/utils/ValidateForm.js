@@ -5,8 +5,9 @@ export const validateFields = (userData) => {
         switch (key) {
             case 'number_phone':
                 const phoneRegex = /^[0-9]{10,15}$/;
+                console.log(userData)
                 if (!phoneRegex.test(userData[key])) {
-                    errors[key] = 'Номер телефону повинен містити лише цифри (10-15 символів)';
+                    errors[key] = 'Номер має містити лише цифри (10-15 символів)';
                 }
                 break;
 

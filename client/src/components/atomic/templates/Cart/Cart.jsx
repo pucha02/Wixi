@@ -62,6 +62,7 @@ export const Cart = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    checkPromo(setPromoUsed, setPromoModalOpen)
   }, []);
   // Пересчёт итоговой стоимости
   useEffect(() => {
@@ -76,9 +77,7 @@ export const Cart = () => {
     localStorage.setItem("totalCost", JSON.stringify(discountedTotal));
   }, [cartItems, discount]);
 
-  useEffect(() => {
-    checkPromo(setPromoUsed, setPromoModalOpen)
-  }, []);
+
 
   const saveDiscount = (discountValue) => {
     setDiscount(discountValue);
@@ -106,7 +105,7 @@ export const Cart = () => {
   const handleSubmit = async (promoCodeTitle) => {
     try {
       const deviceId = await getDeviceId();
-      const response = await fetch('http://localhost:5000/api/promocode/check-promo', {
+      const response = await fetch('http://16.171.32.44/api/promocode/check-promo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ deviceId, promoCodeTitle: promoCodeTitle }),

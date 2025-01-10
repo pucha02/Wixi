@@ -34,6 +34,56 @@ export const CartItems = ({ updateTotalCost, deleteMessage, setDeleteMessage }) 
   const [modalData, setModalData] = useState({ isOpen: false, product: null });
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (isAuthorized && !loading && products.length === 0) {
+      dispatch(fetchCart());
+      console.log(dispatch(fetchCart()))
+    }
+
+  }, [isAuthorized, products.length, dispatch]);
+  
+
+  useEffect(() => {
+    if (isAuthorized) {
+      // Очистить локальную корзину
+      setLocalProducts([]); 
+      localStorage.removeItem("cart");
+  
+      // Загрузить корзину с сервера
+      dispatch(fetchCart());
+    } else {
+      // Если пользователь не авторизован, загрузить локальную корзину
+      try {
+        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+        setLocalProducts(localCart);
+      } catch (error) {
+        console.error("Ошибка при чтении данных из localStorage:", error);
+      }
+    }
+  }, [isAuthorized, dispatch]);
+  
+
+  useEffect(() => {
+
+    setPrevIsAuthorized(isAuthorized);
+  }, [isAuthorized, prevIsAuthorized]);
+
+  useEffect(() => {
+    if (!isAuthorized && localProducts.length > 0) {
+      try {
+        localStorage.setItem("cart", JSON.stringify(localProducts));
+      } catch (error) {
+        console.error("Ошибка при сохранении данных в localStorage:", error);
+      }
+    }
+  }, [localProducts, isAuthorized]);
+
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      updateTotalCost(cartItems);
+    }
+  }, [cartItems, updateTotalCost]);
+
   const handleQuantityChangeWrapper = (newCount, product) => {
     handleQuantityChange(
       newCount,
@@ -73,51 +123,7 @@ export const CartItems = ({ updateTotalCost, deleteMessage, setDeleteMessage }) 
     closeModal();
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
 
-    if (token) {
-      const guestCart = localStorage.getItem("cart");
-      if (guestCart) {
-        localStorage.setItem("guestCart", guestCart);
-      }
-      dispatch(fetchCart());
-    } else {
-      try {
-        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-        setLocalProducts(localCart);
-      } catch (error) {
-        console.error("Ошибка при чтении данных из localStorage:", error);
-      }
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (!isAuthorized && prevIsAuthorized) {
-      const guestCart = localStorage.getItem("guestCart");
-      if (guestCart) {
-        localStorage.setItem("cart", guestCart);
-        setLocalProducts(JSON.parse(guestCart));
-      }
-    }
-    setPrevIsAuthorized(isAuthorized);
-  }, [isAuthorized, prevIsAuthorized]);
-
-  useEffect(() => {
-    if (!isAuthorized && localProducts.length > 0) {
-      try {
-        localStorage.setItem("cart", JSON.stringify(localProducts));
-      } catch (error) {
-        console.error("Ошибка при сохранении данных в localStorage:", error);
-      }
-    }
-  }, [localProducts, isAuthorized]);
-
-  useEffect(() => {
-    if (cartItems.length > 0) {
-      updateTotalCost(cartItems);
-    }
-  }, [cartItems, updateTotalCost]);
 
   return (
     <>
@@ -142,7 +148,8 @@ export const CartItems = ({ updateTotalCost, deleteMessage, setDeleteMessage }) 
                   {product.title.toUpperCase()}
                   <div className="cart-product-description-size-color">
                     <div className="cart-product-description-size">
-                      КОЛІР: {isAuthorized ? product.color.toUpperCase() : product.color.color_name.toUpperCase()}
+                      КОЛІР: {product.color.color_name ? product.color.color_name.toUpperCase() : product.color.toUpperCase()}
+                      {console.log(product)}
                     </div>
                     <div className="cart-product-description-color">
                       РОЗМІР: {product.size}

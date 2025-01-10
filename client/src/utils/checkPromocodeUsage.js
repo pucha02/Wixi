@@ -9,7 +9,7 @@ const getDeviceId = async () => {
 export const checkPromoUsage = async (setPromoUsed, setPromoModalOpen) => {
     try {
         const deviceId = await getDeviceId();
-        const response = await fetch("http://localhost:5000/api/promocode/check-promocode", {
+        const response = await fetch("http://16.171.32.44/api/promocode/check-promocode", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

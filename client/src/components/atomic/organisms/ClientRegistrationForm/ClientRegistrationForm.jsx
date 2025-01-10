@@ -32,6 +32,15 @@ const ClientRegistrationForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLog
         const errors = validateFields(userData);
     
         setValidationErrors(errors);
+        Object.keys(errors).forEach(field => {
+            setTimeout(() => {
+                setValidationErrors(prev => {
+                    const newErrors = { ...prev };
+                    delete newErrors[field];
+                    return newErrors;
+                });
+            }, 3000);
+        });
     
         if (Object.keys(errors).length > 0) {
             console.log('Ошибки валидации, регистрация отменена', errors);
@@ -39,7 +48,7 @@ const ClientRegistrationForm = ({ isModalOpen, setIsModalOpen, setIsModalOpenLog
         }
     
         try {
-            const response = await fetch('http://localhost:5000/api/auth/register-user', {
+            const response = await fetch('http://16.171.32.44/api/auth/register-user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
