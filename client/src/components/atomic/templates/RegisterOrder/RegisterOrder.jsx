@@ -41,6 +41,7 @@ export const RegisterOrder = () => {
         warehouse: "",
         status: "Оформлено",
         order_number: "ssssdaaada11s1sss",
+        promocode: discount.code || ''
     });
 
     const [modal, setModal] = useState({
@@ -73,17 +74,16 @@ export const RegisterOrder = () => {
             0
         );
 
-        const discountedTotal = discount > 0 ? rawTotal * (1 - discount / 100) : rawTotal;
+        const discountedTotal = discount.discountPercentage > 0 ? rawTotal * (1 - discount.discountPercentage / 100) : rawTotal;
 
         setOrderDetails((prevDetails) => ({
             ...prevDetails,
             products: currentCart,
             totalCost: discountedTotal,
         }));
-
         setTotalCost(discountedTotal);
         localStorage.setItem("totalCost", JSON.stringify(discountedTotal));
-    }, [products, localProducts, isAuthorized, discount]);
+    }, [products, localProducts, isAuthorized, discount.discountPercentage]);
 
     const handleLiqPayPayment = async (totalCost, orderNumber) => {
         try {

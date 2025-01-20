@@ -247,6 +247,7 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [activeSize, setActiveSize] = useState(0);
+  const [colors, setColors] = useState({});
 
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -272,20 +273,59 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
     const fetchData = async () => {
       try {
         const result = await getAllProductByCategory(id);
-        const updatedData = result.map((item) => ({
+  
+        // Фильтруем элементы с totalAvailable > 0
+        const filteredResult = result.filter((item) => {
+          const totalAvailable = item.color.reduce(
+            (total, color) =>
+              total + color.sizes.reduce((sum, size) => sum + size.availableQuantity, 0),
+            0
+          );
+          return totalAvailable > 0; // Условие для фильтрации
+        });
+  
+        const updatedData = filteredResult.map((item) => ({
           ...item,
           activeIndex: 0,
         }));
+  
         setData(updatedData);
         setFilteredData(null); // Сброс фильтрованных данных
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     window.scrollTo(0, 0);
     fetchData();
-  }, [id]); // Добавьте зависимости, чтобы предотвратить ошибки
+  }, [id]);
+   // Добавьте зависимости, чтобы предотвратить ошибки
+
+  useEffect(() => {
+      const fetchData = async () => {
+          try {
+              const response = await fetch('http://16.171.32.44/api/colors/get-colors');
+              if (!response.ok) {
+                  throw new Error('Ошибка сети: ' + response.status);
+              }
+  
+              const data = await response.json();
+              
+              const colorMap = data.reduce((acc, color) => {
+                  acc[color.name.toLowerCase()] = color.color;
+                  return acc;
+              }, {});
+  
+              setColors(colorMap);
+              console.log(colorMap)
+          } catch (err) {
+              console.error(err);
+          } finally {
+          }
+      };
+  
+      fetchData();
+  }, []);
 
 
   const loadRecentlyViewed = () => {
@@ -390,6 +430,7 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
                 setActiveSize={setActiveSize}
                 activeSize={activeSize}
                 classname={"isDisplaySizes"}
+                colorsList={colors}
               />
             </div>
           </li>
@@ -402,7 +443,7 @@ const ProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
   const elements = useMemo(() => {
     const finallyData = filteredData ? filteredData : data;
     return renderItems(finallyData);
-  }, [data, activeIndex, isLiked, filteredData, storedLikes, isHovered, hoveredItemId]);
+  }, [data, activeIndex, isLiked, filteredData, storedLikes, isHovered, hoveredItemId, colors]);
 
   return (
     <div className="catalog-container">

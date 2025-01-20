@@ -5,54 +5,37 @@ import CheckBoxSizeView from "../../molecules/FilterViewElements/CheckBoxSizeVie
 import CheckBoxColorView from "../../molecules/FilterViewElements/CheckBoxColorView/CheckBoxColorView";
 
 function Filter({ data, filteredData, setViewMobileFilter }) {
-  const sizeFilter = ["XS", "S", "M", "L", "XL"];
-  const colorFilter = [
-    "чорний",
-    "сірий",
-    "світло-сірий",
-    "білий",
-    "смарагд",
-    "бордо",
-    "голубий",
-    "оранжевий",
-    "м'ятний",
-    "персик",
-    "хакі",
-    "електрик",
-    "яскраво-рожевий",
-    "графітовий",
-    "синій",
-    "червоний",
-    "малиновий",
-    "коричневий",
-    "блакитний",
-    "смарагдово-синій",
-    "темно-сірий",
-    "зелений",
-    "світло-рожевий",
-    "срібний",
-    'чорно-білий',
-    "фіолетовий",
-    "чорно-сірий",
-    "мятний",
-    "кавовий",
-    "темний графіт",
-    "молочний",
-    "чорно-синій",
-    'чорно-зелений',
-    'чорний з сірими вставками',
-    'темно-синій',
-    'рожевий',
-    'беж',
-    'молочно-білий',
-    'ніжно-рожевий',
-    "смарагдовий",
-    "винний",
-    "оливка",
-    "ліловий",
-    "пісочний",
-    'графіт'
-  ];
+
+  const [colors, setColors] = useState({})
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://16.171.32.44/api/colors/get-colors');
+        if (!response.ok) {
+          throw new Error('Ошибка сети: ' + response.status);
+        }
+
+        const data = await response.json();
+
+        const colorMap = data.reduce((acc, color) => {
+          acc[color.name.toLowerCase()] = color.color;
+          return acc;
+        }, {});
+
+        setColors(colorMap);
+        console.log(colorMap)
+      } catch (err) {
+        console.error(err);
+      } finally {
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const sizeFilter = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"];
+  
 
   const [selectedFilters, setSelectedFilters] = useState({
     Size: [],
@@ -165,17 +148,17 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
       setViewMobileFilter(false);
     }
   };
-  
+
 
   return (
     <div>
       <ul>
         <button
-      className="price-filter-btn"
-      onClick={resetFilters}
-    >
-      СБРОСИТИ ФІЛЬТРИ
-    </button>
+          className="price-filter-btn"
+          onClick={resetFilters}
+        >
+          СБРОСИТИ ФІЛЬТРИ
+        </button>
         <div className="price-filter">
           <FilterCostView
             minPrice={minPrice}
@@ -186,7 +169,7 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
             handleBlurMin={handleBlurMin}
           />
           <button
-          
+
             className="price-filter-btns"
             onClick={() => {
               renderDataFiltered();
@@ -225,21 +208,23 @@ function Filter({ data, filteredData, setViewMobileFilter }) {
         {availableColors.length > 0 && (
           <ul>
             <div className="filter-head">Колір</div>
-            {colorFilter.map((elem, i) => (
-              availableColors.includes(elem) && (
+            {Object.keys(colors).map((colorName, i) => (
+              availableColors.includes(colorName) && (
                 <li key={i}>
                   <CheckBoxColorView
                     handleCheckboxChange={handleCheckboxChange}
                     filterName="Color"
-                    filterValue={elem}
-                    isChecked={selectedFilters.Color.includes(elem)}
+                    filterValue={colorName}
+                    isChecked={selectedFilters.Color.includes(colorName)}
+                    colorCode={colors[colorName] || "#FFFFFF"} // Код цвета из API
                   />
                 </li>
               )
             ))}
           </ul>
-
         )}
+
+
         {selectedFilters.Size.length > 0 || selectedFilters.Color.length > 0 ? <button
           className="price-filter-btn"
           onClick={() => {

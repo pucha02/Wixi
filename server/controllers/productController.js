@@ -70,3 +70,30 @@ export const getProductByType = async (req, res) => {
         res.status(500).json({ message: 'Помилка отримання даних', error });
     }
 };
+
+export const getAllProductsWithPag = async (req, res) => {
+    try {
+        const { page = 1, limit = 12 } = req.query;
+
+        // Вычисление пропускаемых документов
+        const skip = (Number(page) - 1) * Number(limit);
+
+        // Получение товаров с учетом пагинации
+        const products = await Product.find()
+            .populate('relatedProducts')
+            .skip(skip)
+            .limit(Number(limit));
+
+        // Подсчет общего количества документов
+        const total = await Product.countDocuments();
+
+        res.json({  
+            products,  
+            total,  
+            page: Number(page),
+            totalPages: Math.ceil(total / Number(limit)),
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Помилка отримання даних', error });
+    }
+};

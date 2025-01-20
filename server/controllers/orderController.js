@@ -219,7 +219,7 @@ export const registerOrder = async (req, res) => {
         });
 
         console.log("[DEBUG] Відповідь LiqPay:", paymentResponse);
-
+        console.log( orderDetails.promocode)
         // Сохранение заказа со статусом "Ожидание оплаты"
         const newOrder = {
             area: orderDetails.area,
@@ -240,6 +240,7 @@ export const registerOrder = async (req, res) => {
             status: "Ожидание оплаты",
             order_number: orderDetails.order_number,
             number_phone: orderDetails.number_phone,
+            promocode: orderDetails.promocode
         };
 
         const order = new Order(newOrder);

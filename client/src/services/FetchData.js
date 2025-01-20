@@ -7,15 +7,25 @@ const useGetDataProduct = () => {
   const _urlByProductTitle = 'http://16.171.32.44/api/products/get-products-by-title';
   const _urlByProductType = 'http://16.171.32.44/api/products/get-products-by-type';
   const _urlByAllProducts = 'http://16.171.32.44/api/products/get-all-products'
+  const _urlByAllColors = 'http://16.171.32.44/api/colors/get-colors'
   const _urlAddToCart = 'http://16.171.32.44/api/cart/add-to-cart'
   const _urlRemoveFromCart = 'http://16.171.32.44/api/cart/remove-from-cart'
   const _urlPromocodeByCode = 'http://16.171.32.44/api/promocode/get-promocode-by-code'
+  const _urlByProductsPagination = 'http://16.171.32.44/api/products/get-all-products-with-pag'
 
 
   const getAllProductByCategory = async (category) => {
     const result = await request(`${_urlByCategory}?category=${encodeURIComponent(category)}`);
     console.log(result);
     return result;
+  };
+
+  const getPaginatedProducts = async (page, limit) => {
+    const response = await fetch(`${_urlByProductsPagination}?page=${page}&limit=${limit}`);
+    if (!response.ok) {
+      throw new Error("Ошибка при получении данных");
+    }
+    return await response.json();
   };
 
   const getProduct = async (title) => {
@@ -38,6 +48,12 @@ const useGetDataProduct = () => {
 
   const getAllProduct = async () => {
     const result = await request(`${_urlByAllProducts}`);
+    console.log(result);
+    return result;
+  };
+
+  const getAllColors = async () => {
+    const result = await request(`${_urlByAllColors}`);
     console.log(result);
     return result;
   };
@@ -69,7 +85,9 @@ const useGetDataProduct = () => {
     getAllProductBySearch,
     addToCart,
     removeFromCart,
-    getProductByType
+    getProductByType,
+    getPaginatedProducts,
+    getAllColors
   };
 };
 

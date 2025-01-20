@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProductImage } from "../../atoms/atomsProduct/Image/Image";
 import { Link } from 'react-router-dom';
 import { ProductColor } from '../../atoms/atomsProduct/Color/Color';
@@ -10,6 +10,33 @@ import './Wishlist.css';
 export const WishlistItems = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSize, setActiveSize] = useState(null);
+  const [colors, setColors] = useState({})
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await fetch('http://16.171.32.44/api/colors/get-colors');
+            if (!response.ok) {
+                throw new Error('Ошибка сети: ' + response.status);
+            }
+
+            const data = await response.json();
+            
+            const colorMap = data.reduce((acc, color) => {
+                acc[color.name.toLowerCase()] = color.color;
+                return acc;
+            }, {});
+
+            setColors(colorMap);
+            console.log(colorMap)
+        } catch (err) {
+            console.error(err);
+        } finally {
+        }
+    };
+
+    fetchData();
+}, []);
 
   const wishListItems = useSelector((state) => state.wishlist.items);
   const dispatch = useDispatch();
@@ -45,6 +72,7 @@ export const WishlistItems = () => {
                     index={activeIndex}
                     setActiveIndex={setActiveIndex}
                     setActiveSize={setActiveSize}
+                    colors={colors}
                   />
                 </div>
                 <div className="">

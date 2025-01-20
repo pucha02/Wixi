@@ -294,7 +294,9 @@
 }
 
 .thumbnails .swiper-slide img {
+  
   width: 100%;
+  min-width: 185px;
   height: 100%;
   object-fit: cover;
 }
@@ -341,6 +343,7 @@
   .thumbnails .swiper-slide img {
     object-fit: contain;
     height: auto;
+    min-width: auto;
   }
 
   .swiper-button-prev {

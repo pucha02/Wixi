@@ -1,5 +1,7 @@
 .slider-cont {
   width: 50%;
+  height: 80vh;
+  min-width: 600px;
   display: flex;
   gap: 10px;
   align-items: center;
@@ -8,7 +10,7 @@
 .swiper.thumbnails {
   order: 1;
   width: 246px;
-  height: 85vh;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -21,8 +23,6 @@
 
 .thumbnail.active {
   opacity: 1;
- 
-  /* Подсветка активной миниатюры */
 }
 
 .thumbnail:hover {
@@ -32,7 +32,7 @@
 .main-image {
   order: 2;
   width: 100%;
-  height: 85vh;
+  height: 100%;
   overflow: hidden;
   position: relative;
 }
@@ -43,7 +43,6 @@
   object-fit: cover;
   transition: transform 0.1s ease-out;
   pointer-events: none;
-  /* Отключаем взаимодействие с изображением */
 }
 
 .main-image:hover {
@@ -73,10 +72,20 @@
   background-color: #f0f0f0;
 }
 
-
+@media (max-width: 1030px) {
+  .slider-cont{
+    width: 70%;
+    min-width: 530px;
+  }
+  .product-page-container{
+    width: 97%;
+  }
+}
 
 @media (max-width: 768px) {
   .slider-cont {
+    min-width: auto;
+    height: auto;
     width: 100%;
     flex-direction: column;
     /* Размещаем элементы вертикально */
@@ -86,7 +95,7 @@
     order: 1;
     /* Главная картинка идет после миниатюр */
     width: 100%;
-    height: 500px;
+    height: 55vh;
   }
 
   .swiper.thumbnails {
@@ -124,6 +133,7 @@
   .main-image {
     order: 1;
     width: 100%;
-    height: 385px;
+    /* height: 385px; */
+     height: 55vh;
   }
 }

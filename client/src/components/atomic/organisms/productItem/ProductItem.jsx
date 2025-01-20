@@ -43,6 +43,7 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
   const [sizeError, setSizeError] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false)
+  const [colors, setColors] = useState({});
 
   const { getProduct } = useGetDataProduct();
   const { getAllProductByCategory } = useGetDataProduct();
@@ -53,6 +54,32 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
   const childRefs = useRef([]);
   const activeColor = data[0]?.color?.[activeIndex];
   const storedLikes = useSelector((state) => state.wishlist.items);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://16.171.32.44/api/colors/get-colors');
+        if (!response.ok) {
+          throw new Error('Ошибка сети: ' + response.status);
+        }
+
+        const data = await response.json();
+
+        const colorMap = data.reduce((acc, color) => {
+          acc[color.name.toLowerCase()] = color.color;
+          return acc;
+        }, {});
+
+        setColors(colorMap);
+        console.log(colorMap)
+      } catch (err) {
+        console.error(err);
+      } finally {
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,7 +97,6 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
           const productByCategory = await getAllProductByCategory(category);
 
           if (productByCategory && productByCategory.length > 0) {
-            // Рандомно выбираем до 7 элементов
             const randomProducts = getRandomItems(productByCategory, 7);
             setSimilar(randomProducts);
             console.log(randomProducts);
@@ -159,15 +185,15 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
     const isAvailable = item.color?.some((color) =>
       color.sizes?.some((size) => size.availableQuantity > 0)
     );
-  
+
     console.log(item._id);
-  
+
     return (
       <div className="product-item">
         <div className="name-heart">
           <ProductName name={item.title} className={""} />
         </div>
-        <ProductDescription description={item.description} className={""} />
+        {/* <ProductDescription description={item.description} className={""} /> */}
         <div className="cost-article">
           {isAvailable ? (
             <div className="availability-text">В наличии</div>
@@ -190,11 +216,13 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
           setSku={setSku}
           setVariationId={setVariationId}
           setAvailableQuantity={setAvailableQuantity}
+          colorsList={colors}
         />
         <div className="size-table-block">
           <SizeTable handleViewTable={() => setModalOpen(true)} />
-          <SizeChartModal isModalOpen={isModalOpen} setIsModalOpen={setModalOpen} />
+          <SizeChartModal isModalOpen={isModalOpen} setIsModalOpen={setModalOpen} sizeChartId={item.sizeChart} />
         </div>
+        {/* <div style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}> */}
         <ProductButtonAddToCartTxt
           handleAddToCart={isAvailable ? handleAddToCartWithValidation : null} // Метод не вызывается, если товара нет в наличии
           className={isAvailable ? "" : "disabled"} // Добавляем класс "disabled", если товар недоступен
@@ -208,24 +236,28 @@ export const ProductItem = ({ notification, setNotification, setCartOpen }) => {
           isLiked={isLiked} // Передаем состояние напрямую
           ref={(el) => (childRefs.current[item._id] = el)}
         />
+        {/* </div>*/}
       </div>
     );
   }
-  
+
 
   const elements = useMemo(() => {
     return renderDataProductProperty(data);
-  }, [data, activeIndex, likedItems, activeSize, notifications, isModalOpen]);
+  }, [data, activeIndex, likedItems, activeSize, notifications, isModalOpen, colors]);
 
   return (
     <div>
       <div className="product-page-container">
         <ProductItemModal isOpen={isProductModalOpen} onClose={() => setIsProductModalOpen(false)} setCartOpen={setCartOpen} />
-        <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={`/category/productList/${data[0] ? data[0].category : ''}`}>{data[0] ? data[0].category : ''}</Link> / <Link to={`/category/productList/${data[0] ? data[0].category : ''}/${data[0] ? data[0].title : ''}`}>{data[0] ? data[0].title : ''.toUpperCase()}</Link></div>
 
         <div className="product-page-data-block">
-          <ImageSlider images={activeColor?.img && activeColor?.img.length > 0 ? activeColor.img : []} />
-          {elements}
+          <div className="category-title"><Link to={'/'}>ГОЛОВНА</Link> / <Link to={`/category/productList/${data[0] ? data[0].category : ''}`}>{data[0] ? data[0].category : ''}</Link> / <Link to={`/category/productList/${data[0] ? data[0].category : ''}/${data[0] ? data[0].title : ''}`}>{data[0] ? data[0].title : ''.toUpperCase()}</Link></div>
+
+          <div className="product-page-data-block-els">
+            <ImageSlider images={activeColor?.img && activeColor?.img.length > 0 ? activeColor.img : []} />
+            {elements}
+          </div>
         </div>
         <div className="tab-menu-block">
           <ProductDescriptionMenu description={data[0] ? data[0].description : ''} />

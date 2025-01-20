@@ -23,10 +23,12 @@ import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
 import "./CarouselListByTypes.css";
 
-export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setActiveIndex=null }) => {
+export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setActiveIndex = null }) => {
   const [data, setData] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [productState, setProductState] = useState({});
+  const [colors, setColors] = useState({});
+
   const { getProductByType } = useGetDataProduct();
   const dispatch = useDispatch();
   const childRefs = useRef([]);
@@ -36,18 +38,40 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setA
     const fetchData = async () => {
       try {
         const result = await getProductByType(type);
-        setData(result);
+  
+        // Фильтруем элементы с totalAvailable > 0
+        const filteredResult = result.filter((item) => {
+          const totalAvailable = item.color.reduce(
+            (total, color) =>
+              total + color.sizes.reduce((sum, size) => sum + size.availableQuantity, 0),
+            0
+          );
+          return totalAvailable > 0; // Оставляем только элементы с totalAvailable > 0
+        });
+  
+        setData(filteredResult);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     if (getdata) {
-      setData(getdata);
+      // Если getdata существует, фильтруем и устанавливаем данные
+      const filteredGetData = getdata.filter((item) => {
+        const totalAvailable = item.color.reduce(
+          (total, color) =>
+            total + color.sizes.reduce((sum, size) => sum + size.availableQuantity, 0),
+          0
+        );
+        return totalAvailable > 0;
+      });
+  
+      setData(filteredGetData);
     } else {
       fetchData();
     }
   }, [type, getdata]);
+  
 
   useEffect(() => {
     if (data.length) {
@@ -74,6 +98,32 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setA
     }));
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://16.171.32.44/api/colors/get-colors');
+        if (!response.ok) {
+          throw new Error('Ошибка сети: ' + response.status);
+        }
+
+        const data = await response.json();
+
+        const colorMap = data.reduce((acc, color) => {
+          acc[color.name.toLowerCase()] = color.color;
+          return acc;
+        }, {});
+
+        setColors(colorMap);
+        console.log(colorMap)
+      } catch (err) {
+        console.error(err);
+      } finally {
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleAddToWishlist = (product, index) => {
     const activeColor = product.color?.[productState[product._id]?.activeIndex] || product.color?.[0];
     const activeImage = activeColor?.img?.[0]?.img_link || NoImg;
@@ -98,7 +148,7 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setA
   };
 
   const addToRecentlyViewed = (product) => {
-    if(setActiveIndex){
+    if (setActiveIndex) {
       setActiveIndex(0)
     }
     const recentlyViewed =
@@ -159,6 +209,7 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setA
               setActiveSize={(size) => updateProductState(item._id, "activeSize", size)}
               activeSize={productStateItem.activeSize}
               classname={"isDisplaySizes"}
+              colorsList={colors}
             />
           </div>
         </SwiperSlide>
@@ -170,7 +221,7 @@ export const CarouselListByTypes = ({ type = null, getdata, countSlide = 3, setA
     <div className="main-container">
       <Swiper
         slidesPerView={countSlide}
-        
+
 
         breakpoints={{
           320: {

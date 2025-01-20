@@ -20,6 +20,7 @@ const orderSchema = new mongoose.Schema({
     area: { type: String },
     city: { type: String },
     warehouse: { type: String },
+    promocode: { type: String },
     products: [
         {
             productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },

@@ -7,6 +7,7 @@ import { CarouselListByTypes } from "../../atomic/templates/CarouselListByTypes/
 import { Footer } from "../../atomic/templates/Footer/Footer";
 import { useEffect } from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import './mainPage.css'
 import Banner1 from '../../../assets/svg/baners/banner1.png'
 import Banner2 from '../../../assets/svg/baners/banner2.png'
@@ -73,11 +74,13 @@ export const MainPage = () => {
         <>
             <Header viewMobileFilter={viewMobileFilter} setViewMobileFilter={setViewMobileFilter} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
             <MySlider slides={slidesData} />
-            <HotStripDiscount content={'ЗНИЖКИ!'} />
+            {/* <HotStripDiscount content={'ЗНИЖКИ!'} /> */}
+            <Link to={`/newproducts`}><h1 className="main-new">SALE %</h1></Link>
             <CarouselListByTypes type={'sale'} />
-            <h1 className="main-new">НОВИНКИ</h1>
+            <Link to={`/newproducts`}><h1 className="main-new">НОВИНКИ</h1></Link>
             <CarouselListByTypes type={'new'} />
-            <HotStripDiscount content={'ТОП ПРОДАЖІВ!'} />
+            {/* <HotStripDiscount content={'ТОП ПРОДАЖІВ!'} /> */}
+            <Link to={`/newproducts`}><h1 className="main-new">ТОП ПРОДАЖІВ</h1></Link>
             <CarouselListByTypes type={'top'} />
             <Footer />
             <PromoModal promoModalOpen={promoModalOpen} setPromoModalOpen={setPromoModalOpen} />

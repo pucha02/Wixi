@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import { getDeviceId } from "../../../../utils/checkPromocodeUsage";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../../../../redux/reducers/cartReducer";
 import { CarouselListByTypes } from "../../../atomic/templates/CarouselListByTypes/CarouselListByTypes";
@@ -71,16 +72,14 @@ export const Cart = () => {
     }, 0);
 
     setRawTotalCost(rawTotal); // Сохраняем исходную стоимость
-    const discountedTotal = discount > 0 ? rawTotal * (1 - discount / 100) : rawTotal;
+    const discountedTotal = discount.discountPercentage > 0 ? rawTotal * (1 - discount.discountPercentage / 100) : rawTotal;
 
     setTotalCost(discountedTotal);
     localStorage.setItem("totalCost", JSON.stringify(discountedTotal));
   }, [cartItems, discount]);
 
-
-
   const saveDiscount = (discountValue) => {
-    setDiscount(discountValue);
+    setDiscount(discountValue.discountPercentage);
     localStorage.setItem("discount", JSON.stringify(discountValue));
   };
 
@@ -90,17 +89,12 @@ export const Cart = () => {
     }, 0);
 
     setRawTotalCost(rawTotal); // Обновляем исходную стоимость
-    const discountedTotal = discount > 0 ? rawTotal * (1 - discount / 100) : rawTotal;
+    const discountedTotal = discount.discountPercentage > 0 ? rawTotal * (1 - discount.discountPercentage / 100) : rawTotal;
 
     setTotalCost(discountedTotal);
     localStorage.setItem("totalCost", JSON.stringify(discountedTotal));
   };
-
-  const getDeviceId = async () => {
-    const fp = await FingerprintJS.load();
-    const result = await fp.get();
-    return result.visitorId;
-  };
+  console.log(localStorage.getItem("discount"))
 
   const handleSubmit = async (promoCodeTitle) => {
     try {
@@ -115,8 +109,9 @@ export const Cart = () => {
       if (data.isUsed) {
         alert(data.message || 'Ви вже використали цей промокод.');
       } else if (data.discountPercentage) {
-        saveDiscount(data.discountPercentage);
+        saveDiscount(data);
         alert(`Промокод застосовано! Ви отримали знижку ${data.discountPercentage}%`);
+        window.location.reload()
       } else {
         alert(data.message || 'Промокод недійсний.');
       }
@@ -181,6 +176,5 @@ export const Cart = () => {
       </div>
       <PromoModal promoModalOpen={promoModalOpen} setPromoModalOpen={setPromoModalOpen} />
     </div>
-
   );
 };

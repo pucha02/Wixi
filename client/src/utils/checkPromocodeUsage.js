@@ -1,9 +1,24 @@
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
-const getDeviceId = async () => {
+// const getDeviceId = async () => {
+//     const fp = await FingerprintJS.load();
+//     const result = await fp.get();
+//     return result.visitorId;
+// };
+
+export const getDeviceId = async () => {
+    const savedDeviceId = localStorage.getItem('deviceId');
+    if (savedDeviceId) {
+        return savedDeviceId; 
+    }
+
     const fp = await FingerprintJS.load();
     const result = await fp.get();
-    return result.visitorId;
+    const deviceId = result.visitorId;
+
+    localStorage.setItem('deviceId', deviceId);
+
+    return deviceId;
 };
 
 export const checkPromoUsage = async (setPromoUsed, setPromoModalOpen) => {

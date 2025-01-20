@@ -1,0 +1,220 @@
+a {
+    width: max-content;
+    color: black;
+    text-decoration: none;
+}
+
+.product-item-li {
+    list-style-type: none;
+    width: 33%;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.filter-block-mobile{
+    display: none;
+}
+
+.catalog-content {
+    display: flex;
+}
+
+.filter-block {
+    width: 260px;
+}
+
+.filter-block ul {
+    list-style-type: none;
+    margin: 0;
+    width: 260px;
+    margin-top: 30px;
+}
+
+.fade-enter {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .fade-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+  
+  .fade-exit {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .fade-exit-active {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 300ms, transform 300ms;
+  }
+  
+
+.catalog-container {
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 184px;
+    margin-bottom: 80px;
+}
+
+.category-title {
+    font-size: 21px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+
+
+.category-title, .category-title a{
+font-family: 'Helvetica Neue Cyr Ultra Light';
+}
+
+.recently-viewed-container {
+    margin: 0 auto;
+}
+
+.recently-viewed-container .main-container {
+    width: 100%;
+}
+
+.recently-viewed-container .swiper-button-prev, .recently-viewed-container .swiper-button-next{
+    margin-top: -70px;
+}
+
+.product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    /* Или space-between */
+    gap: 10px;
+    /* Одинаковое расстояние между элементами */
+}
+
+
+.product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container .color-circle {
+    width: 27px;
+    height: 27px;
+    margin: 0;
+}
+
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+}
+
+.pagination button.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.pagination .dots {
+    padding: 5px 10px;
+    color: #999;
+}
+
+
+@media (max-width: 768px) {
+    .recently-viewed-container .swiper-button-prev, .recently-viewed-container .swiper-button-next {
+        font-size: 1rem;
+        transform: scale(0.5);
+        margin-top: -30px;
+    }
+}
+
+@media (min-width:1155px) {
+    .product-item-li{
+        width: 33%;
+    }
+}
+
+@media (max-width:1154px) {
+    .product-list{
+        justify-content: space-between;
+    }
+}
+
+@media (max-width:768px) {
+
+    .category-title, .category-title a {
+        font-size: 14px;
+        margin-bottom: 21px;
+        margin-top: 16px;
+    }
+    .catalog-container {
+        width: 86%;
+        margin-top: 100px;
+    }
+
+    .product-item-li{
+        width: 47%;
+    }
+
+    .product-list {
+        justify-content: space-between;
+    }
+
+    .product-list-block .catalog-container .product-list .product-item-li .product-item .color-list .colors-container .color-circle {
+        width: 25px;
+        height: 25px;
+    }
+    .filter-block-mobile {
+        display: none;
+        position: absolute;
+        background-color: white;
+        z-index: 1000;
+        padding: 30px;
+        left: 0px;
+        width: 80%;
+        height: 100%;
+        min-height: 800px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+        overflow-y: auto;
+    }
+    .filter-block-mobile.visible {
+        display: block; /* Отображается при необходимости */
+      }
+      
+      .filter-block-mobile.hidden {
+        display: none; /* Скрывается */
+      }
+      
+      .close-filter-block-mobile {
+        font-size: 24px;
+        cursor: pointer;
+        text-align: right;
+        margin-bottom: 20px;
+      }
+    
+    .filter-block-mobile ul {
+        list-style-type: none;
+    }
+
+    .close-filter-block-mobile{
+        position: absolute;
+        right: 10px;
+        font-size: 25px;
+    }
+
+    
+}

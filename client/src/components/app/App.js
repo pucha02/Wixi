@@ -11,6 +11,9 @@ import { UserProfilePage } from "../pages/userProfilePage/userProfilePage";
 import { WishListPage } from "../pages/wishListPage/wishListPage";
 import { SearchedProductPage } from "../pages/searchedProductPage/searchedProductPage";
 import { ConfPolicePage } from "../pages/confPolicePage/confPolicePage";
+import { NewProductsPage } from "../pages/newProductsPage/newProductsPage";
+import { SaleProductsPage } from "../pages/saleProductsPage/saleProductsPage";
+import { AllProductsPage } from "../pages/allProductsPage/AllProductsPage";
 
 const App = () => {
   return (
@@ -32,6 +35,9 @@ const App = () => {
           {/* <Route path="/aboutus" element={} />
           <Route path="/exchangeandreturn" element={} /> */}
           <Route path="/privacypolicy" element={<ConfPolicePage/>} />
+          <Route path="/newproducts" element={<NewProductsPage/>} />
+          <Route path="/saleproducts" element={<SaleProductsPage/>} />
+          <Route path="/allproducts" element={<AllProductsPage/>} />
           {/* <Route path="/delivery" element={} />
           <Route path="/payment" element={} /> */}
         </Routes>

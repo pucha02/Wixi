@@ -2,7 +2,7 @@ import { ProductColor } from "../../atoms/atomsProduct/Color/Color";
 import { ProductSize } from "../../atoms/atomsProduct/Size/ProductSize";
 import './ColorList.css';
 
-export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, activeSize, classname, sizeError, setSku, setVariationId, setAvailableQuantity }) => {
+export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, activeSize, classname, sizeError, setSku, setVariationId, setAvailableQuantity, colorsList }) => {
   // Суммируем общее количество доступных товаров
   const totalAvailable = colors.reduce(
     (total, color) =>
@@ -38,6 +38,7 @@ export const ColorList = ({ colors, setActiveIndex, activeIndex, setActiveSize, 
                   className={!isAvailable ? "inactive" : ""}
                   setActiveSize={setActiveSize}
                   isAvailable={isAvailable}
+                  colors={colorsList}
                 />
               );
             })}

@@ -82,7 +82,7 @@ export const checkPromoCode = async (req, res) => {
       const newEntry = new UsedPromoCode({ deviceId, promoCode: promoCodeTitle });
       await newEntry.save();
   
-      return res.json({ isUsed: false, discountPercentage: promoCode.discountPercentage });
+      return res.json({ isUsed: false, discountPercentage: promoCode.discountPercentage, code: promoCode.code });
     } catch (error) {
       console.error('Ошибка при обработке промокода:', error);
       res.status(500).json({ message: 'Внутрішня помилка сервера' });

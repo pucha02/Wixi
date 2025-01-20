@@ -22,13 +22,16 @@ import {
     removeItemFromWishlist,
 } from "../../../../redux/reducers/wishlistReducer";
 
+import NoImg from '../../../../assets/svg/no-iamge.svg'
+
+
 const SearchedProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
     const [data, setData] = useState([]);
 
     const [recentlyViewed, setRecentlyViewed] = useState([]);
     const [likedItems, setLikedItems] = useState({});
     const [activeSize, setActiveSize] = useState(0);
-
+    const [colors, setColors] = useState({})
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [isLiked, setLiked] = useState();
@@ -40,6 +43,32 @@ const SearchedProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
     const { getAllProductByCategory } = useGetDataProduct();
     const location = useLocation();
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://16.171.32.44/api/colors/get-colors');
+                if (!response.ok) {
+                    throw new Error('Ошибка сети: ' + response.status);
+                }
+
+                const data = await response.json();
+
+                const colorMap = data.reduce((acc, color) => {
+                    acc[color.name.toLowerCase()] = color.color;
+                    return acc;
+                }, {});
+
+                setColors(colorMap);
+                console.log(colorMap)
+            } catch (err) {
+                console.error(err);
+            } finally {
+            }
+        };
+
+        fetchData();
+    }, []);
 
 
     useEffect(() => {
@@ -75,10 +104,20 @@ const SearchedProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
 
     useEffect(() => {
         const products = location.state?.searchResults || JSON.parse(localStorage.getItem("searchedProducts")) || [];
-        const updatedData = products.map((item) => ({
+        const filteredResult = products.filter((item) => {
+            const totalAvailable = item.color.reduce(
+                (total, color) =>
+                    total + color.sizes.reduce((sum, size) => sum + size.availableQuantity, 0),
+                0
+            );
+            return totalAvailable > 0; // Условие для фильтрации
+        });
+
+        const updatedData = filteredResult.map((item) => ({
             ...item,
             activeIndex: 0,
         }));
+
         setData(updatedData);
         setFilteredData(null);
         window.scrollTo(0, 0); // Скроллим к началу страницы
@@ -101,7 +140,7 @@ const SearchedProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
 
     const handleAddToWishlist = (product, index) => {
         const activeColor = product.color?.[product.activeIndex] || product.color?.[0];
-        const activeImage = product.color?.[product.activeIndex]?.img?.[0]?.img_link || "/placeholder-image.png";
+        const activeImage = product.color?.[product.activeIndex]?.img?.[0]?.img_link || NoImg;
         const item = { title: product.title, _id: product._id, cost: product.cost, img: activeImage, color: activeColor, category: product.category };
 
         const isCurrentlyLiked = !!likedItems[product._id]; // Проверяем, лайкнут ли товар
@@ -151,7 +190,7 @@ const SearchedProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
         const items = arr.map((item, i) => {
             const activeColor = item.color?.[item.activeIndex] || item.color?.[0];
             const activeImage =
-                activeColor?.img?.[0]?.img_link || "/placeholder-image.png";
+                activeColor?.img?.[0]?.img_link || NoImg;
 
 
             return (
@@ -202,6 +241,7 @@ const SearchedProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
                             setActiveSize={setActiveSize}
                             activeSize={activeSize}
                             classname={"isDisplaySizes"}
+                            colorsList={colors}
                         />
                     </div>
                 </li>
@@ -213,7 +253,7 @@ const SearchedProductList = ({ viewMobileFilter, setViewMobileFilter }) => {
     const elements = useMemo(() => {
         const finallyData = filteredData ? filteredData : data;
         return renderItems(finallyData);
-    }, [data, activeIndex, isLiked, filteredData, storedLikes]);
+    }, [data, activeIndex, isLiked, filteredData, storedLikes, colors]);
 
     return (
         <div className="catalog-container">
